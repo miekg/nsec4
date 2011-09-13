@@ -1,0 +1,102 @@
+# Rational
+
+bla bla bla
+
+Only 1 record needs to be send, it has also only one signatures. Reduces
+bandwidth. Only one type of authenticated denial of existence: nsec4, not two.
+
+An NSEC4 records needs store the following items:
+
+* Closest encloser name;
+* Was there a wildcard at the closest encloser;
+* The existing types at the closest encloser;
+* The next ownername.
+
+Unlike NSEC3, NSEC4 defines a zero hash, which leaves the domain names in tact.
+
+# NSEC4 RDATA Wire Format
+
+Differences with NSEC3:
+
+* Hash length does not need to be stored, all domain names are stored as domain names,
+   not raw hashes;
+* Window Count is needed because (I think) you can not see the end of the type bit map, unless
+   its the last RDATA in the resource record.
+
+The RDATA of the NSEC4 RR is as shown below:
+
+                          1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |   Hash Alg.   |     Flags     |          Iterations           |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |  Salt Length  |                     Salt                      /
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     /             (Hashed) Closest Encloser Name                    /
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+     | Window Count  |     Type Bit Maps at Closest Encloser         /
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+     /              Next (Hashed) Owner Name                         /
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     | Window Count  |     Type Bit Maps at Owner Name               /
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+Hash Algorithm is a single octet.
+
+Flags field is a single octet. The following one-bit flags are defined:
+
+     0 1 2 3 4 5 6 7
+    +-+-+-+-+-+-+-+-+
+    |           |W|O|
+    +-+-+-+-+-+-+-+-+
+
+* O - Opt-Out flag
+* W - Wildcard flag
+
+Iterations is represented as a 16-bit unsigned integer, with the most
+significant bit first.
+
+Salt Length is represented as an unsigned octet.  Salt Length
+represents the length of the Salt field in octets.  If the value is
+zero, the following Salt field is omitted.
+
+Salt, if present, is encoded as a sequence of binary octets.  The
+length of this field is determined by the preceding Salt Length
+field.
+
+The (hashed) closest encloser name is base32 encoded domain name (if 
+Iterations is not zero). If Iteration is zero it is a plain domain name.
+
+The window count is one octect encoding the number of windows in 
+the bit map at the closest encloser name.
+
+The type bit map at closest encloser field encodes the existing types at the
+closest encloser name.
+
+The next (hashed) owner name is a base32 encoded domain name (if Iteration
+is is not zero). If Iteration is zero it is a plain domain name.
+
+The window count is one octect encoding the number of windows in 
+the bit map at the owner name.
+
+The type bit map at owner name field encodes the existing types at the
+owner name of the NSEC4 record.
+
+# Presentation Format
+
+NSEC3 record:
+
+    15BG9L6359F5CH23E34DDUA6N1RIHL9H.example.org. NSEC3 1 0 2 DEAD 
+        22670TRPLHSR72PQQMEDLTG1KDQEOLB7 NS SOA RRSIG DNSKEY NSEC3PARAM
+
+NSEC4 record with zero hashing:
+
+    example.org. NSEC4 0 0 0 L1FE example.org NS SOA RRSIG DNSKEY NSEC4PARAM 
+        a.example.org. NS SOA RRSIG DNSKEY NSEC4PARAM
+
+NSEC4 record with hashing:
+
+    
+    15BG9L6359F5CH23E34DDUA6N1RIHL9H.example.org. NSEC4 1 0 2 L1FE 
+        15BG9L6359F5CH23E34DDUA6N1RIHL9H.example.org. NS SOA RRSIG DNSKEY NSEC4PARAM
+        22670TRPLHSR72PQQMEDLTG1KDQEOLB7.example.org. NS SOA RRSIG DNSKEY NSEC4PARAM
