@@ -1,13 +1,16 @@
 all:	draft.txt
 
-draft.xml: front.xml back.xml draft.pdc transform.xsl
-	(cat front.xml; pandoc draft.pdc -t docbook -s | xsltproc transform.xsl -; cat back.xml) > draft.xml 
+middle.xml: middle.mkd transform.xsl
+	pandoc middle.mkd -t docbook -s | xsltproc transform.xsl - > middle.xml
 
-draft.txt: draft.xml
-	xml2rfc draft.xml draft.txt
+back.xml:  back.mkd transform.xsl
+	pandoc back.mkd -t docbook -s | xsltproc transform.xsl - > back.xml
+
+draft.txt:	front.xml middle.xml back.xml template.xml
+	xml2rfc template.xml draft.txt
 
 clean:
-	rm -f draft.xml
+	rm -f middle.xml back.xml
 
-realclean: clean
+realclean:
 	rm -f draft.txt
