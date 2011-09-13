@@ -74,8 +74,8 @@ field.
 The (hashed) closest encloser name is base32 encoded domain name (if 
 Iterations is not zero). If Iteration is zero it is a plain domain name.
 
-The window count is one octect encoding the number of windows in 
-the bit map at the closest encloser name.
+The window count is encoded as an unsigned octect representing the 
+number of windows in the bit map at the closest encloser name.
 
 The type bit map at closest encloser field encodes the existing types at the
 closest encloser name.
