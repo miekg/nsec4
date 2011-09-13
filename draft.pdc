@@ -45,7 +45,7 @@ The RDATA of the NSEC4 RR is as shown below:
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
      /              Next (Hashed) Owner Name                         /
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     | Window Count  |     Type Bit Maps at Owner Name               /
+     |             Type Bit Maps at Owner Name                       /
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 Hash Algorithm is a single octet.
@@ -82,9 +82,6 @@ closest encloser name.
 
 The next (hashed) owner name is a base32 encoded domain name (if Iteration
 is is not zero). If Iteration is zero it is a plain domain name.
-
-The window count is one octect encoding the number of windows in 
-the bit map at the owner name.
 
 The type bit map at owner name field encodes the existing types at the
 owner name of the NSEC4 record.
