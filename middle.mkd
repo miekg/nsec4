@@ -34,6 +34,7 @@ Questions:
   encloser? MG: don't think so
 * If you know there was a wildcard, you are done, check 
     algorithm in [](#RFC1034) Section 4.3.2.
+* Empty [](#RFC4592)
 
 The RDATA of the NSEC4 RR is as shown below:
 

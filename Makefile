@@ -6,7 +6,7 @@ middle.xml: middle.mkd transform.xsl
 back.xml:  back.mkd transform.xsl
 	pandoc back.mkd -t docbook -s | xsltproc transform.xsl - > back.xml
 
-draft.txt:	front.xml middle.xml back.xml template.xml
+draft.txt:	middle.xml back.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.txt
 
 clean:
