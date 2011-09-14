@@ -27,8 +27,13 @@ Differences with NSEC3:
 
 * Hash length does not need to be stored, all domain names are stored as domain names,
    not raw hashes;
-* Window Count is needed because (I think) you can not see the end of the type bit map, unless
-   its the last RDATA in the resource record.
+
+Questions:
+
+* Does a resolver need to know the types present at the closest
+  encloser? MG: don't think so
+* If you know there was a wildcard, you are done, check 
+    algorithm in [](#RFC1034) Section 4.3.2.
 
 The RDATA of the NSEC4 RR is as shown below:
 
@@ -39,10 +44,6 @@ The RDATA of the NSEC4 RR is as shown below:
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |  Salt Length  |                     Salt                      /
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     /             (Hashed) Closest Encloser Name                    /
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
-     | Window Count  |     Type Bit Maps at Closest Encloser         /
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
      /              Next (Hashed) Owner Name                         /
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
      |             Type Bit Maps at Owner Name                       /
@@ -71,15 +72,6 @@ Salt, if present, is encoded as a sequence of binary octets.  The
 length of this field is determined by the preceding Salt Length
 field.
 
-The (hashed) closest encloser name is base32 encoded domain name (if 
-Iterations is not zero). If Iteration is zero it is a plain domain name.
-
-The window count is encoded as an unsigned octect representing the 
-number of windows in the bit map at the closest encloser name.
-
-The type bit map at closest encloser field encodes the existing types at the
-closest encloser name.
-
 The next (hashed) owner name is a base32 encoded domain name (if Iteration
 is is not zero). If Iteration is zero it is a plain domain name.
 
@@ -95,11 +87,10 @@ NSEC3 record:
 
 NSEC4 record with zero hashing:
 
-    example.org. NSEC4 0 0 0 L1FE example.org NS SOA RRSIG DNSKEY NSEC4PARAM 
-     a.example.org. NS SOA RRSIG DNSKEY NSEC4PARAM
+    example.org. NSEC4 0 0 0 L1FE a.example.org. 
+     NS SOA RRSIG DNSKEY NSEC4PARAM
 
 NSEC4 record with hashing:
 
     15BG9L6359F5CH23E34DDUA6N1RIHL9H.example.org. NSEC4 1 0 2 L1FE 
-     15BG9L6359F5CH23E34DDUA6N1RIHL9H NS SOA RRSIG DNSKEY NSEC4PARAM
      22670TRPLHSR72PQQMEDLTG1KDQEOLB7 NS SOA RRSIG DNSKEY NSEC4PARAM

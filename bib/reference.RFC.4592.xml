@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC4592'>
+
+<front>
+<title>The Role of Wildcards in the Domain Name System</title>
+<author initials='E.' surname='Lewis' fullname='E. Lewis'>
+<organization /></author>
+<date year='2006' month='July' />
+<abstract>
+<t>This is an update to the wildcard definition of RFC 1034.  The interaction with wildcards and CNAME is changed, an error condition is removed, and the words defining some concepts central to wildcards are changed.  The overall goal is not to change wildcards, but to refine the definition of RFC 1034. [STANDARDS-TRACK]</t></abstract></front>
+
+<seriesInfo name='RFC' value='4592' />
+<format type='TXT' octets='43991' target='http://www.rfc-editor.org/rfc/rfc4592.txt' />
+</reference>
