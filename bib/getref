@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo $0: Need RFC number >&2
+    exit 1
+fi
+wget http://xml.resource.org/public/rfc/bibxml/reference.RFC."$1".xml
