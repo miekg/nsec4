@@ -69,6 +69,7 @@
 
 <references title='Normative References'>
     <?rfc include="bib/reference.RFC.4592.xml"?>
+    <?rfc include="bib/reference.RFC.5155.xml"?>
 </references>
 
  <?rfc include="back.xml"?>
