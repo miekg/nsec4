@@ -62,16 +62,7 @@
 </middle>
 
 <back>
-<references title='Informative References'>
-    <?rfc include="bib/reference.RFC.1034.xml"?>
-    <?rfc include="bib/reference.RFC.2119.xml"?>
-</references>
-
-<references title='Normative References'>
-    <?rfc include="bib/reference.RFC.4592.xml"?>
-    <?rfc include="bib/reference.RFC.5155.xml"?>
-</references>
-
+ <?rfc include="refs.xml"?>
  <?rfc include="back.xml"?>
 </back>
 </rfc>

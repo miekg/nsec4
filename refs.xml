@@ -1,15 +1,12 @@
 <references title="Informative References">
     <?rfc include="bib/reference.RFC.1034.xml"?>
     <?rfc include="bib/reference.RFC.2119.xml"?>
-    <?rfc include="bib/reference.RFC.3755.xml"?>
     <?rfc include="bib/reference.RFC.4033.xml"?>
     <?rfc include="bib/reference.RFC.4034.xml"?>
     <?rfc include="bib/reference.RFC.4035.xml"?>
 </references>
 
 <references title="Normative References">
-    <?rfc include="bib/reference.RFC.3845.xml"?>
     <?rfc include="bib/reference.RFC.4592.xml"?>
-    <?rfc include="bib/reference.RFC.4956.xml"?>
     <?rfc include="bib/reference.RFC.5155.xml"?>
 </references>
