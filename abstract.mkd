@@ -1,0 +1,7 @@
+The Domain Name System Security (DNSSEC) Extensions introduced the NSEC
+resource record (RR) for authenticated denial of existence, and the NSEC3
+resource record for hashed authenticated denial of existence.  This document
+introduces an alternative resource record, NSEC4, which similarly provides 
+authenticated denial of existence.  It can permit can permit gradual expansion of
+delegation-centric zones, just like NSEC3 does.  It is also possible, but not
+required, to provide measures against zone enumeration.
