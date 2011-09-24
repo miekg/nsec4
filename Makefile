@@ -13,7 +13,7 @@ draft.txt:	middle.xml back.xml abstract.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.txt
 
 clean:
-	rm -f middle.xml back.xml
+	rm -f middle.xml back.xml abstract.xml
 
 realclean: clean
 	rm -f draft.txt
