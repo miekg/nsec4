@@ -1,5 +1,8 @@
 # Rationale
-...
+
+* Remove the need for three NSEC3 records, but optimizing the wildcard record away. This
+    safes a records and a signature from the answer
+* One unified denial of existence method, in stead of two
 
 # Requirements
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
@@ -287,7 +290,7 @@ If the zone does not contain any RRsets matching QNAME either exactly or
 via wildcard name expansion, then the name server must include proof that:
 
 * there is no exact match for QNAME;
-* thee zone contains no RRsets that would QNAME via wildcard name expansion.
+* the zone contains no RRsets that would match QNAME via wildcard name expansion.
 
 With NSEC, the server includes in the response a NSEC RR that covers QNAME,
 and a NSEC RR that covers the wildcard RR at the closest encloser.
@@ -364,11 +367,16 @@ Like "serving-no-data-responses" with QYTPE is DS.
 
 ### Responding to Queries for NSEC4 Owner Names
 
-To do.
+Queries for NSEC4 owner names are handled in the same way as normal
+queries. When NSEC4 hashing is in effect the paradox (NSEC4 records
+deny there own existence) described
+in Section 7.2.8 of [](#RFC5155) is back. In light of this paradox
+validating resolvers SHOULD NOT use the information from NSEC4
+queries.
 
 ### Server Response to a Run-Time Collision
 
-To do.
+The same considerations as Section 7.2.9 of [](#RFC5155) apply.
 
 # IANA Considerations
 
