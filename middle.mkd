@@ -1,15 +1,7 @@
 # Introduction
 
 ## Rationale
-bla bla bla. NSEC + NSEC3 = NSEC4.
-Reduces bandwidth.
-Only one type of authenticated denial of existence: nsec4, not two.
-
-In addition to NSEC3, a NSEC4 records needs store the following items:
-
-* was there a wildcard at the original owner name;
-
-Unlike NSEC3, NSEC4 defines a zero hash, which leaves the domain names in tact.
+...
 
 ## Requirements
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
