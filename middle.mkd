@@ -1,15 +1,13 @@
-# Introduction
-
-## Rationale
+# Rationale
 ...
 
-## Requirements
+# Requirements
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
 "OPTIONAL" in this document are to be interpreted as described in
 [](#RFC2119).
 
-## Terminology
+# Terminology
 
 The reader is assumed to be familiar with the basic DNS and DNSSEC concepts
 described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034), [](#RFC4035)
@@ -67,9 +65,7 @@ cryptographic hashes of the original owner name prepended as a single label
 to the name of the zone. If hashing is used, the NSEC4 RR indicates which
 hash function is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
-The hashing technique is described fully in []"calculation-of-the-hash".
-
-MM: Hoe doe je xref naar secties?
+The hashing technique is described in [](#calculation-of-the-hash).
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
 A NSEC4 RR whose span covers an owner name or "next closer" name of an
