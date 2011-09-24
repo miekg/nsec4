@@ -86,30 +86,29 @@ This is in the spirit of negative caching [](#RFC2136).
 
 ## NSEC4 RDATA Wire Format
 
-Differences with NSEC3:
+The NSEC4 RDATA has many similarities with NSEC3.
+But there are a few differences:
 
-* Flags have a bit reserved to indicate whether wildcard name expansion is
-  possible at the original owner name;
-* Hash length does not need to be stored, all domain names are stored as domain names,
-  not raw hashes;
+* There is an extra flag bit reserved to indicate whether wildcard name expansion is
+  possible at the original owner name; [MG] wat is de original owner name.
+* the hash length does not need to be stored, as all domain names are stored as domain 
+  names, not raw hashes;
 
-The RDATA of the NSEC4 RR is as shown below and has many similarities with NSEC3.
+The RDATA of the NSEC4 RR is as shown below.
 
-                      1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
-  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |   Hash Alg.   |     Flags     |          Iterations           |
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |  Salt Length  |                     Salt                      /
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- /                 Next (Hashed) Owner Name                      /
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |                         Type Bit Maps                         /
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                         1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |   Hash Alg.   |     Flags     |          Iterations           |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |  Salt Length  |                     Salt                      /
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    /                 Next (Hashed) Owner Name                      /
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                         Type Bit Maps                         /
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-Hash Algorithm is a single octet.
-If Hash Algorithm is zero (no hashing), the Iterations field,
-Salt Length field and Salt field are omitted. MM: not implemented
+Hash Algorithm is a single octet. 
 
 Flags field is a single octet. The following one-bit flags are defined:
 
@@ -122,7 +121,8 @@ Flags field is a single octet. The following one-bit flags are defined:
 * W - Wildcard flag
 
 Iterations is represented as a 16-bit unsigned integer, with the most
-significant bit first.
+significant bit first. If no hashing should be applied the Hash Algorithm
+field, the Salt Length field and the Salt field MUST be ignored.
 
 Salt Length is represented as an unsigned octet.  Salt Length
 represents the length of the Salt field in octets.  If the value is
@@ -132,9 +132,11 @@ Salt, if present, is encoded as a sequence of binary octets.  The
 length of this field is determined by the preceding Salt Length
 field.
 
-The Next (Hashed) Owner Name is a base32 encoded domain name,
-if Hash Algorithm is is not zero. If Hash Algorithm is zero it is a plain
-domain name.
+The Next (Hashed) Owner Name is a domain name,
+If Iterations is not zero, this is a base32 encoded domain name. If Iterations
+is zero this is plain domain name. MG: hier moeten we zeker nog zeggen dat de
+base32 encode domain in de zone valt (ala NSEC3) en anders gewoon de next
+name is (ala NSEC).
 
 The Type Bit Maps encode the existing types at the original owner name
 that matches the NSEC4 RR.
@@ -152,6 +154,32 @@ MM: But we still can't use it for NXDOMAIN responses. Unhashed NXDOMAIN is
     screwed.
 
 ## Presentation Format
+
+The presentation format of the RDATA portion is as follows:
+
+* The Hash Algorithm field is represented as an unsigned decimal
+    integer. The value has a maximum of 255.
+
+* The Flags field is represented as an unsigned decimal integer.
+    The value has a maximum of 255.
+
+* The Iterations field is represented as an unsigned decimal
+    integer. The value is between 0 and 65535, inclusive.
+
+* The Salt Length field is not represented.
+
+*  The Salt field is represented as a sequence of case-insensitive
+    hexadecimal digits.  Whitespace is not allowed within the
+    sequence.  The Salt field is represented as "-" (without the
+    quotes) when the Salt Length field has a value of 0.
+
+*  The Next (Hashed) Owner Name field is represented as a domain name.
+
+*  The Type Bit Maps field is represented as a sequence of RR type
+    mnemonics.  When the mnemonic is not known, the TYPE
+    representation as described in Section 5 of [](#RFC3597) MUST be
+    used.
+
 
 NSEC3 record:
 
