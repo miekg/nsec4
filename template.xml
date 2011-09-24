@@ -53,7 +53,7 @@
         <workgroup>DNSEXT</workgroup>
         <keyword>DNSSEC</keyword>
         <abstract>
-            <t>Authenticated Denial of Existence.</t>
+                <?rfc include="abstract.xml"?>
         </abstract>
 </front>
 
