@@ -1,12 +1,24 @@
 <references title="Informative References">
-    <?rfc include="bib/reference.RFC.1034.xml"?>
-    <?rfc include="bib/reference.RFC.2119.xml"?>
-    <?rfc include="bib/reference.RFC.4033.xml"?>
-    <?rfc include="bib/reference.RFC.4034.xml"?>
-    <?rfc include="bib/reference.RFC.4035.xml"?>
+        <?rfc include="bib/reference.RFC.2672" ?>
+        <?rfc include="bib/reference.RFC.2898" ?>
+        <?rfc include="bib/reference.RFC.3833" ?>
+        <?rfc include="bib/reference.RFC.4592" ?>
+        <?rfc include="bib/reference.RFC.4956" ?>
 </references>
 
 <references title="Normative References">
-    <?rfc include="bib/reference.RFC.4592.xml"?>
-    <?rfc include="bib/reference.RFC.5155.xml"?>
+        <?rfc include="bib/reference.RFC.1034" ?>
+        <?rfc include="bib/reference.RFC.1035" ?>
+        <?rfc include="bib/reference.RFC.2119" ?>
+        <?rfc include="bib/reference.RFC.2136" ?>
+        <?rfc include="bib/reference.RFC.2181" ?>
+        <?rfc include="bib/reference.RFC.2308" ?>
+        <?rfc include="bib/reference.RFC.3597" ?>
+        <?rfc include="bib/reference.RFC.4033" ?>
+        <?rfc include="bib/reference.RFC.4034" ?>
+        <?rfc include="bib/reference.RFC.4035" ?>
+        <?rfc include="bib/reference.RFC.4648" ?>
+        <?rfc include="bib/reference.RFC.5155" ?>
+        <?rfc include="bib/reference.RFC.5226" ?>
+        <?rfc include="bib/reference.RFC.6195" ?>
 </references>
