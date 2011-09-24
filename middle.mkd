@@ -1,21 +1,20 @@
 # Rationale
 
-* Remove the need for three NSEC3 records, but optimizing the wildcard record away. This
-    safes a records and a signature from the answer
-* One unified denial of existence method, in stead of two
+* Remove the need for three NSEC3 records, but optimizing the wildcard NSEC away. This
+    saves a record and a signature from the answer;
+* One unified denial of existence method, in stead of two: NSEC and NSEC3.
 
 # Requirements
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in
-[](#RFC2119).
+"OPTIONAL" in this document are to be interpreted as described in [](#RFC2119).
 
 # Terminology
 
 The reader is assumed to be familiar with the basic DNS and DNSSEC concepts
 described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034), [](#RFC4035)
-and subsequent RFCs that update them: [](#RFC2136), [](#RFC2181), [](#RFC2308), and
-[](#RFC5155).
+and subsequent RFCs that update them: [](#RFC2136), [](#RFC2181), [](#RFC2308), 
+and [](#RFC5155).
 
 The same terminology is used throughout this document as in Section 1.3
 from [](#RFC5155), with the following changes:
