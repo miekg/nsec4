@@ -180,7 +180,6 @@ The presentation format of the RDATA portion is as follows:
     representation as described in Section 5 of [](#RFC3597) MUST be
     used.
 
-
 NSEC3 record:
 
     example.org. NSEC a.example.org. NS SOA RRSIG DNSKEY NSEC3PARAM
@@ -206,7 +205,41 @@ Like NSEC3PARAM.
 
 # Calculation of the Hash
 
-Like NSEC3.
+The hash calculation is similar to that in NSEC3, with one big difference:
+Zero iterations means no hashing should be performed.
+
+The hash calculation uses three of the NSEC4 RDATA fields: Hash
+Algorithm, Salt, and Iterations.
+
+Define H(x) to be the hash of x using the Hash Algorithm selected by
+the NSEC4 RR, k to be the number of Iterations, and || to indicate
+concatenation.  Then define:
+
+    IH(salt, x, 0) = x
+
+    IH(salt, x, k) = H(IH(salt, x, k-1) || salt), if k > 0
+
+Then the calculated hash of an owner name is
+
+    IH(salt, owner name, iterations),
+
+where the owner name is in the canonical form, defined as:
+
+The wire format of the owner name where:
+
+1.  The owner name is fully expanded (no DNS name compression) and
+    fully qualified;
+
+2.  All uppercase US-ASCII letters are replaced by the corresponding
+    lowercase US-ASCII letters;
+
+3.  If the owner name is a wildcard name, the owner name is in its
+    original unexpanded form, including the "*" label (no wildcard
+    substitution);
+
+This form is as defined in Section 6.2 of [](#RFC4034).
+
+The method to calculate the Hash is based on [](#RFC2898).
 
 # Authoritative Server Considerations
 
