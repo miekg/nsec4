@@ -18,13 +18,10 @@ draft.html:	middle.xml back.xml abstract.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.html
 
 $(DRAFTNAME).txt:	draft.txt
-	mv $< $(DRAFTNAME).txt
-
-#draft-nsec4-00.txt:	draft.txt
-#	cp $< $(DRAFTNAME).txt
+	cp $< $(DRAFTNAME).txt
 
 $(DRAFTNAME).html:	draft.html
-	mv $< $(DRAFTNAME).html
+	cp $< $(DRAFTNAME).html
 
 nits:   $(DRAFTNAME).txt
 	idnits --year 2011 --verbose $<
