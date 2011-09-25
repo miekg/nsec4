@@ -1,18 +1,22 @@
-<?xml version='1.0' ?>
+<?xml version='1.0' encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM 'rfc2629.dtd'>
-<rfc ipr='trust200902' docName='draft-nsec4-01'>
 <?rfc toc="yes"?>         <!-- generate a table of contents -->
+<?rfc tocompact="no"?>
+<?rfc tocdepth="6"?>
 <?rfc symrefs="yes"?>     <!-- use anchors instead of numbers for references -->
 <?rfc sortrefs="yes" ?>   <!-- alphabetize the references -->
+<?rfc rfcedstyle="yes"?>
+<?rfc strict="yes"?>
+<?rfc autobreaks="yes"?>
 <?rfc compact="yes" ?>    <!-- conserve vertical whitespace -->
 <?rfc subcompact="no" ?>  <!-- but keep a blank line between list items -->
- <front>
-        <title>Authenticated Denial of Existence</title>
+<rfc ipr='trust200902' category="std" docName='draft-nsec4-00'>
+<front>
 
-        <author initials='R.' surname='Gieben'
-                fullname='R. (Miek) Gieben'>
+<title abbrev="NSEC4"> DNS Security (DNSSEC) Authenticated Denial of Existence </title>
+
+        <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
             <organization>SIDN</organization>
-
             <address>
                 <postal>
                     <street>Meander 501</street>
@@ -28,8 +32,7 @@
             </address>
         </author>
 
-        <author initials='M.' surname='Mekking'
-                fullname='Mathijs Mekking'>
+        <author initials='W.' surname='Mekking' fullname='W. (Matthijs) Mekking'>
             <organization>NLnet Labs</organization>
 
             <address>
@@ -42,8 +45,8 @@
                 </postal>
 
                 <phone></phone>
-                <email>mathijs@nlnetlabs.nl</email>
-                <uri>http://nlnetlabs.nl/</uri>
+                <email>matthijs@nlnetlabs.nl</email>
+                <uri>http://www.nlnetlabs.nl/</uri>
             </address>
         </author>
 
@@ -53,7 +56,13 @@
         <workgroup>DNSEXT</workgroup>
         <keyword>DNSSEC</keyword>
         <abstract>
-            <t>Authenticated Denial of Existence.</t>
+        <t>
+The Domain Name System Security (DNSSEC) Extensions introduced the NSEC resource record (RR) for authenticated denial of existence,
+and the NSEC3 resource record for hashed authenticated denial of existence.
+This document introduces an alternative resource record, NSEC4, which similarly provides authenticated denial of existence.
+It can permit can permit gradual expansion of delegation-centric zones, just like NSEC3 does.
+It is also possible, but not required, to provide measures against zone enumeration.
+        </t>
         </abstract>
 </front>
 
@@ -62,16 +71,31 @@
 </middle>
 
 <back>
-<references title='Informative References'>
-    <?rfc include="bib/reference.RFC.1034.xml"?>
-    <?rfc include="bib/reference.RFC.2119.xml"?>
-</references>
+        <references title="Informative References">
+                <?rfc include="bib/reference.RFC.2672" ?>
+                <?rfc include="bib/reference.RFC.2898" ?>
+                <?rfc include="bib/reference.RFC.3833" ?>
+                <?rfc include="bib/reference.RFC.4592" ?>
+                <?rfc include="bib/reference.RFC.4956" ?>
+        </references>
 
-<references title='Normative References'>
-    <?rfc include="bib/reference.RFC.4592.xml"?>
-    <?rfc include="bib/reference.RFC.5155.xml"?>
-</references>
+        <references title="Normative References">
+                <?rfc include="bib/reference.RFC.1034" ?>
+                <?rfc include="bib/reference.RFC.1035" ?>
+                <?rfc include="bib/reference.RFC.2119" ?>
+                <?rfc include="bib/reference.RFC.2136" ?>
+                <?rfc include="bib/reference.RFC.2181" ?>
+                <?rfc include="bib/reference.RFC.2308" ?>
+                <?rfc include="bib/reference.RFC.3597" ?>
+                <?rfc include="bib/reference.RFC.4033" ?>
+                <?rfc include="bib/reference.RFC.4034" ?>
+                <?rfc include="bib/reference.RFC.4035" ?>
+                <?rfc include="bib/reference.RFC.4648" ?>
+                <?rfc include="bib/reference.RFC.5155" ?>
+                <?rfc include="bib/reference.RFC.5226" ?>
+                <?rfc include="bib/reference.RFC.6195" ?>
+        </references>
 
- <?rfc include="back.xml"?>
+<?rfc include="back.xml"?>
 </back>
 </rfc>
