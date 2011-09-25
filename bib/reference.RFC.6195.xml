@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC6195'>
+
+<front>
+<title>Domain Name System (DNS) IANA Considerations</title>
+<author initials='D.' surname='Eastlake' fullname='D. Eastlake'>
+<organization /></author>
+<date year='2011' month='March' />
+<abstract>
+<t>This document specifies Internet Assigned Number Authority (IANA) parameter assignment considerations for the allocation of Domain Name System (DNS) resource record types, CLASSes, operation codes, error codes, DNS protocol message header bits, and AFSDB resource record subtypes.  This memo documents an Internet Best Current Practice.</t></abstract></front>
+
+<seriesInfo name='BCP' value='42' />
+<seriesInfo name='RFC' value='6195' />
+<format type='TXT' octets='33790' target='http://www.rfc-editor.org/rfc/rfc6195.txt' />
+</reference>

@@ -56,9 +56,7 @@
         <workgroup>DNSEXT</workgroup>
         <keyword>DNSSEC</keyword>
         <abstract>
-        <t>
         <?rfc include="abstract.xml"?>
-        </t>
         </abstract>
 </front>
 
@@ -67,36 +65,7 @@
 </middle>
 
 <back>
-<<<<<<< HEAD
-        <references title="Informative References">
-                <?rfc include="bib/reference.RFC.2672" ?>
-                <?rfc include="bib/reference.RFC.2898" ?>
-                <?rfc include="bib/reference.RFC.3833" ?>
-                <?rfc include="bib/reference.RFC.4592" ?>
-                <?rfc include="bib/reference.RFC.4956" ?>
-        </references>
-
-        <references title="Normative References">
-                <?rfc include="bib/reference.RFC.1034" ?>
-                <?rfc include="bib/reference.RFC.1035" ?>
-                <?rfc include="bib/reference.RFC.2119" ?>
-                <?rfc include="bib/reference.RFC.2136" ?>
-                <?rfc include="bib/reference.RFC.2181" ?>
-                <?rfc include="bib/reference.RFC.2308" ?>
-                <?rfc include="bib/reference.RFC.3597" ?>
-                <?rfc include="bib/reference.RFC.4033" ?>
-                <?rfc include="bib/reference.RFC.4034" ?>
-                <?rfc include="bib/reference.RFC.4035" ?>
-                <?rfc include="bib/reference.RFC.4648" ?>
-                <?rfc include="bib/reference.RFC.5155" ?>
-                <?rfc include="bib/reference.RFC.5226" ?>
-                <?rfc include="bib/reference.RFC.6195" ?>
-        </references>
-
-<?rfc include="back.xml"?>
-=======
  <?rfc include="refs.xml"?>
  <?rfc include="back.xml"?>
->>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 </back>
 </rfc>

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2136'>
+
+<front>
+<title abbrev='DNS Update'>Dynamic Updates in the Domain Name System (DNS UPDATE)</title>
+<author initials='P.' surname='Vixie' fullname='Paul Vixie'>
+<organization>Internet Software Consortium</organization>
+<address>
+<postal>
+<street>Star Route Box 159A</street>
+<street>Woodside</street>
+<street>CA 94062</street></postal>
+<phone>+1 415 747 0204</phone>
+<email>paul@vix.com</email></address></author>
+<author initials='S.' surname='Thomson' fullname='Susan Thomson'>
+<organization>Bellcore</organization>
+<address>
+<postal>
+<street>445 South Street</street>
+<street>Morristown</street>
+<street>NJ 07960</street></postal>
+<phone>+1 201 829 4514</phone>
+<email>set@thumper.bellcore.com</email></address></author>
+<author initials='Y.' surname='Rekhter' fullname='Yakov Rekhter'>
+<organization>Cisco Systems</organization>
+<address>
+<postal>
+<street>170 West Tasman Drive</street>
+<street>San Jose</street>
+<street>CA 95134-1706</street></postal>
+<phone>+1 914 528 0090</phone>
+<email>yakov@cisco.com</email></address></author>
+<author initials='J.' surname='Bound' fullname='Jim Bound'>
+<organization>Digital Equipment Corp.</organization>
+<address>
+<postal>
+<street>110 Spitbrook Rd ZK3-3/U14</street>
+<street>Nashua</street>
+<street>NH 03062-2698</street></postal>
+<phone>+1 603 881 0400</phone>
+<email>bound@zk3.dec.com</email></address></author>
+<date year='1997' month='April' />
+<area>Applications</area>
+<keyword>domain name</keyword>
+<keyword>domain name system</keyword>
+<abstract>
+<t>
+   The Domain Name System was originally designed to support queries of
+   a statically configured database.  While the data was expected to
+   change, the frequency of those changes was expected to be fairly low,
+   and all updates were made as external edits to a zone&apos;s Master File.
+</t>
+<t>
+   Using this specification of the UPDATE opcode, it is possible to add
+   or delete RRs or RRsets from a specified zone.  Prerequisites are
+   specified separately from update operations, and can specify a
+   dependency upon either the previous existence or nonexistence of an
+   RRset, or the existence of a single RR.
+</t>
+<t>
+   UPDATE is atomic, i.e., all prerequisites must be satisfied or else
+   no update operations will take place.  There are no data dependent
+   error conditions defined after the prerequisites have been met.
+</t></abstract></front>
+
+<seriesInfo name='RFC' value='2136' />
+<format type='TXT' octets='56354' target='http://www.rfc-editor.org/rfc/rfc2136.txt' />
+<format type='HTML' octets='70333' target='http://xml.resource.org/public/rfc/html/rfc2136.html' />
+<format type='XML' octets='54954' target='http://xml.resource.org/public/rfc/xml/rfc2136.xml' />
+</reference>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2432'>
+
+<front>
+<title>Terminology for IP Multicast Benchmarking</title>
+<author initials='K.' surname='Dubray' fullname='Kevin Dubray'>
+<organization>IronBridge Networks</organization>
+<address>
+<postal>
+<street>55 Hayden Avenue</street>
+<street>Lexington</street>
+<street>MA 02421</street>
+<country>USA</country></postal>
+<phone>781 372 8118</phone>
+<email>kdubray@ironbridgenetworks.com</email></address></author>
+<date year='1998' month='October' />
+<area>Internet</area>
+<keyword>multicast</keyword>
+<abstract>
+<t>
+   The purpose of this document is to define terminology specific to the
+   benchmarking of multicast IP forwarding devices. It builds upon the
+   tenets set forth in RFC 1242, RFC 2285, and other IETF Benchmarking
+   Methodology Working Group (BMWG) efforts.  This document seeks to
+   extend these efforts to the multicast paradigm.
+</t>
+<t>
+   The BMWG produces two major classes of documents: Benchmarking
+   Terminology documents and Benchmarking Methodology documents. The
+   Terminology documents present the benchmarks and other related terms.
+   The Methodology documents define the procedures required to collect
+   the benchmarks cited in the corresponding Terminology documents.
+</t></abstract></front>
+
+<seriesInfo name='RFC' value='2432' />
+<format type='TXT' octets='29758' target='http://www.rfc-editor.org/rfc/rfc2432.txt' />
+<format type='HTML' octets='46401' target='http://xml.resource.org/public/rfc/html/rfc2432.html' />
+<format type='XML' octets='33106' target='http://xml.resource.org/public/rfc/xml/rfc2432.xml' />
+</reference>

@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2929'>
+
+<front>
+<title>Domain Name System (DNS) IANA Considerations</title>
+<author initials='D.' surname='Eastlake' fullname='D. Eastlake'>
+<organization /></author>
+<author initials='E.' surname='Brunner-Williams' fullname='E. Brunner-Williams'>
+<organization /></author>
+<author initials='B.' surname='Manning' fullname='B. Manning'>
+<organization /></author>
+<date year='2000' month='September' />
+<abstract>
+<t>This document discusses the Internet Assigned Number Authority (IANA) parameter assignment considerations given for the allocation of Domain Name System (DNS) classes, Resource Record (RR) types, operation codes, error codes, etc.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract></front>
+
+<seriesInfo name='RFC' value='2929' />
+<format type='TXT' octets='22454' target='http://www.rfc-editor.org/rfc/rfc2929.txt' />
+</reference>
