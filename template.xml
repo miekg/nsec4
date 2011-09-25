@@ -27,8 +27,8 @@
                 </postal>
 
                 <phone></phone>
-                <email>miek@miek.nl</email>
-                <uri>http://miek.nl/</uri>
+                <email>miek.gieben@sidn.nl</email>
+                <uri>http://sidn.nl/</uri>
             </address>
         </author>
 
@@ -57,11 +57,7 @@
         <keyword>DNSSEC</keyword>
         <abstract>
         <t>
-The Domain Name System Security (DNSSEC) Extensions introduced the NSEC resource record (RR) for authenticated denial of existence,
-and the NSEC3 resource record for hashed authenticated denial of existence.
-This document introduces an alternative resource record, NSEC4, which similarly provides authenticated denial of existence.
-It can permit can permit gradual expansion of delegation-centric zones, just like NSEC3 does.
-It is also possible, but not required, to provide measures against zone enumeration.
+        <?rfc include="abstract.xml"?>
         </t>
         </abstract>
 </front>
@@ -71,6 +67,7 @@ It is also possible, but not required, to provide measures against zone enumerat
 </middle>
 
 <back>
+<<<<<<< HEAD
         <references title="Informative References">
                 <?rfc include="bib/reference.RFC.2672" ?>
                 <?rfc include="bib/reference.RFC.2898" ?>
@@ -97,5 +94,9 @@ It is also possible, but not required, to provide measures against zone enumerat
         </references>
 
 <?rfc include="back.xml"?>
+=======
+ <?rfc include="refs.xml"?>
+ <?rfc include="back.xml"?>
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 </back>
 </rfc>

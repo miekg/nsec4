@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Introduction
 
 ## Rationale
@@ -12,11 +13,46 @@ In addition to NSEC3, a NSEC4 records needs store the following items:
 Unlike NSEC3, NSEC4 defines a zero hash, which leaves the domain names in tact.
 
 ## Requirements
+=======
+# Rationale
+
+* Remove the need for three NSEC3 records, but optimizing the wildcard NSEC away. This
+    saves a record and a signature from the answer;
+* One unified denial of existence method, in stead of two: NSEC and NSEC3.
+
+# Requirements
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in
-[](#RFC2119).
+"OPTIONAL" in this document are to be interpreted as described in [](#RFC2119).
 
+# Terminology
+
+The reader is assumed to be familiar with the basic DNS and DNSSEC concepts
+described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034), [](#RFC4035)
+and subsequent RFCs that update them: [](#RFC2136), [](#RFC2181), [](#RFC2308), 
+and [](#RFC5155).
+
+The same terminology is used throughout this document as in Section 1.3
+from [](#RFC5155), with the following changes:
+
+Opt-Out NSEC4 RR
+
+:   a NSEC4 RR that has the Opt-Out flag set to 1.
+
+Opt-Out zone
+
+:   a zone with at least one Opt-Out NSEC4 RR.
+
+Base32
+
+:   the "Base 32 Encoding with Extended Hex Alphabet" as specified in
+    [](#RFC4648). Note that trailing padding characters ("=") are
+    not used in the NSEC4 specification.
+
+To cover
+
+<<<<<<< HEAD
 ## Terminology
 
 The reader is assumed to be familiar with the basic DNS and DNSSEC concepts
@@ -65,6 +101,30 @@ To match
 The NSEC4 Resource Record (RR) provides authenticated denial of existence
 for DNS RRsets.
 
+=======
+:   When a hash algorithm is defined,
+    a NSEC4 RR is said to "cover" a name if the hash of the name or
+    "next closer" name falls between the owner name and the next hashed
+    owner name of the NSEC4. When no hash algorithm is defined, a NSEC4 RR is
+    said to "cover" a name if the name or "next closer" name falls between
+    the owner name and the next owner name of the NSEC4. In other words, if
+    it proves the nonexistence of the name, either directly or by proving the
+    nonexistence of an ancestor of the name.
+
+To match
+
+:   When a hash algorithm is defined, a NSEC4 RR is said to "match" a name
+    if the owner name of the NSEC4 RR is the same as the hashed owner name
+    of that name. When no hash algorithm is defined, a NSEC4 RR is said to
+    "match" a name if the name and the owner name of the NSEC4 RR are equal.
+
+
+# The NSEC4 Resource Record
+
+The NSEC4 Resource Record (RR) provides authenticated denial of existence
+for DNS RRsets.
+
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 The NSEC4 RR lists RR types present at the original owner name of the NSEC4 RR.
 It includes the next (hashed) owner name in the (hash) order of the zone.
 The complete set of NSEC4 RRs in a zone indicates which RRSets exist for the
@@ -75,6 +135,7 @@ cryptographic hashes of the original owner name prepended as a single label
 to the name of the zone. If hashing is used, the NSEC4 RR indicates which
 hash function is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
+<<<<<<< HEAD
 The hashing technique is described fully in []"calculation-of-the-hash".
 
 MM: Hoe doe je xref naar secties?
@@ -97,9 +158,19 @@ The NSEC4 RR SHOULD have the same TTL value as the SOA minimum TTL field.
 This is in the spirit of negative caching [](#RFC2136).
 
 ## NSEC4 RDATA Wire Format
+=======
+The hashing technique is described in [](#calculation-of-the-hash).
 
-Differences with NSEC3:
+(Hashed) owner names of unsigned delegations may be excluded from the chain.
+A NSEC4 RR whose span covers an owner name or "next closer" name of an
+unsigned delegation is referred to as an Opt-Out NSEC4 RR and is indicated by
+the presence of a flag.
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 
+If hashing is in use, the owner name for the NSEC4 RR is the base32 encoding
+of the hashed owner name prepended as a single label to the name of the zone.
+
+<<<<<<< HEAD
 * Flags have a bit reserved to indicate whether wildcard name expansion is
   possible at the original owner name;
 * Hash length does not need to be stored, all domain names are stored as domain names,
@@ -122,6 +193,42 @@ The RDATA of the NSEC4 RR is as shown below and has many similarities with NSEC3
 Hash Algorithm is a single octet.
 If Hash Algorithm is zero (no hashing), the Iterations field,
 Salt Length field and Salt field are omitted. MM: not implemented
+=======
+The type value for the NSEC4 RR is [TBD1].
+
+The NSEC4 RR RDATA format is class independent and is described below.
+
+The class MUST be the same as the class of the original owner name.
+
+The NSEC4 RR SHOULD have the same TTL value as the SOA minimum TTL field.
+This is in the spirit of negative caching [](#RFC2136).
+
+## NSEC4 RDATA Wire Format
+
+The NSEC4 RDATA has many similarities with NSEC3.
+But there are a few differences:
+
+* There is an extra flag bit reserved to indicate whether wildcard name expansion is
+  possible at the original owner name; [MG] wat is de original owner name.
+* the hash length does not need to be stored, as all domain names are stored as domain 
+  names, not raw hashes;
+
+The RDATA of the NSEC4 RR is as shown below.
+
+                         1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |   Hash Alg.   |     Flags     |          Iterations           |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |  Salt Length  |                     Salt                      /
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    /                 Next (Hashed) Owner Name                      /
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                         Type Bit Maps                         /
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+Hash Algorithm is a single octet. 
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 
 Flags field is a single octet. The following one-bit flags are defined:
 
@@ -134,7 +241,8 @@ Flags field is a single octet. The following one-bit flags are defined:
 * W - Wildcard flag
 
 Iterations is represented as a 16-bit unsigned integer, with the most
-significant bit first.
+significant bit first. If no hashing should be applied the Hash Algorithm
+field, the Salt Length field and the Salt field MUST be ignored.
 
 Salt Length is represented as an unsigned octet.  Salt Length
 represents the length of the Salt field in octets.  If the value is
@@ -144,9 +252,17 @@ Salt, if present, is encoded as a sequence of binary octets.  The
 length of this field is determined by the preceding Salt Length
 field.
 
+<<<<<<< HEAD
 The Next (Hashed) Owner Name is a base32 encoded domain name,
 if Hash Algorithm is is not zero. If Hash Algorithm is zero it is a plain
 domain name.
+=======
+The Next (Hashed) Owner Name is a domain name,
+If Iterations is not zero, this is a base32 encoded domain name. If Iterations
+is zero this is plain domain name. MG: hier moeten we zeker nog zeggen dat de
+base32 encode domain in de zone valt (ala NSEC3) en anders gewoon de next
+name is (ala NSEC).
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 
 The Type Bit Maps encode the existing types at the original owner name
 that matches the NSEC4 RR.
@@ -164,9 +280,40 @@ MM: But we still can't use it for NXDOMAIN responses. Unhashed NXDOMAIN is
     screwed.
 
 ## Presentation Format
+<<<<<<< HEAD
 
 NSEC3 record:
 
+=======
+
+The presentation format of the RDATA portion is as follows:
+
+* The Hash Algorithm field is represented as an unsigned decimal
+    integer. The value has a maximum of 255.
+
+* The Flags field is represented as an unsigned decimal integer.
+    The value has a maximum of 255.
+
+* The Iterations field is represented as an unsigned decimal
+    integer. The value is between 0 and 65535, inclusive.
+
+* The Salt Length field is not represented.
+
+*  The Salt field is represented as a sequence of case-insensitive
+    hexadecimal digits.  Whitespace is not allowed within the
+    sequence.  The Salt field is represented as "-" (without the
+    quotes) when the Salt Length field has a value of 0.
+
+*  The Next (Hashed) Owner Name field is represented as a domain name.
+
+*  The Type Bit Maps field is represented as a sequence of RR type
+    mnemonics.  When the mnemonic is not known, the TYPE
+    representation as described in Section 5 of [](#RFC3597) MUST be
+    used.
+
+NSEC3 record:
+
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
     example.org. NSEC a.example.org. NS SOA RRSIG DNSKEY NSEC3PARAM
 
 NSEC3 record:
@@ -190,7 +337,45 @@ Like NSEC3PARAM.
 
 # Calculation of the Hash
 
+<<<<<<< HEAD
 Like NSEC3.
+=======
+The hash calculation is similar to that in NSEC3, with one big difference:
+Zero iterations means no hashing should be performed.
+
+The hash calculation uses three of the NSEC4 RDATA fields: Hash
+Algorithm, Salt, and Iterations.
+
+Define H(x) to be the hash of x using the Hash Algorithm selected by
+the NSEC4 RR, k to be the number of Iterations, and || to indicate
+concatenation.  Then define:
+
+    IH(salt, x, 0) = x
+
+    IH(salt, x, k) = H(IH(salt, x, k-1) || salt), if k > 0
+
+Then the calculated hash of an owner name is
+
+    IH(salt, owner name, iterations),
+
+where the owner name is in the canonical form, defined as:
+
+The wire format of the owner name where:
+
+1.  The owner name is fully expanded (no DNS name compression) and
+    fully qualified;
+
+2.  All uppercase US-ASCII letters are replaced by the corresponding
+    lowercase US-ASCII letters;
+
+3.  If the owner name is a wildcard name, the owner name is in its
+    original unexpanded form, including the "*" label (no wildcard
+    substitution);
+
+This form is as defined in Section 6.2 of [](#RFC4034).
+
+The method to calculate the Hash is based on [](#RFC2898).
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 
 # Authoritative Server Considerations
 
@@ -238,7 +423,11 @@ If the zone does not contain any RRsets matching QNAME either exactly or
 via wildcard name expansion, then the name server must include proof that:
 
 * there is no exact match for QNAME;
+<<<<<<< HEAD
 * thee zone contains no RRsets that would QNAME via wildcard name expansion.
+=======
+* the zone contains no RRsets that would match QNAME via wildcard name expansion.
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 
 With NSEC, the server includes in the response a NSEC RR that covers QNAME,
 and a NSEC RR that covers the wildcard RR at the closest encloser.
@@ -315,11 +504,24 @@ Like "serving-no-data-responses" with QYTPE is DS.
 
 ### Responding to Queries for NSEC4 Owner Names
 
+<<<<<<< HEAD
 To do.
 
 ### Server Response to a Run-Time Collision
 
 To do.
+=======
+Queries for NSEC4 owner names are handled in the same way as normal
+queries. When NSEC4 hashing is in effect the paradox (NSEC4 records
+deny there own existence) described
+in Section 7.2.8 of [](#RFC5155) is back. In light of this paradox
+validating resolvers SHOULD NOT use the information from NSEC4
+queries.
+
+### Server Response to a Run-Time Collision
+
+The same considerations as Section 7.2.9 of [](#RFC5155) apply.
+>>>>>>> 8b9097d7f07835ca879dd4d706ffb08942102c55
 
 # IANA Considerations
 
