@@ -23,21 +23,21 @@ and subsequent RFCs that update them: [](#RFC2136), [](#RFC2181), [](#RFC2308), 
 The same terminology is used throughout this document as in Section 1.3
 from [](#RFC5155), with the following changes:
 
-Opt-Out NSEC4 RR
+Opt-Out NSEC4 RR:
 
 :   a NSEC4 RR that has the Opt-Out flag set to 1.
 
-Opt-Out zone
+Opt-Out zone:
 
 :   a zone with at least one Opt-Out NSEC4 RR.
 
-Base32
+Base32:
 
 :   the "Base 32 Encoding with Extended Hex Alphabet" as specified in
     [](#RFC4648). Note that trailing padding characters ("=") are
     not used in the NSEC4 specification.
 
-To cover
+To cover:
 
 :   When a hash algorithm is defined,
     a NSEC4 RR is said to "cover" a name if the hash of the name or
@@ -48,7 +48,7 @@ To cover
     it proves the nonexistence of the name, either directly or by proving the
     nonexistence of an ancestor of the name.
 
-To match
+To match:
 
 :   When a hash algorithm is defined, a NSEC4 RR is said to "match" a name
     if the owner name of the NSEC4 RR is the same as the hashed owner name
