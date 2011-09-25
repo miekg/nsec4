@@ -10,7 +10,7 @@
 <?rfc autobreaks="yes"?>
 <?rfc compact="yes" ?>    <!-- conserve vertical whitespace -->
 <?rfc subcompact="no" ?>  <!-- but keep a blank line between list items -->
-<rfc ipr='trust200902' category="std" docName='draft-nsec4-00'>
+<rfc ipr="trust200902" category="std" docName="draft-nsec4-00">
 <front>
 
 <title abbrev="NSEC4"> DNS Security (DNSSEC) Authenticated Denial of Existence </title>
