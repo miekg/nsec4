@@ -95,22 +95,40 @@ This is in the spirit of negative caching [](#RFC2136).
 
 ### Hash Algorithm
 
+[](#RFC5155) defines the NSEC3 hash algorithm registry. The zero
+hash (hash algorithm 0) is reserved. For NSEC4 we define hash
+algorithm zero to mean that nothing is hashed in the record. MG: beter.
+
 ### Flags
+
+The Flags field is identical to the Flags field as defined in [](#RFC5155). 
+This specification adds a new flag, the Wildcard Flag.
 
 #### Opt-Out Flag
 
+Like the Opt-Out Flag defined in Section 3.1.2.1 of [](#RFC5155).
+
 #### Wildcard Flag
+
+...
 
 ### Iterations
 
+Like the Iterations field defined in Section 3.1.3 of [](#RC5155).
+
 ### Salt Length
+
+Like the Salt Length field defined in Section 3.1.4 of [](#RC5155).
 
 ### Salt
 
-### Next (Hashes) Owner Name
+Like the Salt field defined in Section 3.1.5 of [](#RC5155).
 
-## Type Bit Maps
+### Next (Hashed) Owner Name
 
+### Type Bit Maps
+
+Like the Type But Maps field defined in Section 3.1.8 of [](#RC5155).
 
 ## NSEC4 RDATA Wire Format
 
