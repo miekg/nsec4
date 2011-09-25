@@ -377,29 +377,25 @@ wildcard. From that, the next closer can be derived.
 Like "serving-no-data-responses" with QYTPE is DS.
 
 ### Responding to Queries for NSEC4 Owner Names
-
-To do.
-
-### Server Response to a Run-Time Collision
-
 Queries for NSEC4 owner names are handled in the same way as normal
 queries. When NSEC4 hashing is in effect the paradox (NSEC4 records
-deny there own existence) described in Section 7.2.8 of [](#RFC5155)
+deny their own existence) described in Section 7.2.8 of [](#RFC5155)
 is back. In light of this paradox validating resolvers SHOULD NOT
 use the information from NSEC4 queries.
 
 ### Server Response to a Run-Time Collision
 
-The same considerations as Section 7.2.9 of [](#RFC5155) apply.
+The same considerations as described in Section 7.2.9 of [](#RFC5155) apply.
 
 # IANA Considerations
 
 This memo includes requests to IANA.
+Almost the same, except remove the reserved status of the zero hash.
 
 # Security Considerations
 
 This document does not introduce any new security issues beyond those
-already discussed in [](#RFC4033), [](#RFC4034), [](#RFC4035), [](#RFC5155),
+already discussed in [](#RFC4033), [](#RFC4034), [](#RFC4035) and [](#RFC5155),
 
 # Changelog
 
