@@ -72,9 +72,7 @@ to the name of the zone. If hashing is used, the NSEC4 RR indicates which
 hash function is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
 
-The hashing technique is described fully in []"calculation-of-the-hash".
-
-MM: Hoe doe je xref naar secties?
+The hashing technique is described in [](#calculation-of-the-hash).
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
 A NSEC4 RR whose span covers an owner name or "next closer" name of an
@@ -92,6 +90,27 @@ The class MUST be the same as the class of the original owner name.
 
 The NSEC4 RR SHOULD have the same TTL value as the SOA minimum TTL field.
 This is in the spirit of negative caching [](#RFC2136).
+
+## RDATA Fields
+
+### Hash Algorithm
+
+### Flags
+
+#### Opt-Out Flag
+
+#### Wildcard Flag
+
+### Iterations
+
+### Salt Length
+
+### Salt
+
+### Next (Hashes) Owner Name
+
+## Type Bit Maps
+
 
 ## NSEC4 RDATA Wire Format
 
@@ -142,7 +161,7 @@ length of this field is determined by the preceding Salt Length
 field.
 
 The Next (Hashed) Owner Name is a base32 encoded domain name,
-if Hash Algorithm is is not zero. If Hash Algorithm is zero it is a plain
+if Hash Algorithm is not zero. If Hash Algorithm is zero it is a plain
 domain name.
 
 MG: hier moeten we zeker nog zeggen dat de base32 encode domain in de zone
