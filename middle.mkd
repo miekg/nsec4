@@ -71,7 +71,7 @@ to the name of the zone. If hashing is used, the NSEC4 RR indicates which
 hash function is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
 
-The hashing technique is described in [](#calculation-of-the-hash).
+The hashing technique is described in Section 5 of [](#RFC5155).
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
 A NSEC4 RR whose span covers an owner name or "next closer" name of an
@@ -249,10 +249,6 @@ NSEC4 record with hashing:
 
 Exactly like NSEC3PARAM described in Section 5 of [](#RFC5155),
 except the type code used [TBD] is that of NSEC4PARAM.
-
-# Calculation of the Hash
-
-Exactly like the hash calculation of NSEC3, Section 5 of [](#RFC5155).
 
 # Authoritative Server Considerations
 
