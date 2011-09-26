@@ -5,10 +5,10 @@ all:	$(DRAFTNAME).txt $(DRAFTNAME).html
 %.xml:	%.mkd transform.xsl
 	pandoc $< -t docbook -s | xsltproc transform.xsl - > $@
 
-draft.txt:	middle.xml back.xml abstract.xml template.xml
+draft.txt:	abstract.xml introduction.xml middle.xml considerations.xml back.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.txt
 
-draft.html:	middle.xml back.xml abstract.xml template.xml
+draft.html:	abstract.xml introduction.xml middle.xml considerations.xml back.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.html
 
 $(DRAFTNAME).txt:	draft.txt
@@ -21,7 +21,7 @@ nits:   $(DRAFTNAME).txt
 	idnits --year 2011 --verbose $<
 
 clean:
-	rm -f middle.xml back.xml abstract.xml
+	rm -f abstract.xml introduction.xml middle.xml considerations.xml back.xml
 
 realclean: clean
 	rm -f $(DRAFTNAME).txt $(DRAFTNAME).html draft.txt draft.html
