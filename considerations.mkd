@@ -167,7 +167,8 @@ iterations, or salt from each other for that zone.
 
 ## Validating Name Error Responses
 
-wildcard bit off
+nsec4 that matches the cloest encloser, wildcard bit off
+nsec4 that covers the next closer
 
 ## Validating No Data Responses
 
@@ -177,10 +178,9 @@ Same as NSEC3/NSEC
 
 ## Validating Wildcard Answer Responses
 
-Need to:
-
 * wildcard proof is in the RR signature, number of labels
 * nsecX: next closer denied
+* next closer calculation: closest encloser = label count from sigs applied to the name
 
 This is not shorter than NSEC3/NSEC
 
@@ -189,7 +189,8 @@ This is not shorter than NSEC3/NSEC
 From the RRSIG you can see why is the closest encloser and get the source
 of synthesis from that.
 
-chop labels and append the wildcard to get to the wild
+chop labels and append the wildcard to get to the name. If
+it works, its ok. If it doesn't work it should have been a NXDOMAIN response.
 
 ## Validating Referrals to Unsigned Subzones
 
