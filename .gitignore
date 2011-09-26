@@ -1,4 +1,7 @@
 back.xml
 middle.xml
-draft.txt
 abstract.xml
+considerations.xml
+introduction.xml
+*.html
+*.txt
