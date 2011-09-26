@@ -167,8 +167,10 @@ iterations, or salt from each other for that zone.
 
 ## Validating Name Error Responses
 
-nsec4 that matches the cloest encloser, wildcard bit off
+nsec4 that covers the closest encloser, wildcard bit off
 nsec4 that covers the next closer
+
+label choppen
 
 ## Validating No Data Responses
 
