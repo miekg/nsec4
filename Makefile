@@ -2,14 +2,8 @@ DRAFTNAME=$(shell grep docName template.xml | sed -e 's/.*docName=\"//' -e 's/\"
 
 all:	$(DRAFTNAME).txt $(DRAFTNAME).html
 
-abstract.xml: abstract.mkd
-	pandoc abstract.mkd -t docbook -s | xsltproc transform.xsl - > abstract.xml
-
-middle.xml: middle.mkd transform.xsl
-	pandoc middle.mkd -t docbook -s | xsltproc transform.xsl - > middle.xml
-
-back.xml:  back.mkd transform.xsl
-	pandoc back.mkd -t docbook -s | xsltproc transform.xsl - > back.xml
+%.xml:	%.mkd transform.xsl
+	pandoc $< -t docbook -s | xsltproc transform.xsl - > $@
 
 draft.txt:	middle.xml back.xml abstract.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.txt
