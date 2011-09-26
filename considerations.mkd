@@ -2,7 +2,7 @@
 
 ## Zone Signing
 
-MM: Todo
+MM: Almost the same, except considerations for the wildcard flag.
 
 ## Zone Serving
 
@@ -121,7 +121,7 @@ wildcard. From that, the next closer can be derived.
 
 ### Referrals to Unsigned Subzones
 
-Like "serving-no-data-responses" with QYTPE is DS.
+MM: Like "serving-no-data-responses" with QYTPE is DS.
 
 ### Responding to Queries for NSEC4 Owner Names
 
@@ -137,27 +137,53 @@ The same considerations as described in Section 7.2.9 of [](#RFC5155) apply.
 
 ## Secondary Servers
 
-MM: Todo
+MM: Like [](#RFC5155), Section 7.3
 
 ## Zones Using Unknown Hash Algorithms
 
-MM: Todo
+MM: Like [](#RFC5155), Section 7.4
 
 ## Dynamic Update
 
-MM: Todo
+MM: Similar to [](#RFC5155), Section 7.5, but special considerations
+for adding and removing wildcard RRs.
 
 # Validator Considerations
 
-MM: Todo
+## Responses with Unknown Hash Types
+
+A validator MUST ignore NSEC4 RRs with unknown hash types.  The
+practical result of this is that responses containing only such NSEC4
+RRs will generally be considered bogus.
+
+## Verifying NSEC4 RRs
+
+A validator MUST ignore NSEC4 RRs with a Flag fields value greater than
+three.
+
+A validator MAY treat a response as bogus if the response contains
+NSEC4 RRs that contain different values for hash algorithm,
+iterations, or salt from each other for that zone.
+
+## Validating Name Error Responses
+
+## Validating No Data Responses
+
+## Validating Wildcard Answer Responses
+
+## Validating Wildcard No Data Responses
+
+## Validating Referrals to Unsigned Subzones
 
 # Resolver Considerations
 
-MM: Todo
+## NSEC3 Resource Record Caching
 
-# Special Considerations
+MM: Like [](#RFC5155), Section 9.1
 
-MM: Todo
+## Use of the AD Bit
+
+MM: Like [](#RFC5155), Section 9.2
 
 # IANA Considerations
 
