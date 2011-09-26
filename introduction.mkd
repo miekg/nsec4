@@ -4,7 +4,7 @@
 
 Changes compared to NSEC and NSEC3:
 
-* Remove the need for three NSEC3 records, but optimizing the wildcard NSEC away. This
+* Remove the need for three NSEC3 records, by optimizing the wildcard NSEC away. This
   saves a record and a signature from the answer;
 * One unified denial of existence method, in stead of two: NSEC and NSEC3.
 

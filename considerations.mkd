@@ -21,7 +21,7 @@ encloser is used to determine:
 
 * the source of synthesis, used in Name Error responses to proof that
   wildcard name expansion was not possible, and used in Wildcard No Data
-  responses to proof that the wildcard does not have the required RRset.
+  responses to proof that the wildcard does not have the required RRset;
 
 * the RRsets at the closest encloser, used to determine if the denial
   of existence is from the proper zone and does not cross authoritative
