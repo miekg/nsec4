@@ -61,6 +61,7 @@
 </front>
 
 <middle>
+<?rfc include="introduction.xml"?>
 <?rfc include="middle.xml"?>
 </middle>
 

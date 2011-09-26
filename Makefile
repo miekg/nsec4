@@ -5,16 +5,19 @@ all:	$(DRAFTNAME).txt $(DRAFTNAME).html
 abstract.xml: abstract.mkd
 	pandoc abstract.mkd -t docbook -s | xsltproc transform.xsl - > abstract.xml
 
+introduction.xml: introduction.mkd transform.xsl
+	pandoc introduction.mkd -t docbook -s | xsltproc transform.xsl - > introduction.xml
+
 middle.xml: middle.mkd transform.xsl
 	pandoc middle.mkd -t docbook -s | xsltproc transform.xsl - > middle.xml
 
 back.xml:  back.mkd transform.xsl
 	pandoc back.mkd -t docbook -s | xsltproc transform.xsl - > back.xml
 
-draft.txt:	middle.xml back.xml abstract.xml template.xml
+draft.txt:	abstract.xml introduction.xml middle.xml back.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.txt
 
-draft.html:	middle.xml back.xml abstract.xml template.xml
+draft.html:	abstract.xml introduction.xml middle.xml back.xml template.xml
 	DISPLAY= xml2rfc template.xml draft.html
 
 $(DRAFTNAME).txt:	draft.txt
@@ -27,7 +30,7 @@ nits:   $(DRAFTNAME).txt
 	idnits --year 2011 --verbose $<
 
 clean:
-	rm -f middle.xml back.xml abstract.xml
+	rm -f abstract.xml introduction.xml middle.xml back.xml
 
 realclean: clean
 	rm -f $(DRAFTNAME).txt $(DRAFTNAME).html draft.txt draft.html

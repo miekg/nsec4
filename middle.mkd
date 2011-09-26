@@ -1,65 +1,3 @@
-# Introduction
-
-## Rationale
-
-Changes compared to NSEC and NSEC3:
-
-* Remove the need for three NSEC3 records, but optimizing the wildcard NSEC away. This
-  saves a record and a signature from the answer;
-* One unified denial of existence method, in stead of two: NSEC and NSEC3.
-
-In addition to NSEC3, a NSEC4 records needs store the following items:
-
-* was there a wildcard at the original owner name;
-
-## Requirements
-
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in [](#RFC2119).
-
-## Terminology
-
-The same terminology is used throughout this document as in Section 1.3
-from [](#RFC5155), with the following changes:
-
-Opt-Out NSEC4 RR:
-
-:   a NSEC4 RR that has the Opt-Out flag set to 1.
-
-Wildcard NSEC4 RR:
-
-:   a NSEC4 RR that has the Wildcard flag set to 1.
-
-Opt-Out zone:
-
-:   a zone with at least one Opt-Out NSEC4 RR.
-
-Base32:
-
-:   the "Base 32 Encoding with Extended Hex Alphabet" as specified in
-    [](#RFC4648). Note that trailing padding characters ("=") are
-    not used in the NSEC4 specification.
-
-To cover:
-
-:   When a hash algorithm is defined,
-    a NSEC4 RR is said to "cover" a name if the hash of the name or
-    "next closer" name falls between the owner name and the next hashed
-    owner name of the NSEC4. When no hash algorithm is defined, a NSEC4 RR is
-    said to "cover" a name if the name or "next closer" name falls between
-    the owner name and the next owner name of the NSEC4. In other words, if
-    it proves the nonexistence of the name, either directly or by proving the
-    nonexistence of an ancestor of the name.
-
-To match:
-
-:   When a hash algorithm is defined, a NSEC4 RR is said to "match" a name
-    if the owner name of the NSEC4 RR is the same as the hashed owner name
-    of that name. When no hash algorithm is defined, a NSEC4 RR is said to
-    "match" a name if the name and the owner name of the NSEC4 RR are equal.
-
-
 # The NSEC4 Resource Record
 
 The NSEC4 Resource Record (RR) provides authenticated denial of existence
@@ -86,7 +24,7 @@ the presence of a flag.
 If hashing is in use, the owner name for the NSEC4 RR is the base32 encoding
 of the hashed owner name prepended as a single label to the name of the zone.
 
-The type value for the NSEC4 RR is [TBD1].
+The type value for the NSEC4 RR is [TBD].
 
 The NSEC4 RR RDATA format is class independent and is described below.
 
