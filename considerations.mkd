@@ -167,11 +167,29 @@ iterations, or salt from each other for that zone.
 
 ## Validating Name Error Responses
 
+wildcard bit off
+
 ## Validating No Data Responses
+
+nsec matching the qname, look at type bitmap
+
+Same as NSEC3/NSEC
 
 ## Validating Wildcard Answer Responses
 
+Need to:
+
+* wildcard proof is in the RR signature, number of labels
+* nsecX: next closer denied
+
+This is not shorter than NSEC3/NSEC
+
 ## Validating Wildcard No Data Responses
+
+From the RRSIG you can see why is the closest encloser and get the source
+of synthesis from that.
+
+chop labels and append the wildcard to get to the wild
 
 ## Validating Referrals to Unsigned Subzones
 
