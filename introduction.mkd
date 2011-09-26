@@ -2,6 +2,17 @@
 
 ## Rationale
 
+NSEC3 proofs all hinge on the Proof of the Closest encloser, but by looking
+carefully at the records sent it is obvious that in almost all cases a
+servers sends too much data. A resolver is capable of inferring the
+closest encloser in all cases without getting a NSEC that matches
+the closest encloser. [MG: veel beter]
+
+This way we can save one NSEC3 record (and signature(s)) from denial
+of existence responses.
+
+This also works for NSEC... bla bla
+
 Changes compared to NSEC and NSEC3:
 
 * Remove the need for three NSEC3 records, by optimizing the wildcard NSEC away. This
@@ -68,3 +79,4 @@ specification (NSEC4-unaware resolvers) may fail to validate the
 responses introduced by this document.
 
 MM: We need an approach for backwards compatibility.
+
