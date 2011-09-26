@@ -15,17 +15,16 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
 "OPTIONAL" in this document are to be interpreted as described in [](#RFC2119).
 
 ## Terminology
-The reader is assumed to be familiar with the basic DNS and DNSSEC concepts
-described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034), [](#RFC4035)
-and subsequent RFCs that update them: [](#RFC2136), [](#RFC2181), [](#RFC2308), and
-[](#RFC5155).
-
 The same terminology is used throughout this document as in Section 1.3
 from [](#RFC5155), with the following changes:
 
 Opt-Out NSEC4 RR:
 
 :   a NSEC4 RR that has the Opt-Out flag set to 1.
+
+Wildcard NSEC4 RR:
+
+:   a NSEC4 RR that has the Wildcard flag set to 1.
 
 Opt-Out zone:
 
