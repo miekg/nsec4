@@ -172,7 +172,6 @@ NSEC4 RRs that contain different values for hash algorithm,
 iterations, or salt from each other for that zone.
 
 ## Validating Name Error Responses
-
 A validator MUST verify that there is a closest encloser for QNAME present
 in the response. A validator MUST verify that the Wildcard bit is clear in
 the Flags field of the NSEC4 RR that matches the closest encloser.
@@ -183,6 +182,7 @@ present in the response.
 
 [MM: Why is it that with NSEC3 it is merely a candidate for the closest
      encloser?]
+[MG: I *think* because of Opt-Out, but frankly I don't know]
 
 One possible algorithm for finding the closest encloser is as follows:
 
