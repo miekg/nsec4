@@ -2,9 +2,8 @@
 
 ## Rationale
 Authenticated denial of exitence proofs all hinge on the 
-closest encloser (Section 3.3.1 of [](#RFC4592))
-proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
-a denial of exsitence answer a validator needs to know the next closer.
+closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
+a denial of existence answer, a validator needs to know the next closer.
 To know the next closer, you need to know the closest encloser. To deny
 or assert a wildcard presence the source of synthesis is needed 
 (Section 3.3.1 of [](#RFC4592)), and for the source of synthesis you
@@ -13,22 +12,19 @@ also need the closest encloser.
 This is why the largest denial of existence response with NSEC3, contains
 three records:
 
-* A record where the ownername of the NSEC3 is the closest encloser;
+* A record where the original owner name of the NSEC3 is the closest encloser;
 * A record which covers the next closer. This is the actual proof that
     the requested name does not exist;
-* A records which matches (or covers) the wildcard. Note that this entire
-    record carries only one bit of information (is there a wildcard presence?).
+* A records which matches (or covers) the wildcard.
 
-With NSEC the story is ....? [MG: hoe zit dat eigenlijk precies met NSEC,
-kunnen we hetzelfde algoritme gebruiken of worden de antwoorden dan juist
-groter]
+MG: Note that the last entire record carries only one bit of information (is there a wildcard presence?).
 
-When looking closely to the information send to a validator you can me
+When looking closely to the information send to a validator you can make
 the following observations:
 
 1. The closest encloser can be inferred from the data sent;
-2. It is not needed to explicitly send the closest encloser;
-3. The wildcard presence can be encoding with a flag bit.
+2. It is often not needed to explicitly send the closest encloser;
+3. The wildcard presence can be encoded with a flag bit.
 
 We present a new record NSEC4 that is similar to NSEC3 ([](#RFC5155)), but
 differs in two ways:
