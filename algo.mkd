@@ -28,7 +28,7 @@ Type Bit Maps that QTYPE is NOT to be found.
 
 # Step Three
 
-If the closest encloser if found, we continue our NXDOMAIN proof
+If the closest encloser is found, we continue our NXDOMAIN proof
 
 # Step Four
 
