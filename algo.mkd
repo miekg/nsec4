@@ -1,0 +1,41 @@
+<!-- Ben hier een beetje aan het hacken, maar dit moet wel ergens beschreven worden -->
+
+# Validation Algorithm
+
+This following is scetch on how a validating resolver must deal with NSEC4 
+responses.
+
+Note this algorithm works for hashed and unhashed names.
+
+IFf [](#RFC5155) Section B.2.1.  No Data Error, Empty Non-Terminal a problem. It states:
+
+> The query returned an NSEC3 RR that proves that the requested name
+> exists ("y.w.example." hashes to "ji6neoaepv8b5o6k4ev33abha8ht9fgc"),
+> but the requested RR type does not exist (Type A is absent in the
+> Type Bit Maps field of the NSEC3 RR).  Note that, unlike an empty
+> non-terminal proof using NSECs, this is identical to a No Data Error.
+> This example is solely mentioned to be complete.
+
+# Step One
+
+Go look for the closest encloser in the NSEC3 way
+
+# Step Two
+
+If the closest encloser equals the qname we have gotten a NODATA response. We should
+only have one NSEC4. And in that NSEC4 the Wildcard Flag MUST NOT be set. And in the
+Type Bit Maps that QTYPE is NOT to be found.
+
+# Step Three
+
+If the closest encloser if found, we continue our NXDOMAIN proof
+
+# Step Four
+
+If the closest is not found at all, we have an expanded wildcard answer.
+We can check this be getting the number of labels of the RRSIG and
+retrieve the closest encloser that way.
+
+    if closest encloser == qname...
+
+    If closest encloser NOT FOUND attempt NODATA PROOF
