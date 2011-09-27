@@ -1,7 +1,7 @@
 # Introduction
 
 ## Rationale
-Authenticated denial of exitence proofs all hinge on the 
+Authenticated denial of existence proofs all hinge on the 
 closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
 a denial of existence answer, a validator needs to know the next closer.
 To know the next closer, you need to know the closest encloser. To deny
@@ -13,33 +13,30 @@ This is why the largest denial of existence response with NSEC3, contains
 three records:
 
 * A record where the original owner name of the NSEC3 is the closest encloser;
-* A record which covers the next closer. This is the actual proof that
+* A record which covers the next closer, to proof that
     the requested name does not exist;
-* A records which matches (or covers) the wildcard.
+* A records which matches or covers the wildcard.
 
-MG: Note that the last entire record carries only one bit of information (is there a wildcard presence?).
+[MG: Note that the last entire record carries only one bit of information
+     (is there a wildcard presence?).]
 
-When looking closely to the information send to a validator you can make
-the following observations:
+[MM: NSEC verhaal weggehaald, dat is niet belangrijk hier.]
 
-1. The closest encloser can be inferred from the data sent;
-2. It is often not needed to explicitly send the closest encloser;
-3. The wildcard presence can be encoded with a flag bit.
+[MM: Observations weggehaald, duplicate of Zone Serving section.
 
 We present a new record NSEC4 that is similar to NSEC3 ([](#RFC5155)), but
-differs in two ways:
+differs in the following ways:
 
-1. It has a new flag bit, the Wildcard Flag (see [](#wildcard-flag);
-2. It allows for unhashed records, by setting the algorithm code to zero,
-    see ()[#hash-algorithm].
+1. It has a new bit in the Flags field, the Wildcard bit (described in
+   [](#wildcard-flag);
+2. It allows for unhashed records, by setting the algorithm code to zero
+   (described in [](#hash-algorithm).
 
 With NSEC4 you will need a maximum of two records for any denial
-of existence response. Thus we save one record and accompanying
-signature(s).
+of existence response, saving one record and accompanying signature(s).
 
-By defining hash algorithm zero to mean that no hashing MUST be applied,
-we also fold back NSEC into NSEC4 and add Opt-out to unhashed names.
-With this change we collapse NSEC
+By defining hash algorithm zero, we also fold back NSEC into NSEC4 and
+add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
 

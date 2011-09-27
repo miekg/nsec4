@@ -1,7 +1,6 @@
 # The NSEC4 Resource Record
 
-The NSEC4 Resource Record (RR) provides authenticated denial of existence
-for DNS RRsets.
+The NSEC4 RR provides authenticated denial of existence for DNS RRsets.
 
 The NSEC4 RR lists RR types present at the original owner name of the NSEC4 RR.
 It includes the next (hashed) owner name in the (hash) order of the zone.
@@ -14,7 +13,8 @@ to the name of the zone. If hashing is used, the NSEC4 RR indicates which
 hash function is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
 
-The hashing technique is described in Section 5 of [](#RFC5155).
+The hashing technique is the same as with NSEC3 and is described in
+Section 5 of [](#RFC5155).
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
 A NSEC4 RR whose span covers an owner name or "next closer" name of an
@@ -35,22 +35,23 @@ This is in the spirit of negative caching [](#RFC2136).
 
 ## RDATA Fields
 
-The NSEC4 RDATA has many similarities with NSEC3, but there are a few differences:
+The NSEC4 RDATA has many similarities with NSEC3, but there are a few
+differences:
 
-* There is an extra flag bit reserved to indicate whether wildcard name expansion is
-  possible at the original owner name;
-* the hash length does not need to be stored, as all domain names are stored as domain 
-  names, not raw hashes;
+* there is an extra flag bit reserved to indicate whether wildcard name
+  expansion is possible at the original owner name;
+* the hash length does not need to be stored, as all domain names are 
+  stored as domain names, not raw hashes.
 
 ### Hash Algorithm
 
 [](#RFC5155) defines the NSEC3 hash algorithm registry. The zero
-hash (hash algorithm 0) is reserved. For NSEC4 we define hash
-algorithm zero to mean that nothing is hashed in the record.
+hash (hash algorithm 0) is reserved. For NSEC4 we define the zero hash
+to mean that no hashing is used.
 
 ### Flags
 
-The Flags field is identical to the Flags field as defined in [](#RFC5155). 
+The Flags field is identical to the Flags field as defined in [](#RFC5155).
 This specification adds a new flag, the Wildcard Flag.
 
 #### Opt-Out Flag
@@ -59,15 +60,15 @@ Like the Opt-Out Flag defined in Section 3.1.2.1 of [](#RFC5155).
 
 #### Wildcard Flag
 
-The Wildcard Flag indicates whether there exists a source of synthesis
-at the original owner name of the NSEC4 RR. It is the second least significant
-bit in the Flags field.
+The Wildcard Flag indicates whether there exists a source of synthesis at the
+original owner name of the NSEC4 RR. It is the second least significant bit
+in the Flags field.
 
 If the Wildcard flag is set, there exists a source of synthesis at the
 original owner name of the NSEC4 RR.
 
-If the Wildcard flag is clear, there does not exist a source of synthesis at the
-original owner name of the NSEC4 RR.
+If the Wildcard flag is clear, there does not exist a source of synthesis
+at the original owner name of the NSEC4 RR.
 
 ### Iterations
 
@@ -86,8 +87,8 @@ Like the Salt field defined in Section 3.1.5 of [](#RFC5155).
 The Next Owner Name field contains the next owner name that exists in the
 definition of Section 2.2.3 of [](#RFC4592).
 
-If zero hashing is used, the field contains the next owner name in the canonical
-ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
+If zero hashing is used, the field contains the next owner name in the
+canonical ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
 
 If hashing is in place, the field contains the next owner name in hash order.
 
@@ -100,7 +101,7 @@ unless at least one authoritative RRset exists at the same owner name.
 
 ### Type Bit Maps
 
-Like the Type But Maps field defined in Section 3.1.8 of [](#RFC5155).
+Like the Type Bit Maps field defined in Section 3.1.8 of [](#RFC5155).
 
 ## NSEC4 RDATA Wire Format
 
@@ -119,9 +120,11 @@ The RDATA of the NSEC4 RR is as shown below.
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 Hash Algorithm is a single octet. 
+If Hash Algorithm is zero (no hashing), the Iterations field,
+the Salt Length field and the Salt field MUST be ignored.
 
-MM: If Hash Algorithm is zero (no hashing), we could omit the Iterations field,
-    Salt Length field and Salt field.
+[MM: If Hash Algorithm is zero (no hashing), we could omit the Iterations
+     field, Salt Length field and Salt field.]
 
 Flags field is a single octet. The following one-bit flags are defined:
 
@@ -134,8 +137,7 @@ Flags field is a single octet. The following one-bit flags are defined:
 * W - Wildcard flag
 
 Iterations is represented as a 16-bit unsigned integer, with the most
-significant bit first. If no hashing should be applied the Hash Algorithm
-field, the Salt Length field and the Salt field MUST be ignored.
+significant bit first.
 
 Salt Length is represented as an unsigned octet.  Salt Length
 represents the length of the Salt field in octets.  If the value is
@@ -145,24 +147,23 @@ Salt, if present, is encoded as a sequence of binary octets.  The
 length of this field is determined by the preceding Salt Length
 field.
 
-The Next (Hashed) Owner Name is a base32 encoded domain name,
-if Hash Algorithm is not zero. If Hash Algorithm is zero it is a plain
-domain name.
+If Hash Algorithm is not zero, the Next (Hashed) Owner Name is a base32
+encoded domain name. If Hash Algorithm is zero it is a plain domain name.
 
 The Type Bit Maps encode the existing types at the original owner name
 that matches the NSEC4 RR.
 
-MM: We might be able to do something smart with the label count,
-    like NSEC does.
+[MM: We might be able to do something smart with the label count,
+     like NSEC does.]
 
 Label Count is represented as a 8-bit unsigned integer, and represents the
 number of labels of the owner name in its unhashed format. It is used to
 determine the closest encloser of the name that matches the NSEC4 RR.
 
-MM: But we still can't use it for NXDOMAIN responses. Unhashed NXDOMAIN is
-    no problem, because the source of synthesis (*.closest_encloser)
-    always is the next of the closest encloser. But hashed, this order is
-    screwed.
+[MM: But we still can't use it for NXDOMAIN responses. Unhashed NXDOMAIN is
+     no problem, because the source of synthesis (*.closest_encloser)
+     always is the next of the closest encloser. But hashed, this order is
+     screwed.]
 
 ## Presentation Format
 
