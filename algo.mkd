@@ -1,5 +1,8 @@
 <!-- Ben hier een beetje aan het hacken, maar dit moet wel ergens beschreven worden -->
 
+* Next Closer Proof: a next closer that is covered by an NSEC4
+* Closest Encloser 
+
 # Validation Algorithm
 
 This following is scetch on how a validating resolver must deal with NSEC4 
@@ -7,7 +10,7 @@ responses.
 
 Note this algorithm works for hashed and unhashed names.
 
-IFf [](#RFC5155) Section B.2.1.  No Data Error, Empty Non-Terminal a problem. It states:
+[](#RFC5155) Section B.2.1.  No Data Error, Empty Non-Terminal. It states:
 
 > The query returned an NSEC3 RR that proves that the requested name
 > exists ("y.w.example." hashes to "ji6neoaepv8b5o6k4ev33abha8ht9fgc"),
