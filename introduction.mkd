@@ -42,7 +42,8 @@ of existence response. Thus we save one record and accompanying
 signature(s).
 
 By defining hash algorithm zero to mean that no hashing MUST be applied,
-we also fold back NSEC into NSEC4. With this change we collapse NSEC
+we also fold back NSEC into NSEC4 and add Opt-out to unhashed names.
+With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
 
@@ -102,4 +103,3 @@ specification (NSEC4-unaware resolvers) may fail to validate the
 responses introduced by this document.
 
 MM: We need an approach for backwards compatibility.
-
