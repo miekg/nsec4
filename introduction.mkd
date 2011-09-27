@@ -1,27 +1,50 @@
 # Introduction
 
 ## Rationale
+Authenticated denial of exitence proofs all hinge on the 
+closest encloser (Section 3.3.1 of [](#RFC4592))
+proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
+a denial of exsitence answer a validator needs to know the next closer.
+To know the next closer, you need to know the closest encloser. To deny
+or assert a wildcard presence the source of synthesis is needed 
+(Section 3.3.1 of [](#RFC4592)), and for the source of synthesis you
+also need the closest encloser.
 
-NSEC3 proofs all hinge on the Proof of the Closest encloser, but by looking
-carefully at the records sent it is obvious that in almost all cases a
-servers sends too much data. A resolver is capable of inferring the
-closest encloser in all cases without getting a NSEC that matches
-the closest encloser. [MG: veel beter]
+This is why the largest denial of existence response with NSEC3, contains
+three records:
 
-This way we can save one NSEC3 record (and signature(s)) from denial
-of existence responses.
+* A record where the ownername of the NSEC3 is the closest encloser;
+* A record which covers the next closer. This is the actual proof that
+    the requested name does not exist;
+* A records which matches (or covers) the wildcard. Note that this entire
+    record carries only one bit of information (is there a wildcard presence?).
 
-This also works for NSEC... bla bla
+With NSEC the story is ....? [MG: hoe zit dat eigenlijk precies met NSEC,
+kunnen we hetzelfde algoritme gebruiken of worden de antwoorden dan juist
+groter]
 
-Changes compared to NSEC and NSEC3:
+When looking closely to the information send to a validator you can me
+the following observations:
 
-* Remove the need for three NSEC3 records, by optimizing the wildcard NSEC away. This
-  saves a record and a signature from the answer;
-* One unified denial of existence method, in stead of two: NSEC and NSEC3.
+1. The closest encloser can be inferred from the data sent;
+2. It is not needed to explicitly send the closest encloser;
+3. The wildcard presence can be encoding with a flag bit.
 
-In addition to NSEC3, a NSEC4 records needs store the following items:
+We present a new record NSEC4 that is similar to NSEC3 ([](#RFC5155)), but
+differs in two ways:
 
-* was there a wildcard at the original owner name;
+1. It has a new flag bit, the Wildcard Flag (see [](#wildcard-flag);
+2. It allows for unhashed records, by setting the algorithm code to zero,
+    see ()[#hash-algorithm].
+
+With NSEC4 you will need a maximum of two records for any denial
+of existence response. Thus we save one record and accompanying
+signature(s).
+
+By defining hash algorithm zero to mean that no hashing MUST be applied,
+we also fold back NSEC into NSEC4. With this change we collapse NSEC
+and NSEC3 into one new record to leave only one form of authenticated
+denial of existence in the DNS.
 
 ## Requirements
 
