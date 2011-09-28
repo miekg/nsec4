@@ -1,9 +1,6 @@
 <references title="Informative References">
         <?rfc include="bib/reference.RFC.2672" ?>
-        <?rfc include="bib/reference.RFC.2898" ?>
-        <?rfc include="bib/reference.RFC.3833" ?>
         <?rfc include="bib/reference.RFC.4592" ?>
-        <?rfc include="bib/reference.RFC.4956" ?>
 </references>
 
 <references title="Normative References">
@@ -20,5 +17,4 @@
         <?rfc include="bib/reference.RFC.4648" ?>
         <?rfc include="bib/reference.RFC.5155" ?>
         <?rfc include="bib/reference.RFC.5226" ?>
-        <?rfc include="bib/reference.RFC.6195" ?>
 </references>
