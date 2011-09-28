@@ -76,8 +76,9 @@ The Denial of Wildcard Synthesis proof consists of one NSEC4 RR, that
 matches some domain name, and that has the Wildcard bit clear.
 
 Note that without much knowledge of the domain name, this proof is not really
-useful. But combined with the closest encloser proof, we can deny the existence
-of the source of synthesis.
+useful. In particular, we don't know if this is the wildcard synthesis that
+we are looking for. This will change if we combine this proof with the
+closest encloser proof.
 
 ### Closest Encloser Proof
 
@@ -101,7 +102,7 @@ the same that constructed the closest encloser proof:
 The first NSEC4 RR essentially proves that the encloser exists, and that no
 wildcard synthesis at the encloser is possible.
 The second NSEC4 RR proves that the encloser is the closest, thus the
-the denial of the wildcard synthesis is the denial of the source of synthesis.
+denial of the wildcard synthesis is the denial of the source of synthesis.
 
 ### Name Error Responses
 
@@ -144,7 +145,7 @@ NSEC4 RR matches QNAME, the server MUST return a closest provable encloser
 proof for QNAME. The NSEC4 RR that covers the "next closer" name MUST have
 the Opt-Out bit set.
 
-Note that we do not need to check the denial of source of synthesis proof,
+Note that we do not need to verify the denial of source of synthesis proof,
 because a DS RRset next to a wildcard is meaningless (Section 4.6, [](#RFC4592)).
 
 ### Wildcard Answer Responses
@@ -168,12 +169,12 @@ to return a RR that matches the closest encloser.
 ### Wildcard No Data Responses
 
 With NSEC, the server includes in the response a NSEC RR that matches the
-wildcard, in addition to the the NSEC RR that covers the next closer. The
+wildcard, in addition to the NSEC RR that covers the next closer. The
 NSEC RR does not have the bits corresponding to QTYPE or CNAME set in its
 Type Bit Maps field.
 
 Again, with NSEC3, the server includes in the response a NSEC3 RR that
-matches the wildcard, in addition to the the NSEC3 RR that covers the next
+matches the wildcard, in addition to the NSEC3 RR that covers the next
 closer. The NSEC3 RR does not have the bits corresponding to QTYPE or
 CNAME set in its Type Bit Maps field. Besides that, a NSEC3 RR that
 matches the closest encloser is included, because there was no expanded
@@ -182,7 +183,7 @@ encloser.
 
 [](#RFC5155) already notes that the closest encloser to QNAME must be the
 immediate ancestor of the wildcard RR, which is also defined in [](#RFC4592).
-A closest encloser proof is not necissitated.
+A closest encloser proof is not necessitated.
 
 To prove the wildcard no data response with NSEC4, the server MUST include
 in the response a NSEC4 RR that matches the wildcard, and a NSEC4 RR that
@@ -361,6 +362,11 @@ encloser, it can derive the "next closer" name. The validator MUST verify
 that there is a NSEC4 RR that covers the "next closer" name to QNAME is
 present in the response.
 
+Note that, because the response included a NSEC4 that matches the source
+of synthesis, we know that there exists data in the zone below the closest
+encloser. Therefore, the closest encloser cannot be a delegation, nor can there
+exists a DNAME RRset at the closest encloser.
+
 ## Validating Referrals to Unsigned Subzones
 
 The delegation name in a referral is the owner name of the NS RRSet
@@ -387,11 +393,63 @@ Opt-Out bit set.
 
 ## NSEC3 Resource Record Caching
 
-[MM: Like [](#RFC5155), Section 9.1]
+The same considerations as described in Section 9.1 of [](#RFC5155) for
+NSEC3 apply to NSEC4.
 
 ## Use of the AD Bit
 
-[MM: Like [](#RFC5155), Section 9.2]
+The same considerations as described in Section 9.2 of [](#RFC5155) for
+NSEC3 apply to NSEC4.
+
+# Special Considerations
+
+## Domain Name Length Restrictions
+
+The same considerations as described in Section 10.1 of [](#RFC5155) apply.
+
+## DNAME at the Zone Apex
+
+The DNAME specification in Section 3 of [](#RFC2672) has a
+'no-descendants' limitation. If a DNAME RR is present at node N,
+there MUST be no data at any descendant of N.
+
+[](#RFC5155) updates the DNAME specification to allow NSEC3 and RRSIG types
+at descendants of the apex regardless of the existence of DNAME at the apex.
+
+This document updates the DNAME specification to also allow NSEC4 types
+at descendants of the apex regardless of the existence of DNAME at the apex.
+
+## Iterations values
+
+Setting the number of iterations used allows the zone owner to choose
+the cost of computing a hash, and therefore the cost of generating a
+dictionary.
+
+Obviously the number of iterations also affects the zone owner's cost
+of signing and serving the zone as well as the validator's cost of
+verifying responses from the zone.
+
+We therefore impose an upper limit on the number of iterations.
+We base this on the number of iterations that approximates the cost of
+verifying an RRSet.
+
+A zone owner SHOULD NOT use a value higher than shown in the table
+below for iterations for the given key size. A resolver MAY treat a
+response with a higher value as insecure, after the validator has
+verified that the signature over the NSEC4 RR is correct.
+
+                          +----------+------------+
+                          | Key Size | Iterations |
+                          +----------+------------+
+                          | 1024     | 150        |
+                          | 2048     | 300        |
+                          | 4096     | 600        |
+                          +----------+------------+
+
+This table is based on [](#Schaeffer10), which shows that the
+half performance count for validators is roughly 150 to 600,
+depending on the key size.
+For authoritative servers the half performance count is around 100 iterations.
 
 # IANA Considerations
 
