@@ -14,7 +14,7 @@ NSEC3 [](#RFC5155) contains three records:
 * A record which covers or matches the next closer, to deny or assert the
   existence of the next closer name;
 * A record which matches or covers the wildcard, to deny or assert the
-  existence of the source of synthesis.
+  wildcard synthesis.
 
 [MG: Note that the last entire record carries only one bit of information
      (is there a wildcard presence?).]

@@ -60,14 +60,13 @@ Like the Opt-Out Flag defined in Section 3.1.2.1 of [](#RFC5155).
 
 #### Wildcard Flag
 
-The Wildcard Flag indicates whether there exists a source of synthesis at the
-original owner name of the NSEC4 RR. If the source of synthesis does not
-exist, there will be no wildcard synthesis.
+The Wildcard Flag indicates whether there is wildcard synthesis possible
+at the original owner name of the NSEC4 RR.
 
-If the Wildcard flag is set, the exists a source of synthesis at the
+If the Wildcard flag is set, the is wildcard synthesis possible at the
 original owner name of the NSEC4 RR.
 
-If the Wildcard flag is clear, there does not exist a source of synthesis
+If the Wildcard flag is clear, wildcard synthesis is not possible
 at the original owner name of the NSEC4 RR.
 
 ### Iterations
