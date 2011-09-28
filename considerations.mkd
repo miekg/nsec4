@@ -249,12 +249,12 @@ NSEC4 RR present in the response.
 
 One possible algorithm for finding the source of synthesis is as follows:
 
-1.  Set SNAME=QNAME.
+1.  Set SNAME=QNAME;
 2.  Truncate SNAME by one label from the left. This is a candidate for the
-    closest encloser.
-3.  Set WNAME to be SNAME with the asterisk label prepended: WNAME=*.SNAME.
+    closest encloser;
+3.  Set WNAME to be SNAME with the asterisk label prepended: WNAME=*.SNAME;
 4.  If there is a NSEC4 RR in the response that matches WNAME, then we have
-    found the source of synthesis, with SNAME being the closest encloser.
+    found the source of synthesis, with SNAME being the closest encloser;
 5.  Go to step 2.
 
 The validator does not need to check that the closest encloser is from the
