@@ -38,9 +38,9 @@ This is in the spirit of negative caching [](#RFC2136).
 The NSEC4 RDATA has many similarities with NSEC3, but there are a few
 differences:
 
-* there is an extra flag bit reserved to indicate whether wildcard name
+* There is an extra flag bit reserved to indicate whether wildcard name
   expansion is possible at the original owner name;
-* the hash length does not need to be stored, as all domain names are 
+* The hash length does not need to be stored, as all domain names are 
   stored as domain names, not raw hashes.
 
 ### Hash Algorithm
@@ -164,6 +164,11 @@ determine the closest encloser of the name that matches the NSEC4 RR.
      no problem, because the source of synthesis (*.closest_encloser)
      always is the next of the closest encloser. But hashed, this order is
      screwed.]
+
+### Type Bit Maps Encoding
+
+The encoding of the Type Bit Maps field is the same as that used by the
+NSEC and NSEC3 RR, described in [](#RFC4034), as well as in [](#RFC5155).
 
 ## Presentation Format
 

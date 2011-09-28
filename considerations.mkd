@@ -4,84 +4,64 @@
 
 [MM: Almost the same, except considerations for the wildcard flag.]
 
-Zones using NSEC4 must satisfy the following properties:
+Zones using NSEC4 must satisfy the same properties as described in 
+Section 7.1 of RFC5155 [](#RFC5155), with NSEC3 replaced by NSEC4.
 
-* Each owner name within the zone that owns authoritative RRSets
-  MUST have a corresponding NSEC4 RR. Owner names that correspond
-  to unsigned delegations MAY have a corresponding NSEC4 RR.
-  However, if there is not a corresponding NSEC4 RR, there MUST be
-  an Opt-Out NSEC3 RR that covers the "next closer" name to the
-  delegation. Other non-authoritative RRs are not represented by
-  NSEC4 RRs.
+In addition, for each original owner name where source of synthesis exists,
+the corresponding NSEC4 RR MUST have the Wildcard bit set in the Flags field.
 
-* Each empty non-terminal MUST have a corresponding NSEC4 RR, unless
-  the empty non-terminal is only derived from an insecure delegation
-  covered by an Opt-Out NSEC4 RR.
+The following steps describe one possible method of proper construction of
+NSEC4 RRs.
 
-* The TTL value for any NSEC4 RR SHOULD be the same as the minimum
-  TTL value field in the zone SOA RR.
+1.  Select the hash algorithm and the values for salt and iterations.
 
-* The Type Bit Maps field of every NSEC4 RR in a signed zone MUST
-  indicate the presence of all types present at the original owner
-  name.
+2.  For each unique original owner name in the zone add an NSEC4 RR.
 
-* Wildcard flag
+    * If Opt-Out is being used, owner names of unsigned delegations
+      MAY be excluded.
+    * The owner name of the NSEC4 RR is either the hash of the original
+      owner name, prepended as a single label to the zone name, or
+      equal to the original owner name if zero hashing is used.
+    * The Next Owner Name field is left blank for the moment.
+    * If Opt-Out is being used, set the Opt-Out bit to one.
 
-* The following steps describe a method of proper construction of NSEC3
-  RRs. This is not the only such possible method.
+3.  For collision detection purposes, if hashing is used, optionally keep
+    track of the original owner name with the NSEC4 RR. Create an additional
+    NSEC4 RR corresponding to the original owner name with the asterisk label
+    prepended. Mark this NSEC4 RR as temporary.
 
-   1.  Select the hash algorithm and the values for salt and iterations.
+4.  If the original owner name is a wildcard domain, mark the NSEC4 to be
+    a wildcard NSEC4 RR.
 
-   2.  For each unique original owner name in the zone add an NSEC3 RR.
+4.  For each RRSet at the original owner name, set the corresponding
+    bit in the Type Bit Maps field.
 
-       *  If Opt-Out is being used, owner names of unsigned delegations
-          MAY be excluded.
+5.  Additional NSEC4 RRs need to be added for every empty non-terminal
+    between the apex and the original owner name. Optionally keep track of the
+    original owner names of these NSEC4 RRs and create temporary NSEC4 RRs for
+    wildcard collisions in a similar fashion to step 3.
 
-       *  The owner name of the NSEC3 RR is the hash of the original
-          owner name, prepended as a single label to the zone name.
+6.  Sort the set of NSEC3 RRs into hash order or canonical order, depending
+    on the value of the hash algorithm.
 
-       *  The Next Hashed Owner Name field is left blank for the moment.
+7.  Combine NSEC4 RRs with identical hashed owner names by replacing
+    them with a single NSEC4 RR with the Type Bit Maps field
+    consisting of the union of the types represented by the set of NSEC4 RRs. 
+    If hashing is used and the original owner name was tracked, then collisions
+    may be detected when combining, as all of the matching NSEC4 RRs should
+    have the same original owner name. Discard any possible temporary NSEC4 RRs.
 
-       *  If Opt-Out is being used, set the Opt-Out bit to one.
+8.  In each NSEC4 RR, insert the next hashed owner name by using the
+    value of the next NSEC4 RR in hash order.  The next hashed owner
+    name of the last NSEC3 RR in the zone contains the value of the
+    hashed owner name of the first NSEC3 RR in the hash order.
 
-       *  For collision detection purposes, optionally keep track of the
-          original owner name with the NSEC3 RR.
+    If the NSEC4 is marked to be a wildcard domain, find the NSEC4 that
+    matches the closest encloser. Set the Wildcard bit in the Flags field
+    of that NSEC4. 
 
-       *  Additionally, for collision detection purposes, optionally
-          create an additional NSEC3 RR corresponding to the original
-          owner name with the asterisk label prepended (i.e., as if a
-          wildcard existed as a child of this owner name) and keep track
-          of this original owner name.  Mark this NSEC3 RR as temporary.
-
-   3.  For each RRSet at the original owner name, set the corresponding
-       bit in the Type Bit Maps field.
-
-   4.  If the difference in number of labels between the apex and the
-       original owner name is greater than 1, additional NSEC3 RRs need
-       to be added for every empty non-terminal between the apex and the
-       original owner name.  This process may generate NSEC3 RRs with
-       duplicate hashed owner names.  Optionally, for collision
-       detection, track the original owner names of these NSEC3 RRs and
-       create temporary NSEC3 RRs for wildcard collisions in a similar
-       fashion to step 1.
-
-   5.  Sort the set of NSEC3 RRs into hash order.
-
-   6.  Combine NSEC3 RRs with identical hashed owner names by replacing
-       them with a single NSEC3 RR with the Type Bit Maps field
-       consisting of the union of the types represented by the set of
-       NSEC3 RRs.  If the original owner name was tracked, then
-       collisions may be detected when combining, as all of the matching
-       NSEC3 RRs should have the same original owner name.  Discard any
-       possible temporary NSEC3 RRs.
-
-   7.  In each NSEC3 RR, insert the next hashed owner name by using the
-       value of the next NSEC3 RR in hash order.  The next hashed owner
-       name of the last NSEC3 RR in the zone contains the value of the
-       hashed owner name of the first NSEC3 RR in the hash order.
-
-   8.  Finally, add an NSEC3PARAM RR with the same Hash Algorithm,
-       Iterations, and Salt fields to the zone apex.
+9.  Finally, add an NSEC3PARAM RR with the same Hash Algorithm,
+    Iterations, and Salt fields to the zone apex.
 
    If a hash collision is detected, then a new salt has to be chosen,
    and the signing process restarted.
@@ -206,6 +186,7 @@ closest encloser, as it can be derived from the NSEC4 RR that matches the
 wildcard. From that, the next closer can be derived.
 
 [MG: moet hier dan ook niet de wildcard flag aan staan?]
+[MM: Nee, want we geven niet de NSEC4 matches closest encloser mee]
 
 ### Referrals to Unsigned Subzones
 
@@ -274,9 +255,11 @@ One possible algorithm for finding the closest encloser is as follows:
 2.  If there is a NSEC4 RR in the response that matches SNAME, then we have
     found the closest encloser.
 3.  Truncate SNAME by one label from the left, go to step 2.
-4.  [MG: je moet hier heel erg letten op hoeveel labels je moet comparen,
-    bij alg == 0, namelijk de hele naam, en bij alg != 0 alleen het eerste
-    label.
+
+[MG: je moet hier heel erg letten op hoeveel labels je moet comparen,
+     bij alg == 0, namelijk de hele naam, en bij alg != 0 alleen het eerste
+     label.
+[MM: Waarom? SNAME en QNAME zijn sowieso unhashed]
 
 Once the closest encloser has been discovered, the validator MUST
 check that the NSEC4 RR that has the closest encloser as the original
@@ -384,8 +367,71 @@ Opt-Out bit set.
 
 # IANA Considerations
 
-This memo includes requests to IANA.
-Almost the same, except remove the reserved status of the zero hash.
+Although the NSEC4 and NSEC4PARAM RR formats include a hash algorithm
+parameter, this document does not define a particular mechanism for
+safely transitioning from one NSEC4 hash algorithm to another. When
+specifying a new hash algorithm for use with NSEC4, a transition
+mechanism MUST also be defined.
+
+This document updates the IANA registry "DOMAIN NAME SYSTEM PARAMETERS"
+(http://www.iana.org/assignments/dns-parameters) in sub-registry "TYPES",
+by defining two new types. [](#the-nsec4-resource-record) defines the
+NSEC4 RR type [TBD]. [](#the-nsec4param-resource-record) defines the
+NSEC4PARAM RR type [TBD].
+
+This document possibly updates the IANA registry
+"DNS SECURITY ALGORITHM NUMBERS -- per [](#RFC4035)"
+(http://www.iana.org/assignments/dns-sec-alg-numbers). 
+
+[MM: Depending on [](#backwards-compatibility).]
+
+This document creates a new IANA registry for NSEC4 flags. This
+registry is named "DNSSEC NSEC4 Flags". The initial contents of this
+registry are:
+
+      0    1    2    3    4    5    6    7
+    +----+----+----+----+----+----+----+----+
+    |    |    |    |    |    |    |Wild|Opt-|
+    |    |    |    |    |    |    |card|Out |
+    +----+----+----+----+----+----+----+----+
+
+    bit 6 is the Wildcard flag.
+
+    bit 7 is the Opt-Out flag.
+
+    bits 0 - 5 are available for assignment.
+
+Assignment of additional NSEC4 Flags in this registry requires IETF
+Standards Action [](#5226).
+
+This document creates a new IANA registry for NSEC4PARAM flags. This
+registry is named "DNSSEC NSEC4PARAM Flags". The initial contents of
+this registry are:
+
+      0   1   2   3   4   5   6   7
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |   |   | 0 |
+    +---+---+---+---+---+---+---+---+
+
+    bit 7 is reserved and must be 0.
+
+    bits 0 - 6 are available for assignment.
+
+Assignment of additional NSEC4PARAM Flags in this registry requires IETF
+Standards Action [](#5226).
+
+Finally, this document creates a new IANA registry for NSEC4 hash
+algorithms. This registry is named "DNSSEC NSEC4 Hash Algorithms".
+The initial contents of this registry are:
+
+    0 is Zero hashing.
+
+    1 is SHA-1.
+
+    2-255 Available for assignment.
+
+Assignment of additional NSEC4 hash algorithms in this registry requires IETF
+Standards Action [](#5226).
 
 # Security Considerations
 

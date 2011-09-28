@@ -1,41 +1,40 @@
 # Introduction
 
 ## Rationale
-Authenticated denial of existence proofs all hinge on the 
+Hashed authenticated denial of existence proofs frequently hinge on the 
 closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
-a denial of existence answer, a validator needs to know the next closer.
-To know the next closer, you need to know the closest encloser. To deny
-or assert a wildcard presence the source of synthesis is needed 
-(Section 3.3.1 of [](#RFC4592)), and for the source of synthesis you
-also need the closest encloser.
+a hashed denial of existence answer, a validator must deny or assert the
+presence of a next closer name and a wildcard name. A validator can derive
+the next closer and the source of synthesis (Section 3.3.1 of [](#RFC4592))
+from the closest encloser.
 
-This is why the largest denial of existence response with NSEC3, contains
-three records:
+This is why the largest denial of existence response with
+NSEC3 [](#RFC5155), contains three records:
 
 * A record where the original owner name of the NSEC3 is the closest encloser;
-* A record which covers the next closer, to proof that
-    the requested name does not exist;
-* A records which matches or covers the wildcard.
+* A record which covers or matches the next closer, to deny or assert the
+  existence of the next closer name;
+* A record which matches or covers the wildcard, to deny or assert the
+  existence of the source of synthesis.
 
 [MG: Note that the last entire record carries only one bit of information
      (is there a wildcard presence?).]
-
 [MM: NSEC verhaal weggehaald, dat is niet belangrijk hier.]
+[MM: Observations weggehaald, duplicate of Zone Serving section.]
 
-[MM: Observations weggehaald, duplicate of Zone Serving section.
+This document presents a new record NSEC4 that is similar to NSEC3,
+but differs in the following ways:
 
-We present a new record NSEC4 that is similar to NSEC3 ([](#RFC5155)), but
-differs in the following ways:
+1. It provides a new way to deny the existence of the source of synthesis,
+   by introducing the Wildcard bit (described in [](#wildcard-flag));
+2. It allows for unhashed records, by introducing zero hashing
+   (described in [](#hash-algorithm)).
 
-1. It has a new bit in the Flags field, the Wildcard bit (described in
-   [](#wildcard-flag);
-2. It allows for unhashed records, by setting the algorithm code to zero
-   (described in [](#hash-algorithm).
+With NSEC4 you will always need a maximum of two records for any denial
+of existence response, saving one record and accompanying signature(s) compared
+with NSEC3.
 
-With NSEC4 you will need a maximum of two records for any denial
-of existence response, saving one record and accompanying signature(s).
-
-By defining hash algorithm zero, we also fold back NSEC into NSEC4 and
+By defining zero hashing, we also fold back NSEC into NSEC4 and
 add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
@@ -48,8 +47,13 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
 
 ## Terminology
 
-The same terminology is used throughout this document as in Section 1.3
-from [](#RFC5155), with the following changes:
+The reader is assumed to be familiar with the basic DNS and DNSSEC
+concepts described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034),
+[](#RFC4035), and subsequent RFCs that update them: [](#RFC2136),
+[](#RFC2181), [](#RFC2308) and [](#RFC5155).
+
+Furthermore, the same terminology is used throughout this document as is
+described in Section 1.3 from [](#RFC5155), with the following changes:
 
 Opt-Out NSEC4 RR:
 
@@ -65,8 +69,8 @@ Opt-Out zone:
 
 Base32:
 
-:   the "Base 32 Encoding with Extended Hex Alphabet" as specified in
-    [](#RFC4648). Note that trailing padding characters ("=") are
+:   the "Base 32 Encoding with Extended Hex Alphabet" as specified
+    in [[RFC4648]](#RFC4648). Note that trailing padding characters ("=") are
     not used in the NSEC4 specification.
 
 To cover:
@@ -95,4 +99,4 @@ In particular, security-aware resolvers that are unaware of this
 specification (NSEC4-unaware resolvers) may fail to validate the
 responses introduced by this document.
 
-MM: We need an approach for backwards compatibility.
+[MM: We need to define an approach for backwards compatibility.]
