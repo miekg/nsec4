@@ -17,4 +17,14 @@
         <?rfc include="bib/reference.RFC.4648" ?>
         <?rfc include="bib/reference.RFC.5155" ?>
         <?rfc include="bib/reference.RFC.5226" ?>
+        <reference anchor='Schaeffer10'>
+            <front>
+            <title>NSEC3 Hash Performance</title>
+            <author initials='Y.' surname='Schaeffer' fullname='Yuri Schaeffer'>
+            <organization>NLnet Labs</organization>
+            </author>
+            <date year='2010' month='March'/>
+            </front>
+        </reference>
 </references>
+

@@ -2,21 +2,7 @@
 
 # Example Responses
 
-# Special Considerations
-
-## Domain Name Length Restrictions
-
-MM: Like [](#RFC5155), Section 10.1
-
-## DNAME at the Zone Apex
-
-MM: Like [](#RFC5155), Section 10.2
-
-## Iterations values
-
-MM: Perhaps use the NSEC3 Hash Performance paper to redefine iterations values.
-
-http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf
+# More Special Considerations
 
 ## Salting
 
