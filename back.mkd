@@ -135,7 +135,7 @@ original ownernames.
                   RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
                          22824 example. WqK... )
     ;
-    ;; Empty nonterminal: who.example.
+    ;; Empty non-terminal: who.example.
     g9f2ivvhohrs5aua715gmp4d99987k7j.example. NSEC4 1 2 2 dead (
                          nfm90i688cdb55a5cfablopmpcrs7jfk.example. )
                   RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
@@ -159,7 +159,7 @@ original ownernames.
                   RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852
                      22824 example. ODH... )
     ;
-    ;; Empty nonterminal: yes.who.example.
+    ;; Empty non-terminal: yes.who.example.
     f55ub17k97db78nulri04cqudhktu5n4.example. NSEC4 1 0 2 dead (
                          g9f2ivvhohrs5aua715gmp4d99987k7j.example. )
                   RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
@@ -288,7 +288,7 @@ This is the same zone showing its NSEC4 RRs with zero hashing.
                   NSEC4  0 1 0 - who.example. A RRSIG
                   RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
                          22824 example. neO... )
-    ;; Empty nonterminal: who.example.
+    ;; Empty non-terminal: who.example.
     who.example.  NSEC4  0 3 0 - *.who.example.
                   RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
                          22824 example. HgO... )
@@ -307,7 +307,7 @@ This is the same zone showing its NSEC4 RRs with zero hashing.
                   RRSIG  NSEC4 16 3 3600 20111026183535 20110928183535 (
                          22824 example. dvM... )
     ;
-    ;; Empty nonterminal: yes.who.example.
+    ;; Empty non-terminal: yes.who.example.
     yes.who.example. NSEC4 0 1 0 -  xtc.yes.who.example.
                   RRSIG  NSEC4 16 3 3600 20111026183535 20110928183535 (
                          22824 example. D1S... )
@@ -334,14 +334,121 @@ This is the same zone showing its NSEC4 RRs with zero hashing.
 
 # Example Responses
 
-# More Special Considerations
+The examples in this section show response messages using the signed
+zone example in [](#example-zones).
 
-## Salting
+## Name Error
 
-## Hash Collision
+An authoritative name error. The NSEC4 RRs prove that the name does
+not exist and that there is no wildcard RR that should have been
+expanded.
 
-## Transitioning a Signed Zone from NSEC to NSEC4
+    ;; Header: rcode: NXDOMAIN, flags: qr aa do
+    ;; Question
+    abba.civ.xtc.who.example. IN A
+    
+    ;; Answer
+    
+    ;; Authority
+    example.         SOA    ns1.example. bugs.x.w.example. 1 3600 300 (
+                            3600000 3600 )
+    example.         RRSIG  SOA 16 1 3600 20111026181129 20110928181129 (
+                            22824 example. Qw9... )
+    
+    ;; NSEC4 RR that covers the "next closer" name (civ.xtc.who.example)
+    ;; H(civ.xtc.who.example) = 0ogqkn5biut40hg8i05ctcitv32kc2tn
+    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. NSEC4 1 0 2 dead (
+                            2abqvfvhaknqhdsdurcqvgafplf6g15h.example.
+                            A RRSIG )
+    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. RRSIG NSEC4 16 2 3600 (
+                            20111026181129 20110928181129 22824
+                            example. a4r... )
 
-## Transitioning a Signed Zone from NSEC3 to NSEC4
+    ;; NSEC4 RR that matches the closest encloser (xtc.who.example)
+    ;; H(xtc.who.example) = 2abqvfvhaknqhdsdurcqvgafplf6g15h
+    2abqvfvhaknqhdsdurcqvgafplf6g15h.example. NSEC4	1 0 2 dead (
+                            3481on4udp5vgvfkth3eqvor08i9of28.example.
+                            MX RRSIG )
+    2abqvfvhaknqhdsdurcqvgafplf6g15h.example. RRSIG	NSEC4 16 2 3600 (
+                            20111026181129 20110928181129 22824
+                            example. Xkt... )
+
+The query returned two NSEC4 RRs that prove that the requested data
+does not exist and that no wildcard expansion applies.
+The negative response is authenticated by verifying the NSEC4 RRs.
+The corresponding RRSIGs indicate that the NSEC4 RRs are signed by an
+"example" DNSKEY of algorithm 16 and with key tag 22824.
+The resolver needs the corresponding DNSKEY RR in order to authenticate this
+answer.
+
+In the above example, the name 'xtc.who.example' hashes to
+'2abqvfvhaknqhdsdurcqvgafplf6g15h'. This indicates that this might
+be the closest encloser.
+
+To prove that 'civ.xtc.who.example' does not
+exist, the name is hashed to '0ogqkn5biut40hg8i05ctcitv32kc2tn'.
+The first NSEC4 RR proves that "next closer" name does not exist.
+
+To prove that the source of synthesis '*.who.example' does not exist,
+the Wildcard bit at the NSEC4 RR matching the closest encloser is inspected.
+The bit is clear and this shows that the source of synthesis does indeed not
+exist.
+
+## No Data Error
+
+A No Data Response. The NSEC4 RR proves that the name exists and
+that the requested RR type does not.
+
+    ;; Header: rcode: NOERROR, flags: qr aa do
+    ;; Question
+    ns1.example. IN MX
+    
+    ;; Answer
+    
+    ;; Authority
+    example.         SOA   ns1.example. bugs.x.w.example. 1 3600 300 (
+                           3600000 3600 )
+    example.         RRSIG SOA 16 1 3600 20111026181129 20110928181129 (
+                           22824 example. Qw9... )
+
+    ;; NSEC4 RR matches the QNAME, the MX and CNAME type bits are not set.
+    r9l4uekucmbpsj3mvgpk4cvtp776d3ku.example. NSEC4 1 0 2 dead (
+                           sj9ursdbrg9hf3sqjr81v5ps9u7bmdav.example.
+                           A RRSIG )
+    r9l4uekucmbpsj3mvgpk4cvtp776d3ku.example. NSEC4 16 2 3600 (
+                           20111026181129 20110928181129 22824
+                           example. AfI... )
+
+The query returned a NSEC4 RR that proves that the requested name
+exists ('ns1.example' hashes to 'r9l4uekucmbpsj3mvgpk4cvtp776d3ku'),
+but the requested RR type does not exist (type MX is absent in the
+type code list of the NSEC3 RR), and was not a CNAME (type CNAME is
+also absent in the type code list of the NSEC4 RR).
+
+## Referral to an Opt-Out Unsigned Zone
+
+The NSEC4 RRs prove that nothing for this delegation was signed.
+There is no proof that the unsigned delegation exists.
+
+[MM: To do]
+
+## Wildcard Expansion
+
+A query that was answered with a response containing a wildcard expansion.
+The label count in the RRSIG RRSet in the answer section
+indicates that a wildcard RRSet was expanded to produce this
+response, and the NSEC4 RR proves that no "next closer" name exists
+in the zone.
+
+[MM: To do]
+
+## Wildcard No Data Error
+
+A No Data Response for a name covered by a wildcard.
+The NSEC4 RRs prove that the matching wildcard name does not have any
+RRs of the requested type and that no closer match exists in the zone.
+
+[MM: To do]
+
 
 
