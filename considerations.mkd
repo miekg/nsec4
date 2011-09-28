@@ -2,7 +2,16 @@
 
 ## Zone Signing
 
-[MM: Almost the same, except considerations for the wildcard flag.]
+* a List
+* of bulleted items
+ 1. this is a numbered sublist
+ 2. Wich is done by using numbers. 
+* and back to the main bulleted list
+
+* this is also a list
+ * with a nested list
+ * which is done by indenting the line
+* back to the parent list
 
 Zones using NSEC4 must satisfy the same properties as described in 
 Section 7.1 of [](#RFC5155), with NSEC3 replaced by NSEC4.
@@ -16,12 +25,8 @@ NSEC4 RRs.
 1.  Select the hash algorithm and the values for salt and iterations.
 
 2.  For each unique original owner name in the zone add an NSEC4 RR.
-
-    * If Opt-Out is being used, owner names of unsigned delegations
-      MAY be excluded.
-    * The owner name of the NSEC4 RR is either the hash of the original
-      owner name, prepended as a single label to the zone name, or
-      equal to the original owner name if zero hashing is used.
+    * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded.
+    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or equal to the original owner name if zero hashing is used.
     * The Next Owner Name field is left blank for the moment.
     * If Opt-Out is being used, set the Opt-Out bit to one.
 
@@ -65,6 +70,8 @@ NSEC4 RRs.
 
    If a hash collision is detected, then a new salt has to be chosen,
    and the signing process restarted.
+
+[MM: Ik krijg de sublist niet goed in markdown syntax]
 
 ## Zone Serving
 
