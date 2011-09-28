@@ -5,11 +5,10 @@ Hashed authenticated denial of existence proofs frequently hinge on the
 closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
 a hashed denial of existence answer, a validator must deny or assert the
 presence of a next closer name and a wildcard name. A validator can derive
-the next closer and the source of synthesis (Section 3.3.1 of [](#RFC4592))
-from the closest encloser.
+these names from the closest encloser.
 
-This is why the largest denial of existence response with
-NSEC3 [](#RFC5155), contains three records:
+This is why most of the denial of existence responses with
+NSEC3 [](#RFC5155) contains three records:
 
 * A record where the original owner name of the NSEC3 is the closest encloser;
 * A record which covers or matches the next closer, to deny or assert the
@@ -25,7 +24,7 @@ NSEC3 [](#RFC5155), contains three records:
 This document presents a new record NSEC4 that is similar to NSEC3,
 but differs in the following ways:
 
-1. It provides a new way to deny the existence of the source of synthesis,
+1. It provides a new way to deny the existence of the wildcard,
    by introducing the Wildcard bit (described in [](#wildcard-flag));
 2. It allows for unhashed records, by introducing zero hashing
    (described in [](#hash-algorithm)).
