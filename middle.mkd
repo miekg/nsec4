@@ -208,7 +208,8 @@ NSEC3 record:
 
 NSEC4 record with zero hashing:
 
-    example.org. NSEC4 0 0 0 - a.example.org. NS SOA RRSIG DNSKEY NSEC4PARAM
+    example.org. NSEC4 0 0 0 - a.example.org. NS SOA RRSIG DNSKEY
+     NSEC4PARAM
 
 NSEC4 record with hashing:
 
