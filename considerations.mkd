@@ -5,7 +5,7 @@
 [MM: Almost the same, except considerations for the wildcard flag.]
 
 Zones using NSEC4 must satisfy the same properties as described in 
-Section 7.1 of RFC5155 [](#RFC5155), with NSEC3 replaced by NSEC4.
+Section 7.1 of [](#RFC5155), with NSEC3 replaced by NSEC4.
 
 In addition, for each original owner name where source of synthesis exists,
 the corresponding NSEC4 RR MUST have the Wildcard bit set in the Flags field.
@@ -402,7 +402,7 @@ registry are:
     bits 0 - 5 are available for assignment.
 
 Assignment of additional NSEC4 Flags in this registry requires IETF
-Standards Action [](#5226).
+Standards Action [](#RFC5226).
 
 This document creates a new IANA registry for NSEC4PARAM flags. This
 registry is named "DNSSEC NSEC4PARAM Flags". The initial contents of
@@ -418,7 +418,7 @@ this registry are:
     bits 0 - 6 are available for assignment.
 
 Assignment of additional NSEC4PARAM Flags in this registry requires IETF
-Standards Action [](#5226).
+Standards Action [](#RFC5226).
 
 Finally, this document creates a new IANA registry for NSEC4 hash
 algorithms. This registry is named "DNSSEC NSEC4 Hash Algorithms".
@@ -431,7 +431,7 @@ The initial contents of this registry are:
     2-255 Available for assignment.
 
 Assignment of additional NSEC4 hash algorithms in this registry requires IETF
-Standards Action [](#5226).
+Standards Action [](#RFC5226).
 
 # Security Considerations
 
