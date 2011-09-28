@@ -254,7 +254,7 @@ One possible algorithm for finding the source of synthesis is as follows:
 
 The validator does not need to check that the closest encloser is from the
 proper zone. The authoritative server returned a NSEC4 that matches the
-source of synthesis. According to RFC2672 [](#RC2672), this proves that
+source of synthesis. According to [](#RFC2672), this proves that
 the server did not encounter a referral (step 3b of the server algorithm),
 nor did it encounter a DNAME (step 3c of the server algorithm).
 
