@@ -205,6 +205,8 @@ covers the next closer. We do not need to include a RR that matches the
 closest encloser, as it can be derived from the NSEC4 RR that matches the
 wildcard. From that, the next closer can be derived.
 
+[MG: moet hier dan ook niet de wildcard flag aan staan?]
+
 ### Referrals to Unsigned Subzones
 
 [MM: Like [](#no-data-responses) with QYTPE is DS.]
@@ -272,6 +274,9 @@ One possible algorithm for finding the closest encloser is as follows:
 2.  If there is a NSEC4 RR in the response that matches SNAME, then we have
     found the closest encloser.
 3.  Truncate SNAME by one label from the left, go to step 2.
+4.  [MG: je moet hier heel erg letten op hoeveel labels je moet comparen,
+    bij alg == 0, namelijk de hele naam, en bij alg != 0 alleen het eerste
+    label.
 
 Once the closest encloser has been discovered, the validator MUST
 check that the NSEC4 RR that has the closest encloser as the original
@@ -336,7 +341,7 @@ One possible algorithm for finding the source of synthesis is as follows:
 
 The validator does not need to check that the closest encloser is from the
 proper zone. The authoritative server returned a NSEC4 that matches the
-source of synthesis. According to RFC2672 [](#RC2672), this proves that
+source of synthesis. According to [](#RFC2672), this proves that
 the server did not encounter a referral (step 3b of the server algorithm),
 nor did it encounter a DNAME (step 3c of the server algorithm).
 
