@@ -1,4 +1,18 @@
-# Example Zone
+# Example Zones
+
+## Hashed Denial of Existence
+
+This is a zone showing its NSEC4 RRs with hashing.
+
+The overall TTL and class are specified in the SOA RR, and are
+subsequently omitted for clarity.
+
+The zone is preceded by a list that contains the hashes of the
+original ownernames.
+
+## Zero Hashing
+
+This is the same zone showing its NSEC4 RRs with zero hashing.
 
 # Example Responses
 
