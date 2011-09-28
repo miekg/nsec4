@@ -190,6 +190,9 @@ One possible algorithm for finding the closest encloser is as follows:
 2.  If there is a NSEC4 RR in the response that matches SNAME, then we have
     found the closest encloser.
 3.  Truncate SNAME by one label from the left, go to step 2.
+4.  [MG: je moet hier heel erg letten op hoeveel labels je moet comparen,
+    bij alg == 0, namelijk de hele naam, en bij alg != 0 alleen het eerste
+    label.
 
 Once the closest encloser has been discovered, the validator MUST
 check that the NSEC4 RR that has the closest encloser as the original
