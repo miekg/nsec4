@@ -123,6 +123,8 @@ covers the next closer. We do not need to include a RR that matches the
 closest encloser, as it can be derived from the NSEC4 RR that matches the
 wildcard. From that, the next closer can be derived.
 
+[MG: moet hier dan ook niet de wildcard flag aan staan?]
+
 ### Referrals to Unsigned Subzones
 
 [MM: Like [](#no-data-responses) with QYTPE is DS.]
