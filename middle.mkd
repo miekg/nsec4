@@ -35,7 +35,7 @@ This is in the spirit of negative caching [](#RFC2136).
 
 ## RDATA Fields
 
-The NSEC4 RDATA has many similarities with the NSEC3 RDATA, but there are a few
+The NSEC4 RDATA has many similarities with the NSEC3 RDATA, but there are
 differences:
 
 * There is an extra flag bit reserved to indicate whether wildcard synthesis
@@ -47,7 +47,7 @@ differences:
 
 [](#RFC5155) defines the NSEC3 hash algorithm registry. The zero
 hash (hash algorithm 0) is reserved. For NSEC4 we define the zero hash
-to mean that no hashing is used.
+to mean that no hashing is used (Zero hashing).
 
 ### Flags
 
@@ -63,7 +63,7 @@ Like the Opt-Out Flag defined in Section 3.1.2.1 of [](#RFC5155).
 The Wildcard Flag indicates whether there is wildcard synthesis possible
 at the original owner name of the NSEC4 RR.
 
-If the Wildcard flag is set, the is wildcard synthesis possible at the
+If the Wildcard flag is set, wildcard synthesis is possible at the
 original owner name of the NSEC4 RR.
 
 If the Wildcard flag is clear, wildcard synthesis is not possible
@@ -119,10 +119,10 @@ The RDATA of the NSEC4 RR is as shown below.
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 Hash Algorithm is a single octet. 
-If Hash Algorithm is zero (no hashing), the Iterations field,
+If Hash Algorithm is zero (zero hashing), the Iterations field,
 the Salt Length field and the Salt field MUST be ignored.
 
-[MM: If Hash Algorithm is zero (no hashing), we could omit the Iterations
+[MM: If Hash Algorithm is zero (zero hashing), we could omit the Iterations
      field, Salt Length field and Salt field.]
 
 Flags field is a single octet. The following one-bit flags are defined:
@@ -148,6 +148,8 @@ field.
 
 If Hash Algorithm is not zero, the Next (Hashed) Owner Name is a base32
 encoded domain name. If Hash Algorithm is zero it is a plain domain name.
+
+[MG: Say something about prepending these names when hashed?]
 
 The Type Bit Maps encode the existing types at the original owner name
 that matches the NSEC4 RR.
