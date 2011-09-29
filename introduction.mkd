@@ -3,17 +3,17 @@
 ## Rationale
 Hashed authenticated denial of existence proofs frequently hinge on the 
 closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
-a hashed denial of existence answer, a validator must deny or assert the
+a hashed denial of existence response, a validator must deny or assert the
 presence of a next closer name and a wildcard name. A validator can derive
 these names from the closest encloser.
 
 This is why most of the denial of existence responses with
-NSEC3 [](#RFC5155) contains three records:
+NSEC3 [](#RFC5155) contain three records:
 
 * A record where the original owner name of the NSEC3 is the closest encloser;
 * A record which covers or matches the next closer, to deny or assert the
   existence of the next closer name;
-* A record which matches or covers the wildcard, to deny or assert the
+* A record which covers or matches the wildcard, to deny or assert the
   wildcard synthesis.
 
 [MG: Note that the last entire record carries only one bit of information
@@ -24,14 +24,14 @@ NSEC3 [](#RFC5155) contains three records:
 This document presents a new record NSEC4 that is similar to NSEC3,
 but differs in the following ways:
 
-1. It provides a new way to deny the existence of the wildcard,
+1. It provides a new way to deny or assert the existence of the wildcard,
    by introducing the Wildcard bit (described in [](#wildcard-flag));
 2. It allows for unhashed records, by introducing zero hashing
    (described in [](#hash-algorithm)).
 
-With NSEC4 you will always need a maximum of two records for any denial
+With NSEC4 you will need a maximum of two records for any denial
 of existence response, saving one record and accompanying signature(s) compared
-with NSEC3.
+to NSEC3.
 
 By defining zero hashing, we also fold back NSEC into NSEC4 and
 add Opt-out to unhashed names. With this change we collapse NSEC
@@ -77,7 +77,8 @@ To cover:
 :   When a hash algorithm is defined,
     a NSEC4 RR is said to "cover" a name if the hash of the name or
     "next closer" name falls between the owner name and the next hashed
-    owner name of the NSEC4. When no hash algorithm is defined, a NSEC4 RR is
+    owner name of the NSEC4. When no hash algorithm (zero hashing) is defined, 
+    a NSEC4 RR is
     said to "cover" a name if the name or "next closer" name falls between
     the owner name and the next owner name of the NSEC4. In other words, if
     it proves the nonexistence of the name, either directly or by proving the
@@ -87,8 +88,12 @@ To match:
 
 :   When a hash algorithm is defined, a NSEC4 RR is said to "match" a name
     if the owner name of the NSEC4 RR is the same as the hashed owner name
-    of that name. When no hash algorithm is defined, a NSEC4 RR is said to
+    of that name. When no hash algorithm (zero hashing) is defined, a NSEC4 RR is said to
     "match" a name if the name and the owner name of the NSEC4 RR are equal.
+
+Zero hashing:
+
+:   Perform no hashing. Leave the name as-is.
 
 # Backwards Compatibility
 
