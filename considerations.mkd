@@ -204,6 +204,8 @@ as a Name Error response ([](#name-error-responses). Or, in other words,
 the authoritative name server will act as if the owner name of the NSEC4 RR
 did not exist.
 
+[MG: waarom zult gij niet query-en voor nsec4? Ik wil dit wel toelaten, eigenlijk]
+
 ### Server Response to a Run-Time Collision
 
 The same considerations as described in Section 7.2.9 of [](#RFC5155) for
