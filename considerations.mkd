@@ -451,7 +451,7 @@ half performance count for validators is roughly 150 to 600,
 depending on the key size.
 For authoritative servers the half performance count is around 100 iterations.
 
-# More Special Considerations
+## More Special Considerations
 
 [](#RFC5155), Appendix C clarifies specific behavior and explains
 more special considerations for implementations, regarding salting and
