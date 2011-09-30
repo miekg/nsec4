@@ -103,8 +103,8 @@ In particular, security-aware resolvers that are unaware of this
 specification (NSEC4-unaware resolvers) may fail to validate the
 responses introduced by this document.
 
-In order to aid deployment, this specification uses the signaling
-technique as presented in Section 2 of [](#RFC5151). 
+In order to aid deployment, this specification uses the same signaling
+technique as presented in Section 2 of [](#RFC5155). 
 
 This specification allocates four new DNSKEY algorithm identifiers for
 this purpose. [MG: dit lijstje is bullshit]
