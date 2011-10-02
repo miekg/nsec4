@@ -26,8 +26,9 @@ NSEC4 RRs.
 
 4.  If the original owner name is a wildcard domain, mark the NSEC4 to be
     a wildcard NSEC4 RR.
+    [MG: the previous NSEC4?]
 
-4.  For each RRSet at the original owner name, set the corresponding
+4.  For each RRSet Type? at the original owner name, set the corresponding
     bit in the Type Bit Maps field.
 
 5.  Additional NSEC4 RRs need to be added for every empty non-terminal
@@ -137,6 +138,7 @@ When a NODATA response needs to be returned, it is safe to say that QNAME
 exists. Similar to NSEC and NSEC3, server MUST include the NSEC4 RR that
 matches QNAME. This NSEC4 RR MUST NOT have the bits corresponding to either
 the QTYPE or CNAME set in its Type Bit Maps field.
+[MG: DNAME?]
 
 #### QTYPE is DS
 
@@ -160,6 +162,8 @@ Both with NSEC and NSEC3, the server includes in the response a NSEC RR
 that covers the next closer. It is not necessary to return a RR that
 matches the closest encloser, as the existence of this closest encloser
 is proven by the presence of the expanded wildcard in the response.
+[MG: validator can check this by checking the label count in the RRSIG
+and the number of labels in the answer]
 
 To prove that the wildcard name expansion was valid with NSEC4,
 the server MUST include in the response a NSEC4 RR that covers the
@@ -356,12 +360,12 @@ One possible algorithm for finding the source of synthesis is as follows:
 The validator does not need to check that the closest encloser is from the
 proper zone. The authoritative server returned a NSEC4 that matches the
 source of synthesis. According to [](#RFC2672), this proves that
-the server did not encounter a referral (step 3b of the server algorithm),
-nor did it encounter a DNAME (step 3c of the server algorithm).
+the server did not encounter a referral (step 3b of the server algorithm [](#RFC1035)),
+nor did it encounter a DNAME (step 3c of the server algorithm [](#RFC1035)).
 
 Now that the validator knows the source of synthesis and thus the closest
 encloser, it can derive the "next closer" name. The validator MUST verify
-that there is a NSEC4 RR that covers the "next closer" name to QNAME is
+that there is a NSEC4 RR that covers the "next closer" name to QNAME, is
 present in the response.
 
 Note that, because the response included a NSEC4 that matches the source
@@ -536,4 +540,4 @@ already discussed in [](#RFC4033), [](#RFC4034), [](#RFC4035) and [](#RFC5155),
 
 ## 00
 
-- Initial document
+* Initial document
