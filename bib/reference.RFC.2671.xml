@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2671'>
+
+<front>
+<title>Extension Mechanisms for DNS (EDNS0)</title>
+<author initials='P.' surname='Vixie' fullname='Paul Vixie'>
+<organization>Internet Software Consortium</organization>
+<address>
+<postal>
+<street>950 Charter Street</street>
+<city>Redwood City</city>
+<region>CA</region>
+<code>94063</code>
+<country>US</country></postal>
+<phone>+1 650 779 7001</phone>
+<email>vixie@isc.org</email></address></author>
+<date year='1999' month='August' />
+<abstract>
+<t>The Domain Name System's wire protocol includes a number of fixed fields whose range has been or soon will be exhausted and does not allow clients to advertise their capabilities to servers. This document describes backward compatible mechanisms for allowing the protocol to grow.</t></abstract></front>
+
+<seriesInfo name='RFC' value='2671' />
+<format type='TXT' octets='15257' target='http://www.rfc-editor.org/rfc/rfc2671.txt' />
+</reference>
