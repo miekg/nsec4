@@ -35,7 +35,7 @@ NSEC4 RRs.
     original owner names of these NSEC4 RRs and create temporary NSEC4 RRs for
     wildcard collisions in a similar fashion to step 3.
 
-6.  Sort the set of NSEC3 RRs into hash order or canonical order, depending
+6.  Sort the set of NSEC4 RRs into hash order or canonical order, depending
     on the value of the hash algorithm.
 
 7.  Combine NSEC4 RRs with identical hashed owner names by replacing
@@ -47,14 +47,14 @@ NSEC4 RRs.
 
 8.  In each NSEC4 RR, insert the next hashed owner name by using the
     value of the next NSEC4 RR in hash order.  The next hashed owner
-    name of the last NSEC3 RR in the zone contains the value of the
-    hashed owner name of the first NSEC3 RR in the hash order.
+    name of the last NSEC4 RR in the zone contains the value of the
+    hashed owner name of the first NSEC4 RR in the hash order.
 
     If the NSEC4 is marked to be a wildcard domain, find the NSEC4 that
     matches the closest encloser. Set the Wildcard bit in the Flags field
     of that NSEC4. 
 
-9.  Finally, add an NSEC3PARAM RR with the same Hash Algorithm,
+9.  Finally, add an NSE43PARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
 
 If a hash collision is detected, then a new salt has to be chosen,
