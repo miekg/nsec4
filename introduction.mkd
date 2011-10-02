@@ -95,6 +95,12 @@ Zero hashing:
 
 :   Perform no hashing. Leave the name as-is.
 
+The NSEC/NSEC3 and NSEC4 example RRs in this document use:
+
+* Either Zero or SHA1 hashing;
+* When using SHA1 hashing, use the salt ....;
+* All are from the zone example.
+
 # Backwards Compatibility
 
 This specification describes a protocol change that is not generally
