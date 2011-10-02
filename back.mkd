@@ -9,7 +9,7 @@ subsequently omitted for clarity. The RRSIGs Signature field is
 shortened to three characters for clarity.
 
 The zone is preceded by a list that contains the hashes of the
-original ownernames.
+original owner names.
 
     ; H(example)             = 98s648rese29576jgp2ni52qpum2n5ia
     ; H(2t7b4g4vsa5smi47k61mv5bv1a22bojr.example)
