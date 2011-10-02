@@ -4,7 +4,8 @@ resource record for hashed authenticated denial of existence.  This document
 introduces an alternative resource record, NSEC4, which similarly provides 
 authenticated denial of existence. It permits gradual expansion of
 delegation-centric zones, just like NSEC3 does. 
-It is possible, but not required, to provide measures against zone enumeration.
+With NSEC4 it is possible, but not required, to provide 
+measures against zone enumeration.
 
 NSEC4 reduces the size of the denial of existence response and
 adds Opt-Out to unhashed names.
