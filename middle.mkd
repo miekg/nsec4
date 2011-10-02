@@ -89,8 +89,6 @@ definition of Section 2.2.3 of [](#RFC4592).
 If zero hashing is used, the field contains the next owner name in the
 canonical ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
 
-If hashing is in place, the field contains the next owner name in hash order.
-
 A sender MUST NOT use DNS name compression on the Next Owner Name field when
 transmitting an NSEC4 RR.
 
@@ -147,9 +145,9 @@ length of this field is determined by the preceding Salt Length
 field.
 
 If Hash Algorithm is not zero, the Next (Hashed) Owner Name is a base32
-encoded domain name. If Hash Algorithm is zero it is a plain domain name.
-
-[MG: Say something about prepending these names when hashed?]
+encoded domain name of the hashed next owner name prepended as a single
+label to the name of the zone. 
+If Hash Algorithm is zero it is a plain domain name.
 
 The Type Bit Maps encode the existing types at the original owner name
 that matches the NSEC4 RR.

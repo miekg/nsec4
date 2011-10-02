@@ -36,7 +36,7 @@ NSEC4 RRs.
     original owner names of these NSEC4 RRs and create temporary NSEC4 RRs for
     wildcard collisions in a similar fashion to step 3.
 
-6.  Sort the set of NSEC3 RRs into hash order or canonical order, depending
+6.  Sort the set of NSEC4 RRs into hash order or canonical order, depending
     on the value of the hash algorithm.
 
 7.  Combine NSEC4 RRs with identical hashed owner names by replacing
@@ -48,14 +48,14 @@ NSEC4 RRs.
 
 8.  In each NSEC4 RR, insert the next hashed owner name by using the
     value of the next NSEC4 RR in hash order.  The next hashed owner
-    name of the last NSEC3 RR in the zone contains the value of the
-    hashed owner name of the first NSEC3 RR in the hash order.
+    name of the last NSEC4 RR in the zone contains the value of the
+    hashed owner name of the first NSEC4 RR in the hash order.
 
     If the NSEC4 is marked to be a wildcard domain, find the NSEC4 that
     matches the closest encloser. Set the Wildcard bit in the Flags field
     of that NSEC4. 
 
-9.  Finally, add an NSEC3PARAM RR with the same Hash Algorithm,
+9.  Finally, add an NSE43PARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
 
 If a hash collision is detected, then a new salt has to be chosen,
@@ -286,15 +286,10 @@ present in the response.
 
 One possible algorithm for finding the closest encloser is as follows:
 
-1.  Set SNAME=QNAME.
-2.  If there is a NSEC4 RR in the response that matches SNAME, then we have
-    found the closest encloser.
-3.  Truncate SNAME by one label from the left, go to step 2.
-
-[MG: je moet hier heel erg letten op hoeveel labels je moet comparen,
-     bij alg == 0, namelijk de hele naam, en bij alg != 0 alleen het eerste
-     label.
-[MM: Waarom? SNAME en QNAME zijn sowieso unhashed]
+(@sname) Set SNAME=QNAME.
+(@ce)    If there is a NSEC4 RR in the response that matches SNAME, then we have
+         found the closest encloser.
+(@trunc) Truncate SNAME by one label from the left, go to step @ce.
 
 Once the closest encloser has been discovered, the validator MUST
 check that the NSEC4 RR that has the closest encloser as the original
@@ -426,6 +421,8 @@ This document updates the DNAME specification to also allow NSEC4 types
 at descendants of the apex regardless of the existence of DNAME at the apex.
 
 ## Iterations values
+
+[MG: leuk stukje, maar misschien meer iets voor een clarify]
 
 Setting the number of iterations used allows the zone owner to choose
 the cost of computing a hash, and therefore the cost of generating a
