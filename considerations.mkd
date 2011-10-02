@@ -418,6 +418,8 @@ at descendants of the apex regardless of the existence of DNAME at the apex.
 
 ## Iterations values
 
+[MG: leuk stukje, maar misschien meer iets voor een clarify]
+
 Setting the number of iterations used allows the zone owner to choose
 the cost of computing a hash, and therefore the cost of generating a
 dictionary.
