@@ -441,13 +441,13 @@ below for iterations for the given key size. A resolver MAY treat a
 response with a higher value as insecure, after the validator has
 verified that the signature over the NSEC4 RR is correct.
 
-                          +----------+------------+
-                          | Key Size | Iterations |
-                          +----------+------------+
-                          | 1024     | 150        |
-                          | 2048     | 300        |
-                          | 4096     | 600        |
-                          +----------+------------+
+Key Size        Iterations
+----------      ------------
+1024            150
+2048            300
+4096            600 
+
+Table: Iteration values relative to the key size.
 
 This table is based on [](#Schaeffer10), which shows that the
 half performance count for validators is roughly 150 to 600,

@@ -10,14 +10,14 @@
 
      It emits warnings (and removes the content) when encountering:
 
-     * articleinfo
-     * tables, should be done as figures texttable
-     * nested blockquotes
-     * footnotes
+     * articleinfo;
+     * nested blockquotes;
+     * footnotes.
 
     Not supported:
 
-    * iref tag (index)
+    * iref tag (index);
+    * cref tag (comments). Use HTML comments.
 -->
 
 <xsl:output method="xml" omit-xml-declaration="yes"/>
@@ -27,13 +27,11 @@
 </xsl:template>
 
 <xsl:template match="article">
-    <!--    <middle> -->
     <xsl:apply-templates/>
-    <!-- </middle> -->
 </xsl:template>
 
 <!-- Remove the article info section, this should be handled
-     in the <front> matter of the RFC -->
+     in the <front> matter of the draft -->
 <xsl:template match="articleinfo">
     <xsl:message terminate="no">
         Warning: Author and article information is discarded.
@@ -62,7 +60,6 @@
         </xsl:attribute>
         <xsl:attribute name="anchor">
             <xsl:value-of select="@id"/>
-            <!--            <xsl:value-of select="ancestor::title/@id"/> -->
         </xsl:attribute>
         <xsl:apply-templates/>
     </section>
@@ -86,7 +83,7 @@
     </xsl:choose>
 </xsl:template>
 
-<!-- Transform a <listitem> to a <t> for lists -->
+<!-- Transform a <listitem> to a <t> for lists, except in description lists -->
 <xsl:template match="listitem">
     <xsl:choose>
         <xsl:when test="parent::varlistentry">
@@ -174,10 +171,8 @@
 <xsl:template match="varlistentry">
     <t>
         <xsl:attribute name="hangText">
-            <!-- <xsl:value-of select="./term"/>  -->
             <xsl:value-of select="normalize-space(translate(./term, '&#x20;&#x9;&#xD;&#xA;', ' '))"/>
         </xsl:attribute>
-        <!-- <xsl:value-of select="./listitem"/> -->
         <xsl:apply-templates select="./listitem"/>
     </t>
 </xsl:template>
@@ -245,6 +240,89 @@
             </spanx>
         </xsl:otherwise>
     </xsl:choose>
+</xsl:template>
+
+<!-- Tables -->
+<xsl:template match="table">
+    <texttable>
+        <xsl:apply-templates/>
+    </texttable>
+</xsl:template>
+
+<xsl:template match="table/caption">
+    <preamble>
+        <xsl:apply-templates/>
+    </preamble>
+</xsl:template>
+
+<xsl:template match="table/thead/tr/th">
+    <ttcol>
+        <xsl:attribute name="align">
+            <xsl:value-of select="@align"/>
+        </xsl:attribute>
+        <!-- for some stupid reason position() div 2, does not work -->
+        <!-- first column -->
+        <xsl:if test="position()=2">
+            <xsl:if test="../../../../table/col[1]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[1]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <!-- second column -->
+        <xsl:if test="position()=4">
+            <xsl:if test="../../../../table/col[2]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[2]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <!-- third column -->
+        <xsl:if test="position()=6">
+            <xsl:if test="../../../../table/col[3]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[3]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <!-- fifth column -->
+        <xsl:if test="position()=8">
+            <xsl:if test="../../../../table/col[4]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[4]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <!-- sixth column -->
+        <xsl:if test="position()=10">
+            <xsl:if test="../../../../table/col[5]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[5]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <!-- seventh column -->
+        <xsl:if test="position()=12">
+            <xsl:if test="../../../../table/col[6]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[6]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <!-- eighth column -->
+        <xsl:if test="position()=14">
+            <xsl:if test="../../../../table/col[7]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[7]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <xsl:apply-templates/>
+    </ttcol>
+</xsl:template>
+
+<xsl:template match="table/tbody/tr/td">
+    <c><xsl:apply-templates/></c>
 </xsl:template>
 
 </xsl:stylesheet>
