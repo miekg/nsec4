@@ -447,7 +447,7 @@ Key Size        Iterations
 2048            300
 4096            600 
 
-Table: Iteration values relative to the key size.
+Table: Iteration values relative to the key sizes.
 
 This table is based on [](#Schaeffer10), which shows that the
 half performance count for validators is roughly 150 to 600,
