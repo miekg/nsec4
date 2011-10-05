@@ -2,184 +2,87 @@
 
 ## Hashed Denial of Existence
 
-This is a zone showing its NSEC4 RRs with hashing.
+This is the unsigned zone we are using for the NSEC4 examples.
+[MG: eerst maar even eens worden over de zone zelf, voordat ik
+alles netjes ga maken]
 
-The overall TTL and class are specified in the SOA RR, and are
-subsequently omitted for clarity. The RRSIGs Signature field is
-shortened to three characters for clarity.
+    $ORIGIN example.
+    @       IN      SOA     ns1 bugs 1 2 3 4 5
+                    NS      ns1
+              
+    ns1             A       192.0.43.10
+              
+    ; signed deletation
+    signed          NS      ns1.signed
+    signed          DS      33694 8 2 2C235500B09FA87BBC0981674FC31AF87D2FA4DCFE666A64BA2646F29651DB83
+    ns1.signed      A       192.0.43.10
+              
+    ; unsigned delegation
+    unsigned        NS      ns1.unsigned
+    ns1.unsigned    A       192.0.43.10
+              
+    ; wildcard, something below the wildcard and empty non-terminal
+    *.who           TXT     "Wildcard"
+    yes.who         TXT     "Yes"
+    xx.a.b          TXT     "Xx"
+
+Below is the signed zone showing NSEC4 RRs with SHA1 hashing.
+
+The overall TTL and class are left out for clarity. The RRSIGs Signature field,
+the DNSKEYs Public Key field are omitted. The RRSIGs expiration and inception
+are set to zero.
 
 The zone is preceded by a list that contains the hashes of the
-original owner names.
+original owner names. [MG: TODO].
 
-    ; H(example)             = 98s648rese29576jgp2ni52qpum2n5ia
-    ; H(2t7b4g4vsa5smi47k61mv5bv1a22bojr.example)
-    ;                        = sj9ursdbrg9hf3sqjr81v5ps9u7bmdav
-    ; H(abba.example)        = 3481on4udp5vgvfkth3eqvor08i9of28
-    ; H(acdc.example)        = 3fgpbhigrn7ugsd4iijgsl89j59omvke
-    ; H(dio.example)         = vghp867p3paduhu4h9tjpre8kpfutv8c
-    ; H(ns1.example)         = r9l4uekucmbpsj3mvgpk4cvtp776d3ku
-    ; H(ns2.example)         = 0auiiv3d5k40rmbsns3rhg0mi8cod65a
-    ; H(who.example)         = g9f2ivvhohrs5aua715gmp4d99987k7j
-    ; H(*.who.example)       = 66k9ln7odi935nuppibrqiqaf8udqrt6
-    ; H(xtc.who.example)     = 2abqvfvhaknqhdsdurcqvgafplf6g15h
-    ; H(yes.who.example)     = f55ub17k97db78nulri04cqudhktu5n4
-    ; H(xtc.yes.who.example) = 8hiqudv6vsrgka9f0t812bltm520f0l1
-    ; H(xx.example)          = 3gt9icouaksga3vcgvi05b551bl66mal
-    ;
-    example. 3600 IN SOA ns1.example. bugs.x.w.example. 1 3600 300 (
-                         3600000 3600 )
-                  RRSIG  SOA 16 1 3600 20111026173852 20110928173852 (
-                         22824 example. uqg... )
-                  NS     ns1.example.
-                  NS     ns2.example.
-                  RRSIG  NS 16 1 3600 20111026173852 20110928173852 (
-                         22824 example. qdK... )
-                  MX     1 xx.example.
-                  RRSIG  MX 16 1 3600 20111026173852 20110928173852 (
-                         22824 example. fSe... )
-                  DNSKEY 257 3 16 AwEAAcw7MuOS4Ko55gR4qAiNX9beD3Rqd9 (
-                         JL04uHBoqSS4e+8lpXNcR3A/iL86OpmOq58g5HzirDJ
-                         f3Xvzsys4SZ+eZCSL/VxL8NjbrwSTXQjOkrpHCuUvB0
-                         gEa2ZhqUDNx4ZrCouOCQmVXd0cDqcrQiU+4h0GZybiJ
-                         FqDe8dDKdDaTh )
-                  RRSIG  DNSKEY 16 1 3600 20111026173852 (
-                         20110928173852 22824 example. VPK... )
-                  NSEC4PARAM 1 0 2 dead
-                  RRSIG  NSEC4PARAM 16 1 3600 20111026173852 (
-                         20110928173852 22824 example. hpA... )
-    98s648rese29576jgp2ni52qpum2n5ia.example. NSEC4 1 0 2 dead (
-                         f55ub17k97db78nulri04cqudhktu5n4.example. 
-                         NS SOA MX RRSIG DNSKEY NSEC4PARAM )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. oLa... )
-    ;
-    2t7b4g4vsa5smi47k61mv5bv1a22bojr.example. A 192.0.2.127
-                  RRSIG  A 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. wUV... )
-    sj9ursdbrg9hf3sqjr81v5ps9u7bmdav.example. NSEC4 1 0 2 dead (
-                         vghp867p3paduhu4h9tjpre8kpfutv8c.example.
-                         A RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. FLl... )
-    ;
-    abba.example. NS     ns1.abba.example.
-                  NS     ns2.abba.example.
-                  DS     58470 5 1 (
-                         3079f1593ebad6dc121e202a8b766a6a4837206c )
-                  RRSIG  DS 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. uEB... )
-    3481on4udp5vgvfkth3eqvor08i9of28.example. NSEC4 1 0 2 dead (
-                         3fgpbhigrn7ugsd4iijgsl89j59omvke.example.
-                         NS DS RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. dwe... )
-    ;
-    ns1.abba.example. A  192.0.2.5
-    ;
-    ns2.abba.example. A  192.0.2.6
-    ;
-    acdc.example. A      192.0.2.9
-                  RRSIG  A 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. kd/... )
-                  HINFO  "KLH-10" "ITS"
-                  RRSIG  HINFO 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. XJD... )
-                  AAAA   2001:db8::f00:baa9
-                  RRSIG  AAAA 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. swF... )
-    3fgpbhigrn7ugsd4iijgsl89j59omvke.example. NSEC4 1 0 2 dead (
-                         3gt9icouaksga3vcgvi05b551bl66mal.example.
-                         A HINFO AAAA RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. HAV... )
-    ;
-    civ.example.  NS     ns1.civ.example.
-                  NS     ns2.civ.example.
-    ;
-    ns1.civ.example. A   192.0.2.7
-    ;
-    ns2.civ.example. A   192.0.2.8
-    ;
-    dio.example.  DNAME  deus.example.
-                  RRSIG  DNAME 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. fvM... )
-    vghp867p3paduhu4h9tjpre8kpfutv8c.example. NSEC4 1 0 2 dead (
-                         0auiiv3d5k40rmbsns3rhg0mi8cod65a.example.
-                         DNAME RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. iVJ... )
-    ;
-    ns1.example.  A      192.0.2.1
-                  RRSIG  A 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. UiD... )
-    r9l4uekucmbpsj3mvgpk4cvtp776d3ku.example. NSEC4 1 0 2 dead (
-                         sj9ursdbrg9hf3sqjr81v5ps9u7bmdav.example.
-                         A RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. bC0... )
-    ;
-    ns2.example.  A      192.0.2.2
-                  RRSIG  A 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. gT0... )
-    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. NSEC4 1 0 2 dead (
-                         2abqvfvhaknqhdsdurcqvgafplf6g15h.example.
-                         A RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. WqK... )
-    ;
-    ;; Empty non-terminal: who.example.
-    g9f2ivvhohrs5aua715gmp4d99987k7j.example. NSEC4 1 2 2 dead (
-                         r9l4uekucmbpsj3mvgpk4cvtp776d3ku.example. )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. lyz... )
-    ;
-    *.who.example. MX    1 acdc.example.
-                  RRSIG  MX 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. F6j... )
-    66k9ln7odi935nuppibrqiqaf8udqrt6.example. NSEC4 1 0 2 dead (
-                         8hiqudv6vsrgka9f0t812bltm520f0l1.example.
-                         MX RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. fl3... )
-    ;
-    xtc.who.example. MX  1 xx.example.
-                  RRSIG  MX 16 3 3600 20111026173852 20110928173852 (
-                         22824 example. T1+... )
-    2abqvfvhaknqhdsdurcqvgafplf6g15h.example. NSEC4 1 0 2 dead (
-                         3481on4udp5vgvfkth3eqvor08i9of28.example.
-                         MX RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852
-                     22824 example. ODH... )
-    ;
-    ;; Empty non-terminal: yes.who.example.
-    f55ub17k97db78nulri04cqudhktu5n4.example. NSEC4 1 0 2 dead (
-                         g9f2ivvhohrs5aua715gmp4d99987k7j.example. )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. G0a... )
-    ;
-    xtc.yes.who.example. MX 1 xx.example.
-                  RRSIG  MX 16 4 3600 20111026173852 20110928173852 (
-                         22824 example. FpG... )
-    8hiqudv6vsrgka9f0t812bltm520f0l1.example. NSEC4 1 0 2 dead (
-                         98s648rese29576jgp2ni52qpum2n5ia.example.
-                         MX RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. PNU... )
-    ;
-    xx.example.   A      192.0.2.10
-                  RRSIG  A 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. TPf... )
-                  HINFO  "KLH-10" "TOPS-20"
-                  RRSIG  HINFO 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. AKO... )
-                  AAAA   2001:db8::f00:baaa
-                  RRSIG  AAAA 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. Dgr... )
-    3gt9icouaksga3vcgvi05b551bl66mal.example. NSEC4 1 0 2 dead (
-                         66k9ln7odi935nuppibrqiqaf8udqrt6.example.
-                         A HINFO AAAA RRSIG )
-                  RRSIG  NSEC4 16 2 3600 20111026173852 20110928173852 (
-                         22824 example. yiH... )
+    example.        SOA     ns1.example. bugs.example. 1 2 3 4 5
+    example.        RRSIG   SOA 7 1 300 0 0 39578 example. ( ... )
+    example.        RRSIG   NS 7 1 300 0 0 39578 example. ( ... )
+    example.        RRSIG   DNSKEY 7 1 300 0 0 39578 example. ( ... )
+    example.        RRSIG   NSEC4PARAM 7 1 3600 0 0 39578 example. ( ... )
+    example.        NS      ns1.example.
+    example.        DNSKEY  256 3 7 ( ... )
+    example.        NSEC4PARAM      1 0 0 -
+    044rrqcqpug5lgjem8m68pqunoaff06b.example.       NSEC4   1 0 0 - 0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.
+    044rrqcqpug5lgjem8m68pqunoaff06b.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.       NSEC4   1 0 0 - 3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
+    0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.       NSEC4   1 0 0 - 5mbsindupfh2v7q518ecffhta7vpk5pu.example. NS SOA RRSIG DNSKEY NSEC4PARAM
+    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    5mbsindupfh2v7q518ecffhta7vpk5pu.example.       NSEC4   1 0 0 - aie4ujcbrr4hnk1v1gf4vpietqauv95f.example. TXT RRSIG
+    5mbsindupfh2v7q518ecffhta7vpk5pu.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    aie4ujcbrr4hnk1v1gf4vpietqauv95f.example.       NSEC4   1 0 0 - b39f52k2414ait0pcpfjosgb4bs25jpe.example. A RRSIG
+    aie4ujcbrr4hnk1v1gf4vpietqauv95f.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    xx.a.b.example. 300     "Xx"
+    xx.a.b.example. 300     TXT 7 4 300 0 0 39578 example. ( ... )
+    b39f52k2414ait0pcpfjosgb4bs25jpe.example.       NSEC4   1 0 0 - g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.
+    b39f52k2414ait0pcpfjosgb4bs25jpe.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.       NSEC4   1 2 0 - ht6ocje68mtm96jpes8olrlbf67jjvdu.example.
+    g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    ht6ocje68mtm96jpes8olrlbf67jjvdu.example.       NSEC4   1 0 0 - ke0sqcil5siu1e9tcllomqdl0793oedc.example. TXT RRSIG
+    ht6ocje68mtm96jpes8olrlbf67jjvdu.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    ke0sqcil5siu1e9tcllomqdl0793oedc.example.       NSEC4   1 0 0 - m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NS DS RRSIG
+    ke0sqcil5siu1e9tcllomqdl0793oedc.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example.       NSEC4   1 0 0 - ruetr4etegsl7j3fipnme9b079pmq5i8.example. A RRSIG
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    ns1.example.    A       192.0.43.10
+    ns1.example.    RRSIG   A 7 2 300 0 0 39578 example. ( ... )
+    ruetr4etegsl7j3fipnme9b079pmq5i8.example.       NSEC4   1 0 0 - tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example. NS
+    ruetr4etegsl7j3fipnme9b079pmq5i8.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    ns1.secure.example.     A       192.0.43.10
+    ns1.secure.example.     RRSIG   A 7 3 300 0 0 39578 example. ( ... )
+    signed.example. NS      ns1.signed.example.
+    signed.example. DS      33694 8 2 ( ... )
+    signed.example. RRSIG   DS 7 2 300 0 0 39578 example. ( ... )
+    tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example.       NSEC4   1 0 0 - 044rrqcqpug5lgjem8m68pqunoaff06b.example. TXT RRSIG
+    tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
+    unsigned.example.       NS      ns1.unsigned.example.
+    ns1.unsigned.example.   A       192.0.43.10
+    *.who.example.  TXT     "Wildcard"
+    *.who.example.  RRSIG   TXT 7 2 300 0 0 39578 example. ( ... )
+    yes.who.example.        TXT     "Yes"
+    yes.who.example.        RRSIG   TXT 7 3 300 0 0 39578 example. ( ... )
+
 
 ## Zero Hashing
 
