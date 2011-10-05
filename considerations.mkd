@@ -420,39 +420,11 @@ at descendants of the apex regardless of the existence of DNAME at the apex.
 This document updates the DNAME specification to also allow NSEC4 types
 at descendants of the apex regardless of the existence of DNAME at the apex.
 
-## Iterations values
+## Iterations
 
-[MG: leuk stukje, maar misschien meer iets voor een clarify]
-
-Setting the number of iterations used allows the zone owner to choose
-the cost of computing a hash, and therefore the cost of generating a
-dictionary.
-
-Obviously the number of iterations also affects the zone owner's cost
-of signing and serving the zone as well as the validator's cost of
-verifying responses from the zone.
-
-We therefore impose an upper limit on the number of iterations.
-We base this on the number of iterations that approximates the cost of
-verifying an RRSet.
-
-A zone owner SHOULD NOT use a value higher than shown in the table
-below for iterations for the given key size. A resolver MAY treat a
-response with a higher value as insecure, after the validator has
-verified that the signature over the NSEC4 RR is correct.
-
-Key Size        Iterations
-----------      ------------
-1024            150
-2048            300
-4096            600 
-
-Table: Iteration values relative to the key sizes.
-
-This table is based on [](#Schaeffer10), which shows that the
-half performance count for validators is roughly 150 to 600,
-depending on the key size.
-For authoritative servers the half performance count is around 100 iterations.
+Like Section 10.3 in [](#RFC5155), but we recommend to
+read [](#Schaeffer10) as it shows that a lower iterations value
+is acceptable.
 
 ## More Special Considerations
 
