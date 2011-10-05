@@ -15,6 +15,7 @@
         <?rfc include="bib/reference.RFC.4034" ?>
         <?rfc include="bib/reference.RFC.4035" ?>
         <?rfc include="bib/reference.RFC.4648" ?>
+        <?rfc include="bib/reference.RFC.4955" ?>
         <?rfc include="bib/reference.RFC.4956" ?>
         <?rfc include="bib/reference.RFC.5155" ?>
         <?rfc include="bib/reference.RFC.5226" ?>
