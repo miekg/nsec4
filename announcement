@@ -3,7 +3,7 @@ Dear colleagues,
 We (Matthijs Mekking and Miek Gieben) had a nagging feeling that NSEC3
 was a sub optimal solution for providing authenticated denial of existence.
 
-In particuliar:
+In particular:
 
 * It uses an entire NSEC3 record (+ signature) for denying or asserting a wildcard;
 * It does not provide Opt-Out of unhashed names.
