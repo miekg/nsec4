@@ -90,11 +90,43 @@ Zero hashing:
 
 :   Perform no hashing. Leave the name as-is.
 
-# Experimental Status
+# Backwards Compatibility
+
+This specification describes an experimental protocol change
+that is not generally backwards compatible with the existing DNSSEC family RFCs.
+In particular, security-aware resolvers that are unaware of this specification
+(NSEC4-unaware resolvers) may fail to validate the responses introduced by this
+document.
+
+It interoperates with non-experimental DNSSEC using the same signaling technique
+as presented in Section 2 of [](#RFC5155). For this purpose,
+this specification allocates four new DNSKEY algorithm aliases:
+
+* Algorithm [TBD], DSA-NSEC4-SHA1, is an alias for algorithm 3, DSA;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA1, is an alias for algorithm 5, RSASHA1;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA256, is an alias for algorithm 5, RSASHA256;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 5, RSASHA512;
+
+Zones signed according to this specification MUST only use these
+algorithm identifiers for their DNSKEY RRs.  Because these new
+identifiers will be unknown algorithms to existing, NSEC4-unaware
+resolvers, those resolvers will then treat responses from the NSEC4
+signed zone as insecure, as detailed in Section 5.2 of [](#RFC4035).
+
+These algorithm identifiers are used with the NSEC4 hash algorithms
+Zero hashing and SHA1.  Using other NSEC4 hash algorithms requires
+allocation of a new alias (see Section 12.1.3 of [RFC5155]).
+
+Security aware resolvers that are aware of this specification MUST
+recognize the new algorithm identifiers and treat them as equivalent
+to the algorithms that they alias.
+
+[MM: Alternative]
 
 This document describes an EXPERIMENTAL extension to DNSSEC.
-It interoperates with non-experimental DNSSEC using the technique described in [](#RFC4955). 
-This experiment is identified with the following private algorithms (using algorithm 253):
+It interoperates with non-experimental DNSSEC using the technique
+described in [](#RFC4955).  This experiment is identified with the
+following private algorithms (using algorithm 253):
 
 * Algorithm "3.nsec4.nlnetlabs.nl", is an alias for algorithm 3, DSA;
 * Algorithm "5.nsec4.nlnetlabs.nl", is an alias for algorithm 5, RSASHA1;
@@ -107,6 +139,3 @@ use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
 unless a zone is signed using one or more of these private algorithms.
-
-The remainder of this document assumes that the servers and resolvers
-involved are aware of and are involved in this experiment.
