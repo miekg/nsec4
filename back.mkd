@@ -14,7 +14,7 @@ alles netjes ga maken]
               
     ; signed deletation
     signed          NS      ns1.signed
-    signed          DS      33694 8 2 2C235500B09FA87BBC0981674FC31AF87D2FA4DCFE666A64BA2646F29651DB83
+    signed          DS      33694 8 2 ( ... )
     ns1.signed      A       192.0.43.10
               
     ; unsigned delegation
@@ -31,58 +31,6 @@ Below is the signed zone showing NSEC4 RRs with SHA1 hashing.
 The overall TTL and class are left out for clarity. The RRSIGs Signature field,
 the DNSKEYs Public Key field are omitted. The RRSIGs expiration and inception
 are set to zero.
-
-The zone is preceded by a list that contains the hashes of the
-original owner names. [MG: TODO].
-
-    example.        SOA     ns1.example. bugs.example. 1 2 3 4 5
-    example.        RRSIG   SOA 7 1 300 0 0 39578 example. ( ... )
-    example.        RRSIG   NS 7 1 300 0 0 39578 example. ( ... )
-    example.        RRSIG   DNSKEY 7 1 300 0 0 39578 example. ( ... )
-    example.        RRSIG   NSEC4PARAM 7 1 3600 0 0 39578 example. ( ... )
-    example.        NS      ns1.example.
-    example.        DNSKEY  256 3 7 ( ... )
-    example.        NSEC4PARAM      1 0 0 -
-    044rrqcqpug5lgjem8m68pqunoaff06b.example.       NSEC4   1 0 0 - 0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.
-    044rrqcqpug5lgjem8m68pqunoaff06b.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.       NSEC4   1 0 0 - 3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
-    0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.       NSEC4   1 0 0 - 5mbsindupfh2v7q518ecffhta7vpk5pu.example. NS SOA RRSIG DNSKEY NSEC4PARAM
-    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    5mbsindupfh2v7q518ecffhta7vpk5pu.example.       NSEC4   1 0 0 - aie4ujcbrr4hnk1v1gf4vpietqauv95f.example. TXT RRSIG
-    5mbsindupfh2v7q518ecffhta7vpk5pu.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    aie4ujcbrr4hnk1v1gf4vpietqauv95f.example.       NSEC4   1 0 0 - b39f52k2414ait0pcpfjosgb4bs25jpe.example. A RRSIG
-    aie4ujcbrr4hnk1v1gf4vpietqauv95f.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    xx.a.b.example. 300     "Xx"
-    xx.a.b.example. 300     TXT 7 4 300 0 0 39578 example. ( ... )
-    b39f52k2414ait0pcpfjosgb4bs25jpe.example.       NSEC4   1 0 0 - g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.
-    b39f52k2414ait0pcpfjosgb4bs25jpe.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.       NSEC4   1 2 0 - ht6ocje68mtm96jpes8olrlbf67jjvdu.example.
-    g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    ht6ocje68mtm96jpes8olrlbf67jjvdu.example.       NSEC4   1 0 0 - ke0sqcil5siu1e9tcllomqdl0793oedc.example. TXT RRSIG
-    ht6ocje68mtm96jpes8olrlbf67jjvdu.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    ke0sqcil5siu1e9tcllomqdl0793oedc.example.       NSEC4   1 0 0 - m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NS DS RRSIG
-    ke0sqcil5siu1e9tcllomqdl0793oedc.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example.       NSEC4   1 0 0 - ruetr4etegsl7j3fipnme9b079pmq5i8.example. A RRSIG
-    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    ns1.example.    A       192.0.43.10
-    ns1.example.    RRSIG   A 7 2 300 0 0 39578 example. ( ... )
-    ruetr4etegsl7j3fipnme9b079pmq5i8.example.       NSEC4   1 0 0 - tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example. NS
-    ruetr4etegsl7j3fipnme9b079pmq5i8.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    ns1.secure.example.     A       192.0.43.10
-    ns1.secure.example.     RRSIG   A 7 3 300 0 0 39578 example. ( ... )
-    signed.example. NS      ns1.signed.example.
-    signed.example. DS      33694 8 2 ( ... )
-    signed.example. RRSIG   DS 7 2 300 0 0 39578 example. ( ... )
-    tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example.       NSEC4   1 0 0 - 044rrqcqpug5lgjem8m68pqunoaff06b.example. TXT RRSIG
-    tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example.       RRSIG   NSEC4 7 2 5 0 0 39578 example. ( ... )
-    unsigned.example.       NS      ns1.unsigned.example.
-    ns1.unsigned.example.   A       192.0.43.10
-    *.who.example.  TXT     "Wildcard"
-    *.who.example.  RRSIG   TXT 7 2 300 0 0 39578 example. ( ... )
-    yes.who.example.        TXT     "Yes"
-    yes.who.example.        RRSIG   TXT 7 3 300 0 0 39578 example. ( ... )
-
 
 ## Zero Hashing
 
