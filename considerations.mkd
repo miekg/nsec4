@@ -457,8 +457,6 @@ This document possibly updates the IANA registry
 "DNS SECURITY ALGORITHM NUMBERS -- per [](#RFC4035)"
 (http://www.iana.org/assignments/dns-sec-alg-numbers). 
 
-[MM: Depending on [](#backwards-compatibility).]
-
 This document creates a new IANA registry for NSEC4 flags. This
 registry is named "DNSSEC NSEC4 Flags". The initial contents of this
 registry are:
