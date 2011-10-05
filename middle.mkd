@@ -90,7 +90,7 @@ If zero hashing is used, the field contains the next owner name in the
 canonical ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
 
 A sender MUST NOT use DNS name compression on the Next Owner Name field when
-transmitting an NSEC4 RR.
+transmitting a NSEC4 RR.
 
 Owner names of RRsets for which the given zone is not authoritative
 (such as glue records) MUST NOT be listed in the Next Owner Name
@@ -152,13 +152,6 @@ If Hash Algorithm is zero it is a plain domain name.
 The Type Bit Maps encode the existing types at the original owner name
 that matches the NSEC4 RR.
 
-[MM: We might be able to do something smart with the label count,
-     like NSEC does.]
-
-Label Count is represented as a 8-bit unsigned integer, and represents the
-number of labels of the owner name in its unhashed format. It is used to
-determine the closest encloser of the name that matches the NSEC4 RR.
-
 ### Type Bit Maps Encoding
 
 The encoding of the Type Bit Maps field is the same as that used by the
@@ -195,24 +188,22 @@ The presentation format of the RDATA portion is as follows:
 
 NSEC record:
 
-    example. NSEC a.example NS SOA RRSIG DNSKEY NSEC3PARAM
+    example. NSEC a.example NS SOA RRSIG DNSKEY NSEC
 
 NSEC3 record:
-<!-- ldns-nsec3-hash -s dead -t 2 -a 1 example. -->
+<!-- ldns-nsec3-hash -t 2 -a 1 example. -->
 
-    98S648RESE29576JGP2NI52QPUM2N5IA.example. NSEC3 1 0 2 DEAD
-     14GSE74GO17ND6VOILE9E3EEJ3OPESOV. NS SOA RRSIG DNSKEY NSEC3PARAM
+    kkg95ivhgijkdqkr45elhgi4cfpnfapv.example. NSEC3 1 0 2 -
+     qlkrssg6q468e49gk2h1cntj9je9ubsj NS SOA RRSIG DNSKEY NSEC3PARAM
 
-
-
-NSEC4 record with Zero hashing:
+NSEC4 record with zero hashing:
 
     example NSEC4 0 0 0 - a.example. NS SOA RRSIG DNSKEY NSEC4PARAM
 
 NSEC4 record with SHA1 hashing:
 
-    .example NSEC4 1 0 2 L1FE
-     .example. NS SOA RRSIG 
+    kkg95ivhgijkdqkr45elhgi4cfpnfapv.example NSEC4 1 0 2 -
+     qlkrssg6q468e49gk2h1cntj9je9ubsj.example. NS SOA RRSIG
      DNSKEY NSEC4PARAM
 
 # The NSEC4PARAM Resource Record
@@ -222,4 +213,7 @@ except the type code used [TBD] is that of NSEC4PARAM.
 
 # Opt-Out
 
-[MM: Possibly the same, maybe different with NSEC.]
+This specification adds Opt-Out as described in Section 6 of [](#RFC5155).
+Because of zero hashing, this allows for Opt-Out being used with
+unhashed names. A similar method is described in [](#RFC4956), but with
+NSEC4 we can reuse the Opt-Out bit from the Flags field. 
