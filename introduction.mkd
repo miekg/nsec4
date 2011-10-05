@@ -101,8 +101,6 @@ This experiment is identified with the following private algorithms (using algor
 * Algorithm "8.nsec4.nlnetlabs.nl", is an alias for algorithm 8, RSASHA256;
 * Algorithm "10.nsec4.nlnetlabs.nl", is an alias for algorithm 10, RSAHSHA512;
 
-These are not new algorithms, they are additional identifiers for the existing algorithms.
-
 Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
 the zone with one or more of these private algorithms and MUST NOT
 use any other algorithms.
