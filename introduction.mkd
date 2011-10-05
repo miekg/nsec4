@@ -69,7 +69,7 @@ Opt-Out zone:
 Base32:
 
 :   the "Base 32 Encoding with Extended Hex Alphabet" as specified
-    in [[RFC4648]](#RFC4648). Note that trailing padding characters ("=") are
+    in [](#RFC4648). Note that trailing padding characters ("=") are
     not used in the NSEC4 specification.
 
 To cover:
