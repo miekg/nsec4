@@ -4,7 +4,8 @@
 
 This is the unsigned zone we are using for the NSEC4 examples.
 [MG: eerst maar even eens worden over de zone zelf, voordat ik
-alles netjes ga maken]
+     alles netjes ga maken]
+[MM: yes.who en xx.a.b zijn denk ik niet nodig.]
 
     $ORIGIN example.
     @       IN      SOA     ns1 bugs 1 2 3 4 5
@@ -13,13 +14,13 @@ alles netjes ga maken]
     ns1             A       192.0.43.10
               
     ; signed deletation
-    signed          NS      ns1.signed
-    signed          DS      33694 8 2 ( ... )
-    ns1.signed      A       192.0.43.10
+    sd          NS      ns1.sd
+    sd          DS      33694 8 2 ( ... )
+    ns1.sd      A       192.0.43.10
               
     ; unsigned delegation
-    unsigned        NS      ns1.unsigned
-    ns1.unsigned    A       192.0.43.10
+    ud        NS      ns1.ud
+    ns1.ud    A       192.0.43.10
               
     ; wildcard, something below the wildcard and empty non-terminal
     *.who           TXT     "Wildcard"
