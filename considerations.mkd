@@ -420,11 +420,11 @@ at descendants of the apex regardless of the existence of DNAME at the apex.
 This document updates the DNAME specification to also allow NSEC4 types
 at descendants of the apex regardless of the existence of DNAME at the apex.
 
-## Iterations
+## Iterations value
 
 Like Section 10.3 in [](#RFC5155), but we recommend to
 read [](#Schaeffer10) as it shows that a lower iterations value
-is acceptable.
+is also acceptable.
 
 ## More Special Considerations
 
