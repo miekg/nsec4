@@ -286,10 +286,9 @@ present in the response.
 
 One possible algorithm for finding the closest encloser is as follows:
 
-(@sname) Set SNAME=QNAME.
-(@ce)    If there is a NSEC4 RR in the response that matches SNAME, then we have
-         found the closest encloser.
-(@trunc) Truncate SNAME by one label from the left, go to step @ce.
+1. Set SNAME=QNAME.
+2. If there is a NSEC4 RR in the response that matches SNAME, then we have found the closest encloser.
+3. Truncate SNAME by one label from the left, go to step 2.
 
 Once the closest encloser has been discovered, the validator MUST
 check that the NSEC4 RR that has the closest encloser as the original
