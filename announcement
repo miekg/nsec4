@@ -3,12 +3,20 @@ Dear colleagues,
 We (Matthijs Mekking and Miek Gieben) had a nagging feeling that NSEC3
 was a sub optimal solution for providing authenticated denial of existence.
 
+[MM: Je kan denk ik beter zeggen dat je bezig was met een document over denial
+     of existence, en dat we toen op het idee waren gekomen om te kijken of
+     'het niet efficienter kon'.
+
 In particular:
 
 * It uses an entire NSEC3 record (+ signature) for denying or asserting a wildcard;
 * It does not provide Opt-Out of unhashed names.
 
+[MM: Voornamelijk denying]
+
 Also RFC 5155 lacks a bit in providing background for some of the design decisions.
+
+[MM: Daarom heb je het document over denial of existence]
 
 In an attempt to address these issues and provide additional insight in how NSEC and
 NSEC3 work, we submitted the following draft:
@@ -29,6 +37,8 @@ Abstract:
 > NSEC4 reduces the size of the denial of existence response and
 > adds Opt-Out to unhashed names.
 
+[MM: Nog een stukje dat we experimentje hebben gedaan en dit in eerste instantie
+     op het experimental track willen]
 
 Please send your comments/feedback to the list.
 

@@ -5,6 +5,10 @@
 This is the unsigned zone we are using for the NSEC4 examples.
 
 <!-- ./q -dnssec -port 8082 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
+=======
+[MG: eerst maar even eens worden over de zone zelf, voordat ik
+     alles netjes ga maken]
+[MM: yes.who en xx.a.b zijn denk ik niet nodig.]
 
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
@@ -16,6 +20,17 @@ This is the unsigned zone we are using for the NSEC4 examples.
     ns1.signed      A       192.0.43.10
     unsigned        NS      ns1.unsigned.example.
     ns1.unsigned    A       192.0.43.10
+              
+    ; signed deletation
+    sd          NS      ns1.sd
+    sd          DS      33694 8 2 ( ... )
+    ns1.sd      A       192.0.43.10
+              
+    ; unsigned delegation
+    ud        NS      ns1.ud
+    ns1.ud    A       192.0.43.10
+              
+    ; wildcard, something below the wildcard and empty non-terminal
     *.who           TXT     "Wildcard"
     yes.who         TXT     "Yes"
 
