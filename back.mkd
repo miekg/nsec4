@@ -3,36 +3,18 @@
 ## Hashed Denial of Existence
 
 This is the unsigned zone we are using for the NSEC4 examples.
-
 <!-- ./q -dnssec -port 8082 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
-=======
-[MG: eerst maar even eens worden over de zone zelf, voordat ik
-     alles netjes ga maken]
-[MM: yes.who en xx.a.b zijn denk ik niet nodig.]
 
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
                     NS      ns1.example.
-    xx.a.b          TXT     "Xx"
     ns1             A       192.0.43.10
     signed          NS      ns1.signed.example.
                     DS      33694 8 2 ...
     ns1.signed      A       192.0.43.10
     unsigned        NS      ns1.unsigned.example.
     ns1.unsigned    A       192.0.43.10
-              
-    ; signed deletation
-    sd          NS      ns1.sd
-    sd          DS      33694 8 2 ( ... )
-    ns1.sd      A       192.0.43.10
-              
-    ; unsigned delegation
-    ud        NS      ns1.ud
-    ns1.ud    A       192.0.43.10
-              
-    ; wildcard, something below the wildcard and empty non-terminal
     *.who           TXT     "Wildcard"
-    yes.who         TXT     "Yes"
 
 Below is the signed zone showing NSEC4 RRs with Zero hashing and below that
 the zone with SHA1 hashing.
@@ -56,15 +38,7 @@ This is the same zone shown with zero hashing.
                     NS      ns1.example.
                     DNSKEY  256 3 7 ...
                     NSEC4PARAM 0 0 0 -
-                    NSEC4   0 0 0 - b.example. SOA RRSIG DNSKEY NSEC4
-    b               NSEC4   0 0 0 - a.b.example.
-                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
-    a.b             NSEC4   0 0 0 - xx.a.b.example.
-                    RRSIG   NSEC4 7 3 5 . . 39578 example. ...
-    xx.a.b          TXT     "Xx"
-                    RRSIG   TXT 7 4 300 . . 39578 example. ...
-                    RRSIG   NSEC4 7 4 5 . . 39578 example. ...
-                    NSEC4   0 0 0 - ns1.example. TXT RRSIG NSEC4
+                    NSEC4   0 0 0 - ns1.example. SOA RRSIG DNSKEY NSEC4
     ns1             A       192.0.43.10
                     RRSIG   A 7 2 300 . . 39578 example. ...
                     RRSIG   NSEC4 7 2 5 . . 39578 example. ...
@@ -84,11 +58,8 @@ This is the same zone shown with zero hashing.
     *.who           TXT     "Wildcard"
                     RRSIG   TXT 7 2 300 . . 39578 example. ...
                     RRSIG   NSEC4 7 2 5 . . 39578 example. ...
-                    NSEC4   0 0 0 - yes.who.example. TXT RRSIG NSEC4
-    yes.who         TXT     "Yes"
-                    RRSIG   TXT 7 3 300 . . 39578 example. ...
-                    RRSIG   NSEC4 7 3 5 . . 39578 example. ...
                     NSEC4   0 0 0 - example. TXT RRSIG NSEC4
+
 
 ## SHA1 Hashing
 
@@ -104,21 +75,9 @@ This is the same zone shown with SHA1 Hashing.
                     NS      ns1.example.
                     DNSKEY  256 3 7 ...
                     NSEC4PARAM 1 0 0 -
-    0vllmrvak1tq5bdb4itk6aarccqqqk8h NSEC4 1 0 0 - (
-                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. )
-                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
     3msev9usmd4br9s97v51r2tdvmr9iqo1 NSEC4 1 0 0 - (
-                    5mbsindupfh2v7q518ecffhta7vpk5pu.example.
+                    g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.
                     NS SOA RRSIG DNSKEY NSEC4PARAM )
-                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
-    5mbsindupfh2v7q518ecffhta7vpk5pu NSEC4 1 0 0 - (
-                    b39f52k2414ait0pcpfjosgb4bs25jpe.example.
-                    TXT RRSIG )
-                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
-    xx.a.b          TXT     "Xx"
-                    RRSIG   TXT 7 4 300 . . 39578 example. ...
-    b39f52k2414ait0pcpfjosgb4bs25jpe NSEC4 1 0 0 - (
-                    g4s20q3kptookhpt9mgr93k8bfhjs3fd.example. )
                     RRSIG   NSEC4 7 2 5 . . 39578 example. ...
     g4s20q3kptookhpt9mgr93k8bfhjs3fd NSEC4 1 2 0 - (
                     ht6ocje68mtm96jpes8olrlbf67jjvdu.example. )
@@ -138,23 +97,17 @@ This is the same zone shown with SHA1 Hashing.
     ns1             A       192.0.43.10
                     RRSIG   A 7 2 300 . . 39578 example. ...
     ruetr4etegsl7j3fipnme9b079pmq5i8 NSEC4 1 0 0 - (
-                    tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example.
+                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
                     NS )
                     RRSIG   NSEC4 7 2 5 . . 39578 example. ...
     signed          NS      ns1.signed.example.
                     DS      33694 8 2 ...
                     RRSIG   DS 7 2 300 . . 39578 example. ...
     ns1.signed      A       192.0.43.10
-    tah40g2ga4nrcf7s5lr84rjgpof1bfl2 NSEC4 1 0 0 - (
-                    0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.
-                    TXT RRSIG )
-                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
     unsigned        NS      ns1.unsigned.example.
     ns1.unsigned    A       192.0.43.10
     *.who           TXT     "Wildcard"
                     RRSIG   TXT 7 2 300 . . 39578 example. ...
-    yes.who         TXT     "Yes"
-                    RRSIG   TXT 7 3 300 . . 39578 example. ...
 
 # Example Responses
 
