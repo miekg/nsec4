@@ -126,16 +126,12 @@ to the algorithms that they alias.
 This document describes an EXPERIMENTAL extension to DNSSEC.
 It interoperates with non-experimental DNSSEC using the technique
 described in [](#RFC4955).  This experiment is identified with the
-following private algorithms (using algorithm 253):
+following private algorithm (using algorithm 253):
 
-* Algorithm "3.nsec4.nlnetlabs.nl", is an alias for algorithm 3, DSA;
 * Algorithm "5.nsec4.nlnetlabs.nl", is an alias for algorithm 5, RSASHA1;
-* Algorithm "8.nsec4.nlnetlabs.nl", is an alias for algorithm 8, RSASHA256;
-* Algorithm "10.nsec4.nlnetlabs.nl", is an alias for algorithm 10, RSAHSHA512;
 
 Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
-the zone with one or more of these private algorithms and MUST NOT
-use any other algorithms.
+the zone with ths private algorithm and MUST NOT use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
-unless a zone is signed using one or more of these private algorithms.
+unless a zone is signed using one or more of this private algorithm.
