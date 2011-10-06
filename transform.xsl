@@ -6,7 +6,7 @@
 
      Some "awkward" conversions:
 
-     * blockquote -> <t><figure><artwork> ... 
+     * blockquote -> <figure><artwork> ... 
 
      It emits warnings (and removes the content) when encountering:
 
@@ -107,6 +107,38 @@
             </xsl:otherwise>
         </xsl:choose>
        </xsl:when>
+       <xsl:when test="contains(@numeration,'lowerroman')">
+        <xsl:choose>
+            <xsl:when test="ancestor::orderedlist">
+                <list style="format %i."><xsl:apply-templates/></list>
+            </xsl:when>
+            <xsl:when test="ancestor::itemizedlist">
+                <list style="format %i."><xsl:apply-templates/></list>
+            </xsl:when>
+            <xsl:when test="ancestor::variablelist">
+                <list style="format %i."><xsl:apply-templates/></list>
+            </xsl:when>
+            <xsl:otherwise>
+                <t><list style="format %i."><xsl:apply-templates/></list></t>
+            </xsl:otherwise>
+        </xsl:choose>
+       </xsl:when>
+       <xsl:when test="contains(@numeration,'upperroman')">
+        <xsl:choose>
+            <xsl:when test="ancestor::orderedlist">
+                <list style="format %I."><xsl:apply-templates/></list>
+            </xsl:when>
+            <xsl:when test="ancestor::itemizedlist">
+                <list style="format %I."><xsl:apply-templates/></list>
+            </xsl:when>
+            <xsl:when test="ancestor::variablelist">
+                <list style="format %I."><xsl:apply-templates/></list>
+            </xsl:when>
+            <xsl:otherwise>
+                <t><list style="format %I."><xsl:apply-templates/></list></t>
+            </xsl:otherwise>
+        </xsl:choose>
+       </xsl:when>
        <xsl:otherwise> 
         <xsl:choose>
             <xsl:when test="ancestor::orderedlist">
@@ -194,13 +226,11 @@
 
 <!-- Transform <blockquote> to <figure><artwork> -->
 <xsl:template match="blockquote">
-    <t>
     <figure>
         <artwork>
             <xsl:value-of select="./para"/>
         </artwork>
     </figure>
-    </t>
 </xsl:template>
 
 <!-- Transform <screen> to <figure><artwork> -->
@@ -287,7 +317,7 @@
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
-        <!-- fifth column -->
+        <!-- fourth column -->
         <xsl:if test="position()=8">
             <xsl:if test="../../../../table/col[4]">
                 <xsl:attribute name="width">
@@ -295,7 +325,7 @@
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
-        <!-- sixth column -->
+        <!-- fifth column -->
         <xsl:if test="position()=10">
             <xsl:if test="../../../../table/col[5]">
                 <xsl:attribute name="width">
@@ -303,7 +333,7 @@
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
-        <!-- seventh column -->
+        <!-- sixth column -->
         <xsl:if test="position()=12">
             <xsl:if test="../../../../table/col[6]">
                 <xsl:attribute name="width">
@@ -311,11 +341,19 @@
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
-        <!-- eighth column -->
+        <!-- seventh column -->
         <xsl:if test="position()=14">
             <xsl:if test="../../../../table/col[7]">
                 <xsl:attribute name="width">
                     <xsl:value-of select="../../../../table/col[7]/@width"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+        <!-- eighth column -->
+        <xsl:if test="position()=16">
+            <xsl:if test="../../../../table/col[8]">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="../../../../table/col[8]/@width"/>
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
