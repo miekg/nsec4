@@ -3,170 +3,143 @@
 ## Hashed Denial of Existence
 
 This is the unsigned zone we are using for the NSEC4 examples.
-[MG: eerst maar even eens worden over de zone zelf, voordat ik
-alles netjes ga maken]
+
+<!-- ./q -dnssec -port 8082 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
 
     $ORIGIN example.
-    @       IN      SOA     ns1 bugs 1 2 3 4 5
-                    NS      ns1
-              
+    @               SOA     ns1.example. bugs.example. 1 2 3 4 5
+                    NS      ns1.example.
+    xx.a.b          TXT     "Xx"
     ns1             A       192.0.43.10
-              
-    ; signed deletation
-    signed          NS      ns1.signed
-    signed          DS      33694 8 2 ( ... )
+    signed          NS      ns1.signed.example.
+                    DS      33694 8 2 ...
     ns1.signed      A       192.0.43.10
-              
-    ; unsigned delegation
-    unsigned        NS      ns1.unsigned
+    unsigned        NS      ns1.unsigned.example.
     ns1.unsigned    A       192.0.43.10
-              
-    ; wildcard, something below the wildcard and empty non-terminal
     *.who           TXT     "Wildcard"
     yes.who         TXT     "Yes"
-    xx.a.b          TXT     "Xx"
 
-Below is the signed zone showing NSEC4 RRs with SHA1 hashing.
+Below is the signed zone showing NSEC4 RRs with Zero hashing and below that
+the zone with SHA1 hashing.
 
 The overall TTL and class are left out for clarity. The RRSIGs Signature field,
-the DNSKEYs Public Key field are omitted. The RRSIGs expiration and inception
-are set to zero.
+the DNSKEYs Public Key field and the DS's Digest field are omitted. 
+The RRSIGs expiration and inception are set to ".".
 
 ## Zero Hashing
 
-This is the same zone showing its NSEC4 RRs with zero hashing.
+This is the same zone shown with zero hashing.
+<!-- ./q -dnssec -port 8080 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1  -->
 
-    example.      SOA    ns1.example. bugs.x.w.example. 1 3600 300 (
-                         3600000 3600 )
-                  RRSIG  SOA 16 1 3600 20111026183535 20110928183535 (
-                         22824 example. LCS... )
-                  NS     ns1.example.
-                  NS     ns2.example.
-                  RRSIG  NS 16 1 3600 20111026183535 20110928183535 (
-                         22824 example. RNk... )
-                  MX     1 xx.example.
-                  RRSIG  MX 16 1 3600 20111026183535 20110928183535 (
-                         22824 example. XUm... )
-                  DNSKEY 257 3 16 AwEAAcw7MuOS4Ko55gR4qAiNX9beD3Rqd9 (
-                         JL04uHBoqSS4e+8lpXNcR3A/iL86OpmOq58g5HzirDJ
-                         f3Xvzsys4SZ+eZCSL/VxL8NjbrwSTXQjOkrpHCuUvB0
-                         gEa2ZhqUDNx4ZrCouOCQmVXd0cDqcrQiU+4h0GZybiJ
-                         FqDe8dDKdDaTh )
-                  RRSIG  DNSKEY 16 1 3600 20111026183535 (
-                         20111026183535 22824 example. kia... )
-                  NSEC4PARAM 0 0 0 -
-                  RRSIG  NSEC4PARAM 16 1 3600 20111026183535 (
-                         20111026183535 22824 example. Lll... )
-                  NSEC4  0 1 0 - (
-                         2t7b4g4vsa5smi47k61mv5bv1a22bojr.example.
-                         NS SOA MX RRSIG DNSKEY NSEC4PARAM )
-                  RRSIG  NSEC4 16 1 3600 20111026183535 20110928183535 (
-                         22824 example. nyd... )
-    ;
-    2t7b4g4vsa5smi47k61mv5bv1a22bojr.example. A 192.0.2.127
-                  RRSIG  A 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. bcY... )
-                  NSEC4  0 1 1 -  abba.example. A RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. bda... )
-    ;
-    abba.example. NS     ns1.abba.example.
-                  NS     ns2.abba.example.
-                  DS     58470 5 1 (
-                         3079f1593ebad6dc121e202a8b766a6a4837206c )
-                  RRSIG  DS 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. kT1... )
-                  NSEC4  0 1 0 - acdc.example. NS DS RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. bda... )
-    ;
-    ns1.abba.example. A  192.0.2.5
-    ;
-    ns2.abba.example. A  192.0.2.6
-    ;
-    acdc.example. A      192.0.2.9
-                  RRSIG  A 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. geI... )
-                  HINFO  "KLH-10" "ITS"
-                  RRSIG  HINFO 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. H4q... )
-                  AAAA   2001:db8::f00:baa9
-                  RRSIG  AAAA 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. OI8... )
-                  NSEC4  0 1 0 - dio.example. A HINFO AAAA RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. VBX... )
-    ;
-    civ.example.  NS     ns1.civ.example.
-                  NS     ns2.civ.example.
-    ;
-    ns1.civ.example. A   192.0.2.7
-    ;
-    ns2.civ.example. A   192.0.2.8
-    ;
-    dio.example.  DNAME  deus.example.
-                  RRSIG  DNAME 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. Vwm... )
-                  NSEC4  0 1 0 - ns1.example. DNAME RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. OMu... )
-    ;
-    ns1.example.  A      192.0.2.1
-                  RRSIG  A 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. Kr1... )
-                  NSEC4  0 1 0 - ns2.example. A RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. hVA... )
-    ;
-    ns2.example.  A      192.0.2.2
-                  RRSIG  A 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. uik... )
-                  NSEC4  0 1 0 - who.example. A RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. neO... )
-    ;; Empty non-terminal: who.example.
-    who.example.  NSEC4  0 3 0 - *.who.example.
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. HgO... )
-    ;
-    *.who.example. MX    1 acdc.example.
-                  RRSIG  MX 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. y+v... )
-                  NSEC4  0 1 0 - xtc.who.example. MX RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. Mwy... )
-    ;
-    xtc.who.example. MX 1 xx.example.
-                  RRSIG  MX 16 3 3600 20111026183535 20110928183535 (
-                         22824 example. ke7... )
-                  NSEC4  0 1 0 - yes.who.example. MX RRSIG
-                  RRSIG  NSEC4 16 3 3600 20111026183535 20110928183535 (
-                         22824 example. dvM... )
-    ;
-    ;; Empty non-terminal: yes.who.example.
-    yes.who.example. NSEC4 0 1 0 -  xtc.yes.who.example.
-                  RRSIG  NSEC4 16 3 3600 20111026183535 20110928183535 (
-                         22824 example. D1S... )
-    ;
-    xtc.yes.who.example. MX 1 xx.example.
-                  RRSIG  MX 16 4 3600 20111026183535 20110928183535 (
-                         22824 example. eYW... )
-                  NSEC4  0 1 0 - xx.example. MX RRSIG
-                  RRSIG  NSEC4 16 4 3600 20111026183535 20110928183535 (
-                         22824 example. sfr... )
-    ;
-    xx.example.   A      192.0.2.10
-                  RRSIG  A 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. fRQ... )
-                  HINFO  "KLH-10" "TOPS-20"
-                  RRSIG  HINFO 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. owF... )
-                  AAAA   2001:db8::f00:baaa
-                  RRSIG  AAAA 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. rQR... )
-                  NSEC4  0 1 0 - example. A HINFO AAAA RRSIG
-                  RRSIG  NSEC4 16 2 3600 20111026183535 20110928183535 (
-                         22824 example. gR+... )
+    $ORIGIN example.
+    @               SOA     ns1.example. bugs.example. 1 2 3 4 5
+                    RRSIG   SOA 7 1 300 . . 39578 example. ...
+                    RRSIG   NS 7 1 300 . . 39578 example. ...
+                    RRSIG   DNSKEY 7 1 300 . . 39578 example. ...
+                    RRSIG   NSEC4PARAM 7 1 3600 . . 39578 example. ...
+                    RRSIG   NSEC4 7 1 5 . . 39578 example. ...
+                    NS      ns1.example.
+                    DNSKEY  256 3 7 ...
+                    NSEC4PARAM 0 0 0 -
+                    NSEC4   0 0 0 - b.example. SOA RRSIG DNSKEY NSEC4
+    b               NSEC4   0 0 0 - a.b.example.
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    a.b             NSEC4   0 0 0 - xx.a.b.example.
+                    RRSIG   NSEC4 7 3 5 . . 39578 example. ...
+    xx.a.b          TXT     "Xx"
+                    RRSIG   TXT 7 4 300 . . 39578 example. ...
+                    RRSIG   NSEC4 7 4 5 . . 39578 example. ...
+                    NSEC4   0 0 0 - ns1.example. TXT RRSIG NSEC4
+    ns1             A       192.0.43.10
+                    RRSIG   A 7 2 300 . . 39578 example. ...
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+                    NSEC4   0 0 0 - signed.example. A RRSIG NSEC4
+    signed          NS      ns1.signed.example.
+                    DS      33694 8 2 ...
+                    RRSIG   DS 7 2 300 . . 39578 example. ...
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+                    NSEC4   0 0 0 - unsigned.example. NS DS RRSIG NSEC4
+    ns1.signed      A       192.0.43.10
+    unsigned        NS      ns1.unsigned.example.
+                    NSEC4   0 0 0 - who.example. NS RRSIG NSEC4
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    ns1.unsigned    A       192.0.43.10
+    who             NSEC4   0 2 0 - *.who.example.
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    *.who           TXT     "Wildcard"
+                    RRSIG   TXT 7 2 300 . . 39578 example. ...
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+                    NSEC4   0 0 0 - yes.who.example. TXT RRSIG NSEC4
+    yes.who         TXT     "Yes"
+                    RRSIG   TXT 7 3 300 . . 39578 example. ...
+                    RRSIG   NSEC4 7 3 5 . . 39578 example. ...
+                    NSEC4   0 0 0 - example. TXT RRSIG NSEC4
+
+## SHA1 Hashing
+
+This is the same zone shown with SHA1 Hashing.
+<!-- ./q -dnssec -port 8081 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
+
+    $ORIGIN example.
+    @               SOA     ns1.example. bugs.example. 1 2 3 4 5
+                    RRSIG   SOA 7 1 300 . . 39578 example. ...
+                    RRSIG   NS 7 1 300 . . 39578 example. ...
+                    RRSIG   DNSKEY 7 1 300 . . 39578 example. ...
+                    RRSIG   NSEC4PARAM 7 1 3600 . . 39578 example. ...
+                    NS      ns1.example.
+                    DNSKEY  256 3 7 ...
+                    NSEC4PARAM 1 0 0 -
+    0vllmrvak1tq5bdb4itk6aarccqqqk8h NSEC4 1 0 0 - (
+                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    3msev9usmd4br9s97v51r2tdvmr9iqo1 NSEC4 1 0 0 - (
+                    5mbsindupfh2v7q518ecffhta7vpk5pu.example.
+                    NS SOA RRSIG DNSKEY NSEC4PARAM )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    5mbsindupfh2v7q518ecffhta7vpk5pu NSEC4 1 0 0 - (
+                    b39f52k2414ait0pcpfjosgb4bs25jpe.example.
+                    TXT RRSIG )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    xx.a.b          TXT     "Xx"
+                    RRSIG   TXT 7 4 300 . . 39578 example. ...
+    b39f52k2414ait0pcpfjosgb4bs25jpe NSEC4 1 0 0 - (
+                    g4s20q3kptookhpt9mgr93k8bfhjs3fd.example. )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    g4s20q3kptookhpt9mgr93k8bfhjs3fd NSEC4 1 2 0 - (
+                    ht6ocje68mtm96jpes8olrlbf67jjvdu.example. )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    ht6ocje68mtm96jpes8olrlbf67jjvdu NSEC4 1 0 0 - (
+                    ke0sqcil5siu1e9tcllomqdl0793oedc.example.
+                    TXT RRSIG )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    ke0sqcil5siu1e9tcllomqdl0793oedc NSEC4 1 0 0 - (
+                    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example.
+                    NS DS RRSIG )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m NSEC4 1 0 0 - (
+                    ruetr4etegsl7j3fipnme9b079pmq5i8.example.
+                    A RRSIG )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    ns1             A       192.0.43.10
+                    RRSIG   A 7 2 300 . . 39578 example. ...
+    ruetr4etegsl7j3fipnme9b079pmq5i8 NSEC4 1 0 0 - (
+                    tah40g2ga4nrcf7s5lr84rjgpof1bfl2.example.
+                    NS )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    signed          NS      ns1.signed.example.
+                    DS      33694 8 2 ...
+                    RRSIG   DS 7 2 300 . . 39578 example. ...
+    ns1.signed      A       192.0.43.10
+    tah40g2ga4nrcf7s5lr84rjgpof1bfl2 NSEC4 1 0 0 - (
+                    0vllmrvak1tq5bdb4itk6aarccqqqk8h.example.
+                    TXT RRSIG )
+                    RRSIG   NSEC4 7 2 5 . . 39578 example. ...
+    unsigned        NS      ns1.unsigned.example.
+    ns1.unsigned    A       192.0.43.10
+    *.who           TXT     "Wildcard"
+                    RRSIG   TXT 7 2 300 . . 39578 example. ...
+    yes.who         TXT     "Yes"
+                    RRSIG   TXT 7 3 300 . . 39578 example. ...
 
 # Example Responses
 
