@@ -128,7 +128,8 @@ It interoperates with non-experimental DNSSEC using the technique
 described in [](#RFC4955).  This experiment is identified with the
 following private algorithm (using algorithm 253):
 
-* Algorithm "5.nsec4.nlnetlabs.nl.", is an alias for algorithm 5, RSASHA1;
+* Algorithm "7.nsec4.nlnetlabs.nl.", is an alias for algorithm 7,
+    RSAS1NSEC3SHA1.
 
 Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
 the zone with ths private algorithm and MUST NOT use any other algorithms.
