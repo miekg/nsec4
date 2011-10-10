@@ -130,7 +130,7 @@ expanded.
     ;; NSEC4 RR that matches the closest encloser (example)
     ;; This NSEC4 also covers the next closer name (a.example)
     ;; H(a.example) = 6cd522290vma0nr8lqu1ivtcofj94rga
-    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 0 0 - (
+    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 1 0 - (
                     831naajdsm14h0md3kip92563ud3saav.example.
                     NS SOA RRSIG DNSKEY NSEC4PARAM )
     3msev9usmd4br9s97v51r2tdvmr9iqo1.example. RRSIG NSEC4 253 2 5 (
@@ -177,7 +177,7 @@ that the requested RR type does not.
     example.        SOA     ns1.example. bugs.example. 1 2 3 4 5
     example.        RRSIG   SOA 253 1 300 . . 39824 example. ...
     ;; H(ns1.example) = m1o89lfdo9rrf2f8r8ss42d81d09v48m
-    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 0 0 - (
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
                     ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
                     A RRSIG )
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
@@ -193,17 +193,28 @@ also absent in the type code list of the NSEC4 RR).
 
 The NSEC4 RRs prove that nothing for this delegation was signed.
 There is no proof that the unsigned delegation exists.
-<!-- tot hier omgezet -->
+<!-- ./q -dnssec -port 8081 -short a.ud.example. MX 2>/dev/null |./answer-cleanup | expand -->
+<!-- ldns-signzone does not do the correct thing, this example need to be constructed manual -->
 
-    ;; Header: rcode: NOERROR, flags: qr do
+    ;; Header: QR RD RCODE=NOERROR
+    ;;
     ;; Question
-    mia.civ.example. IN MX
-    
+    a.ud.example.   IN MX
+
     ;; Answer
+    ;; (empty)
 
     ;; Authority
-    civ.example.     NS    ns1.civ.example.
-    civ.example.     NS    ns2.civ.example.
+    ud.example.     NS      ns1.ud.example.
+    ub8e42kj4s2jdfve6aloo98jdoa425a9.example. NSEC4 1 1 0 - (
+                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
+                    NS )
+    ub8e42kj4s2jdfve6aloo98jdoa425a9.example. RRSIG NSEC4 253 2 5 (
+                    . . 39824 example. ... )
+
+    ;; Additional
+    ns1.ud.example. A       192.0.43.10
+
 
     ;; NSEC3 RR that matches the closest provable encloser (example)
     ;; H(example) = 98s648rese29576jgp2ni52qpum2n5ia.example.
@@ -222,14 +233,11 @@ There is no proof that the unsigned delegation exists.
                            20111026181129 20110928181129 22824
                            example. WlL... )
 
-    ;; Additional
-    ns1.civ.example.  A    192.0.2.7
-    ns2.civ.example.  A    192.0.2.8
+The query returned a referral to the unsigned 'ud.example.' zone.
+The response contains the closest provable encloser of 'a.ud.example', which
+is 'ud.example', since the hash of 'ud.example' is 'ub8e42kj4s2jdfve6aloo98jdoa425a9'.
 
-The query returned a referral to the unsigned 'civ.example.' zone.
-The response contains the closest provable encloser of 'civ.example'
-to be 'example', since the hash of 'civ.example'
-('nfm90i688cdb55a5cfablopmpcrs7jfk') is covered by the second NSEC4 RR
+is covered by the second NSEC4 RR
 and its Opt-Out bit is set.
 
 ## Wildcard Expansion
@@ -239,86 +247,77 @@ The label count in the RRSIG RRSet in the answer section
 indicates that a wildcard RRSet was expanded to produce this
 response, and the NSEC4 RR proves that no "next closer" name exists
 in the zone.
+<!-- ./q -dnssec -port 8081 -short a.b.who.example. TXT 2>/dev/null |./answer-cleanup | expand -->
 
-    ;; Header: rcode: NOERROR, flags: qr aa do
+    ;; Header: QR AA RD RCODE=NOERROR
+    ;;
     ;; Question
-    ;; air.zztop.who.example. IN MX
+    a.b.who.example.        IN TXT
 
     ;; Answer
-    air.zztop.who.example. MX 1 acdc.example.
-    air.zztop.who.example. RRSIG MX 16 2 3600 20111026181129 (
-                           20110928181129 22824 example. R8K... )
+    a.b.who.example.        TXT     "Wildcard"
+    a.b.who.example. RRSIG TXT 253 2 300 (
+                    . . 39824 example. ... )
 
     ;; Authority
-    example.         NS    ns1.example.
-    example.         NS    ns2.example.
-    example.         RRSIG NS 16 1 3600 20111026181129 20110928181129 (
-                           22824 example. kVP... )
-
-    ;; NSEC4 RR that covers the "next closer" name (zztop.who.example)
-    ;; H(zztop.who.example) = 1fc32meggi1lajs3jrqeurt5bfd4m9gl
-    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. NSEC4 1 0 2 dead (
-                           2abqvfvhaknqhdsdurcqvgafplf6g15h.example.
-                           A RRSIG )
-    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. RRSIG NSEC4 16 2 3600 (
-                           20111026181129 20110928181129 22824
-                           example. a4r... )
+    ;; NSEC4 RR that covers the next closer name (b.who.example)
+    ;; H(b.who.example) = rmv5tauk8nss83vo1st0tp1ps927j71e
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
+                    ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
+                    A RRSIG )
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
+                    . . 39824 example. ... )
+    example.        NS      ns1.example.
+    example.        RRSIG   NS 253 1 300 . . 39824 example. ...
 
     ;; Additional
-    acdc.example.    A     92.0.2.9
-    acdc.example.    RRSIG A 16 2 3600 20111026181129 20110928181129 (
-                           22824 example. xXN... )
-    acdc.example.    AAAA  2001:db8::f00:baa9
-    acdc.example.    RRSIG AAAA 16 2 3600 20111026181129 20110928181129 (
-                           22824 example. ljM... )
+    ns1.example.    A       192.0.43.10
+    ns1.example.    RRSIG   A 253 2 300 . . 39824 example. ...
 
 The query returned an answer that was produced as a result of a
 wildcard expansion. The answer section contains a wildcard RRSet
 expanded as it would be in a traditional DNS response. The RRSIG
 Labels field value of 2 indicates that the answer is the result of a
-wildcard expansion, as the "air.zztop.who.example" name contains 4 labels.
+wildcard expansion, as the "a.b.who.example" name contains 4 labels.
 This also shows that "who.example" exists, so there is no need for an
 NSEC4 RR that matches the closest encloser.
 
 The NSEC4 RR proves that no closer match could have been used to
 answer this query.
+[MG: dit zou ook laten staan, is beetje opm. in de stijl van rfc5151]
 
 ## Wildcard No Data Error
 
 A No Data Response for a name covered by a wildcard.
 The NSEC4 RRs prove that the matching wildcard name does not have any
 RRs of the requested type and that no closer match exists in the zone.
+<!-- ./q -dnssec -port 8081 -short a.b.who.example. AAAA 2>/dev/null |./answer-cleanup | expand -->
 
-    ;; Header: rcode: NOERROR, flags: qr aa do
+    ;; Header: QR AA RD RCODE=NOERROR
+    ;;
     ;; Question
-    ;; air.zztop.who.example. IN AAAA
+    a.b.who.example.        IN AAAA
 
     ;; Answer
+    ;; (empty)
 
     ;; Authority
-    example.         SOA   ns1.example. bugs.x.w.example. 1 3600 300 (
-                           3600000 3600 )
-    example.         RRSIG SOA 16 1 3600 20111026181129 20110928181129 (
-                           22824 example. Qw9... )
-
-    ;; NSEC4 RR that covers the "next closer" name (zztop.who.example)
-    ;; H(zztop.who.example) = 1fc32meggi1lajs3jrqeurt5bfd4m9gl
-    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. NSEC4 1 0 2 dead (
-                           2abqvfvhaknqhdsdurcqvgafplf6g15h.example.
-                           A RRSIG )
-    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. RRSIG NSEC4 16 2 3600 (
-                           20111026181129 20110928181129 22824
-                           example. a4r... )
-
-    ;; NSEC4 RR that matches a wildcard at the closest encloser.
-    ;; H(*.who.example) = 66k9ln7odi935nuppibrqiqaf8udqrt6
-    66k9ln7odi935nuppibrqiqaf8udqrt6.example. NSEC4 1 0 2 dead (
-                           8hiqudv6vsrgka9f0t812bltm520f0l1.example.
-                           MX RRSIG )
-    66k9ln7odi935nuppibrqiqaf8udqrt6.example. RRSIG NSEC4 16 2 3600
-                           20111026181129 20110928181129 22824
-                           example. EXw... )
+    ;; NSEC4 RR that covers the next closer name (b.who.example)
+    ;; H(b.who.example) = rmv5tauk8nss83vo1st0tp1ps927j71e
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
+                    ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
+                    A RRSIG )
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
+                    . . 39824 example. ... )
+    example.        SOA     ns1.example. bugs.example. 1 2 3 4 5
+    example.        RRSIG   SOA 253 1 300 . . 39824 example. ...
+    ;; NSEC4 RR that matches the wildcard at closest encloser 
+    ;; H(*.who.example) = ht6ocje68mtm96jpes8olrlbf67jjvdu
+    ht6ocje68mtm96jpes8olrlbf67jjvdu.example. NSEC4 1 1 0 - (
+                    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example.
+                    TXT RRSIG )
+    ht6ocje68mtm96jpes8olrlbf67jjvdu.example. RRSIG NSEC4 253 2 5 (
+                    . . 39824 example. ... )
 
 The query returned the NSEC4 RRs that prove that the requested data
-does not exist and no wildcard RR applies.
-
+does not exist and shows the types that do exist at the wildcard.
