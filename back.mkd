@@ -105,6 +105,7 @@ This is the same zone shown with SHA1 Hashing.
     ns1.ud          A       192.0.43.10
     *.who           TXT     "Wildcard"
                     RRSIG   TXT 253 2 300 . . 39824 example. ...
+
 # Example Responses
 
 The examples in this section show response messages using the signed
@@ -126,6 +127,9 @@ expanded.
     ;; (empty)
 
     ;; Authority
+    ;; NSEC4 RR that matches the closest encloser (example)
+    ;; This NSEC4 also covers the next closer name (a.example)
+    ;; H(a.example) = 6cd522290vma0nr8lqu1ivtcofj94rga
     3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 0 0 - (
                     831naajdsm14h0md3kip92563ud3saav.example.
                     NS SOA RRSIG DNSKEY NSEC4PARAM )
@@ -134,37 +138,23 @@ expanded.
     example.        SOA     ns1.example. bugs.example. 1 2 3 4 5
     example.        RRSIG   SOA 253 1 300 . . 39824 example. ...
 
-    OUD:
-      
-    ;; NSEC4 RR that covers the "next closer" name (civ.xtc.who.example)
-    ;; H(civ.xtc.who.example) = 0ogqkn5biut40hg8i05ctcitv32kc2tn
-    0auiiv3d5k40rmbsns3rhg0mi8cod65a.example. NSEC4 1 0 2 dead (
-                            2abqvfvhaknqhdsdurcqvgafplf6g15h.example.
-                            A RRSIG )
-
-    ;; NSEC4 RR that matches the closest encloser (xtc.who.example)
-    ;; H(xtc.who.example) = 2abqvfvhaknqhdsdurcqvgafplf6g15h
-    2abqvfvhaknqhdsdurcqvgafplf6g15h.example. NSEC4	1 0 2 dead (
-                            3481on4udp5vgvfkth3eqvor08i9of28.example.
-                            MX RRSIG )
-
-The query returned two NSEC4 RRs that prove that the requested data
+The query returns one NSEC4 RR that proves that the requested data
 does not exist and that no wildcard expansion applies.
-The negative response is authenticated by verifying the NSEC4 RRs.
+The negative response is authenticated by verifying the NSEC4 RR.
 The corresponding RRSIGs indicate that the NSEC4 RRs are signed by an
-"example" DNSKEY of algorithm 16 and with key tag 22824.
+"example" DNSKEY of algorithm 253 and with key tag 39824.
 The resolver needs the corresponding DNSKEY RR in order to authenticate this
 answer.
 
-In the above example, the name 'xtc.who.example' hashes to
-'2abqvfvhaknqhdsdurcqvgafplf6g15h'. This indicates that this might
+In the above example, the name 'example' hashes to
+'3msev9usmd4br9s97v51r2tdvmr9iqo1'. This indicates that this might
 be the closest encloser.
 
-To prove that 'civ.xtc.who.example' does not
-exist, the name is hashed to '0ogqkn5biut40hg8i05ctcitv32kc2tn'.
-The first NSEC4 RR proves that "next closer" name does not exist.
+To prove that 'a.example' does not
+exist, the name is hashed to '6cd522290vma0nr8lqu1ivtcofj94rga'.
+The NSEC4 RR also proves that "next closer" name does not exist.
 
-To prove that the source of synthesis '*.who.example' does not exist,
+To prove that the source of synthesis '*.example' does not exist,
 the Wildcard bit at the NSEC4 RR matching the closest encloser is inspected.
 The bit is clear and this shows that the source of synthesis does indeed not
 exist.
@@ -186,20 +176,15 @@ that the requested RR type does not.
     ;; Authority
     example.        SOA     ns1.example. bugs.example. 1 2 3 4 5
     example.        RRSIG   SOA 253 1 300 . . 39824 example. ...
+    ;; H(ns1.example) = m1o89lfdo9rrf2f8r8ss42d81d09v48m
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 0 0 - (
                     ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
                     A RRSIG )
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
                     . . 39824 example. ... )
 
-    OUD:
-    ;; NSEC4 RR matches the QNAME, the MX and CNAME type bits are not set.
-    r9l4uekucmbpsj3mvgpk4cvtp776d3ku.example. NSEC4 1 0 2 dead (
-                           sj9ursdbrg9hf3sqjr81v5ps9u7bmdav.example.
-                           A RRSIG )
-
 The query returned a NSEC4 RR that proves that the requested name
-exists ('ns1.example' hashes to 'r9l4uekucmbpsj3mvgpk4cvtp776d3ku'),
+exists ('ns1.example' hashes to 'm1o89lfdo9rrf2f8r8ss42d81d09v48m'),
 but the requested RR type does not exist (type MX is absent in the
 type code list of the NSEC3 RR), and was not a CNAME (type CNAME is
 also absent in the type code list of the NSEC4 RR).
@@ -208,6 +193,7 @@ also absent in the type code list of the NSEC4 RR).
 
 The NSEC4 RRs prove that nothing for this delegation was signed.
 There is no proof that the unsigned delegation exists.
+<!-- tot hier omgezet -->
 
     ;; Header: rcode: NOERROR, flags: qr do
     ;; Question
