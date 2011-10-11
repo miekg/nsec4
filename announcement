@@ -3,7 +3,7 @@ Dear dnsext,
 We have written down a little experiment that we have performed, called NSEC4.
 The goal of the experiment was to optimize denial of existence records.
 It is not our intention to standardize this, as we are aware of the backwards
-compatibility issues this has with the current DNSSEC family RFC, and we do
+compatibility issues this has with the current DNSSEC family RFCs, and we do
 not want to discomfort the ongoing DNSSEC deployment.
 
 However, we do want to document this to archive the insights we have gained
