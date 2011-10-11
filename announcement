@@ -1,39 +1,28 @@
-Dear colleagues,
+Dear dnsext,
 
-For quite some time I've been working on a document that clarifies
-NSEC3 (URL). This idea was born from the fact that I find RFC 5155
-a bit lacking in providing background for some of the design decisions.
+We have written down a little experiment that we have performed, called NSEC4.
+The goal of the experiment was to optimize denial of existence records.
+It is not our intention to standardize this, as we are aware of the backwards
+compatibility issues this has with the current DNSSEC family RFC, and we do
+not want to discomfort the ongoing DNSSEC deployment.
 
-From this document grew the idea "this can be done more efficient".
-In particular, NSEC3:
-
-* uses an entire record (+ signature) for denying or asserting a wildcard;
-* does not provide Opt-Out of unhashed names.
-
-In an attempt to address these issues and provide additional insight in how NSEC and
-NSEC3 work, we (Matthijs Mekking and Miek Gieben) submitted the following draft:
+However, we do want to document this to archive the insights we have gained
+by doing this experiment. Therefor, we have submitted the following draft:
 
     http://www.ietf.org/id/<draft>
 
-Abstract:
+This experiment resolves two things:
+* Reduces the size of the denial of existence response;
+* Adds Opt-Out to unhashed names.
 
-> The Domain Name System Security (DNSSEC) Extensions introduced the NSEC
-> resource record (RR) for authenticated denial of existence, and the NSEC3
-> resource record for hashed authenticated denial of existence.  This document
-> introduces an alternative resource record, NSEC4, which similarly provides 
-> authenticated denial of existence. It permits gradual expansion of
-> delegation-centric zones, just like NSEC3 does. 
-> With NSEC4 it is possible, but not required, to provide 
-> measures against zone enumeration.
-> 
-> NSEC4 reduces the size of the denial of existence response and
-> adds Opt-Out to unhashed names.
+We would be grateful if you would like to read this.
 
-The draft is aimed at the experimental track. The code (ldns/NSD/GoDNS)
-we use for our experiments uses the PRIVATEDNS algorithm (RFC 4034, Section A.1.1. and 
-RFC 4955).
+Our question is what is the best place to archive this? Re-reading RFC 2026,
+we are considering to put this on the experimental non-standards track.
 
-Please send your comments/feedback to the list.
+Thoughts?
 
-Thanks,
-    Matthijs & Miek
+Best regards,
+
+Miek Gieben,
+Matthijs Mekking
