@@ -49,6 +49,11 @@ concepts described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034),
 Furthermore, the same terminology is used throughout this document as is
 described in Section 1.3 from [](#RFC5155), with the following changes:
 
+Original owner name:
+
+:   the owner name corresponding to a hashed owner name if hashing is used. Or
+    the owner name as-is if no hashing is used. [MG: is this correct?]
+
 Opt-Out NSEC4 RR:
 
 :   a NSEC4 RR that has the Opt-Out flag set to 1.
