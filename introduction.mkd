@@ -104,8 +104,8 @@ this specification allocates four new DNSKEY algorithm aliases:
 
 * Algorithm [TBD], DSA-NSEC4-SHA1, is an alias for algorithm 3, DSA;
 * Algorithm [TBD], RSAHSHA1-NSEC4-SHA1, is an alias for algorithm 5, RSASHA1;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA256, is an alias for algorithm 5, RSASHA256;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 5, RSASHA512;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA256, is an alias for algorithm 8, RSASHA256;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 10, RSASHA512;
 
 Zones signed according to this specification MUST only use these
 algorithm identifiers for their DNSKEY RRs.  Because these new
@@ -126,10 +126,9 @@ to the algorithms that they alias.
 This document describes an EXPERIMENTAL extension to DNSSEC.
 It interoperates with non-experimental DNSSEC using the technique
 described in [](#RFC4955).  This experiment is identified with the
-following private algorithm (using algorithm 253):
+following private algorithm (using algorithm PRIVATEDNS):
 
-* Algorithm "7.nsec4.nlnetlabs.nl.", is an alias for algorithm 7,
-    RSAS1NSEC3SHA1.
+* Algorithm "5.nsec4.nlnetlabs.nl.", is an alias for algorithm 5, RSASHA1.
 
 Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
 the zone with ths private algorithm and MUST NOT use any other algorithms.
