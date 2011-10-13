@@ -21,14 +21,14 @@ but differs in the following ways:
 
 1. It provides a new way to deny the existence of the wildcard,
    by introducing the Wildcard bit (described in [](#wildcard-flag));
-2. It allows for unhashed records, by introducing zero hashing
+2. It allows for unhashed records, by introducing Zero hashing
    (described in [](#hash-algorithm)).
 
 With NSEC4 you will need a maximum of two records for any denial
 of existence response, saving one record and accompanying signature(s) compared
 to NSEC3.
 
-By defining zero hashing, we also fold back NSEC into NSEC4 and
+By defining Zero hashing, we also fold back NSEC into NSEC4 and
 add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
@@ -77,7 +77,7 @@ To cover:
 :   When a hash algorithm is defined,
     a NSEC4 RR is said to "cover" a name if the hash of the name or
     "next closer" name falls between the owner name and the next hashed
-    owner name of the NSEC4. When no hash algorithm (zero hashing) is defined, 
+    owner name of the NSEC4. When no hash algorithm (Zero hashing) is defined, 
     a NSEC4 RR is
     said to "cover" a name if the name or "next closer" name falls between
     the owner name and the next owner name of the NSEC4. In other words, if
@@ -88,7 +88,7 @@ To match:
 
 :   When a hash algorithm is defined, a NSEC4 RR is said to "match" a name
     if the owner name of the NSEC4 RR is the same as the hashed owner name
-    of that name. When no hash algorithm (zero hashing) is defined, a NSEC4 RR is said to
+    of that name. When no hash algorithm (Zero hashing) is defined, a NSEC4 RR is said to
     "match" a name if the name and the owner name of the NSEC4 RR are equal.
 
 Zero hashing:

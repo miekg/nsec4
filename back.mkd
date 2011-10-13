@@ -21,7 +21,7 @@ The overall TTL and class are left out for clarity.
 
 ## Zero Hashing
 
-This is the same zone shown with zero hashing.
+This is the same zone shown with Zero hashing.
 The RRSIGs Signature field,
 the DNSKEYs Public Key field and the DS's Digest field are omitted. 
 The RRSIGs expiration and inception are set to ".".

@@ -15,7 +15,7 @@ NSEC4 RRs.
 
 2.  For each unique original owner name in the zone add a NSEC4 RR.
     * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded.
-    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if zero hashing is used.
+    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Zero hashing is used.
     * The Next Owner Name field is left blank for the moment.
     * If Opt-Out is being used, set the Opt-Out bit to one.
 
@@ -203,7 +203,7 @@ the delegation. In this case, the closest provable encloser proof MUST be
 included in the response. The included NSEC4 RR that covers the "next closer"
 name for the delegation MUST have the Opt-Out flag set to one.
 
-Note that with zero hashing, the NSEC4 RR that matches the closest provable
+Note that with Zero hashing, the NSEC4 RR that matches the closest provable
 encloser does not need to be included in the response, as it can be
 derived from the NSEC4 that covers the "next closer" name.
 

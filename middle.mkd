@@ -46,7 +46,7 @@ differences:
 ### Hash Algorithm
 
 [](#RFC5155) defines the NSEC3 hash algorithm registry. The zero
-hash (hash algorithm 0) is reserved. For NSEC4 we define the zero hash
+hash (hash algorithm 0) is reserved. For NSEC4 we define the Zero hash
 to mean that no hashing is used (Zero hashing).
 
 ### Flags
@@ -86,7 +86,7 @@ Like the Salt field defined in Section 3.1.5 of [](#RFC5155).
 The Next Owner Name field contains the next owner name that exists in the
 definition of Section 2.2.3 of [](#RFC4592).
 
-If zero hashing is used, the field contains the next owner name in the
+If Zero hashing is used, the field contains the next owner name in the
 canonical ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
 
 A sender MUST NOT use DNS name compression on the Next Owner Name field when
@@ -117,10 +117,10 @@ The RDATA of the NSEC4 RR is as shown below.
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 Hash Algorithm is a single octet. 
-If Hash Algorithm is zero (zero hashing), the Iterations field,
+If Hash Algorithm is zero (Zero hashing), the Iterations field,
 the Salt Length field and the Salt field MUST be ignored.
 
-[MM: If Hash Algorithm is zero (zero hashing), we could omit the Iterations
+[MM: If Hash Algorithm is zero (Zero hashing), we could omit the Iterations
      field, Salt Length field and Salt field.]
 
 Flags field is a single octet. The following one-bit flags are defined:
@@ -198,7 +198,7 @@ NSEC3 record:
                         6cd522290vma0nr8lqu1ivtcofj94rga 
                         NS SOA RRSIG DNSKEY NSEC3PARAM )
 
-NSEC4 record with zero hashing:
+NSEC4 record with Zero hashing:
 
     example NSEC4 0 0 0 - a.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
 
@@ -216,6 +216,6 @@ except the type code used [TBD] is that of NSEC4PARAM.
 # Opt-Out
 
 This specification adds Opt-Out as described in Section 6 of [](#RFC5155).
-Because of zero hashing, this allows for Opt-Out being used with
+Because of Zero hashing, this allows for Opt-Out being used with
 unhashed names. A similar method is described in [](#RFC4956), but with
 NSEC4 we can reuse the Opt-Out bit from the Flags field. 
