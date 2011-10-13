@@ -37,7 +37,8 @@ The RRSIGs expiration and inception are set to ".".
                     NS      ns1.example.
                     DNSKEY  256 3 253 ...
                     NSEC4PARAM 0 0 0 -
-                    NSEC4   0 0 0 - ns1.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
+                    NSEC4   0 0 0 - ( 
+                    ns1.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM )
     ns1             A       192.0.43.10
                     RRSIG   A 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
