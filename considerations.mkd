@@ -293,8 +293,8 @@ present in the response.
 
 One possible algorithm for finding the closest encloser is as follows:
 
-1. Set SNAME=QNAME.
-2. If there is a NSEC4 RR in the response that matches SNAME, then we have found the closest encloser.
+1. Set SNAME=QNAME;
+2. If there is a NSEC4 RR in the response that matches SNAME, then we have found the closest encloser;
 3. Truncate SNAME by one label from the left, go to step 2.
 
 Once the closest encloser has been discovered, the validator MUST
@@ -307,7 +307,7 @@ using them to falsely deny the existence of RRs for which the server is
 not authoritative.
 
 In addition, the validator MUST verify that there is a NSEC4 RR that covers
-the "next closer" name.
+the next closer name.
 
 ## Validating No Data Responses
 
@@ -327,16 +327,16 @@ If there is no such NSEC4 RR, then the validator MUST verify that there is
 a closest provable encloser for QNAME present in the response. The closest
 provable encloser is found in a similar way as the closest encloser.
 In addition, the validator MUST verify that there is a NSEC4 RR that covers
-the "next closer" name and has the Opt-Out bit set.
+the next closer name and has the Opt-Out bit set.
 
 ## Validating Wildcard Answer Responses
 
 The verified wildcard answer RRSet in the response provides the validator
 with a closest encloser for QNAME. The validator can do so by checking the
-label count in the RRSIG and the number of labels in the answer domain name.
+label count in the RRSIG and the number of labels in the answer's owner name.
 
 The validator MUST verify that there is a NSEC4 RR that covers the
-"next closer" name to QNAME is present in the response. This proves that QNAME
+next closer name to QNAME is present in the response. This proves that QNAME
 itself did not exist and that the correct wildcard was used to generate the
 response.
 
@@ -366,8 +366,8 @@ the server did not encounter a referral (step 3b of the server algorithm [](#RFC
 nor did it encounter a DNAME (step 3c of the server algorithm [](#RFC1035)).
 
 Now that the validator knows the source of synthesis and thus the closest
-encloser, it can derive the "next closer" name. The validator MUST verify
-that there is a NSEC4 RR that covers the "next closer" name to QNAME, is
+encloser, it can derive the next closer name. The validator MUST verify
+that there is a NSEC4 RR that covers the next closer name to QNAME, is
 present in the response.
 
 Note that, because the response included a NSEC4 that matches the source
@@ -394,7 +394,7 @@ Maps field of the NSEC4 RR.
 If there is no NSEC4 RR present that matches the delegation name,
 then the validator MUST verify that there is a closest provable encloser 
 for the delegation name. In addition, the validator MUST verify that
-there is a NSEC4 RR that covers the "next closer" name and has the
+there is a NSEC4 RR that covers the next closer name and has the
 Opt-Out bit set.
 
 # Resolver Considerations
