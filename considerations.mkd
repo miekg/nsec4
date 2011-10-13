@@ -13,46 +13,47 @@ NSEC4 RRs.
 
 1.  Select the hash algorithm and the values for salt and iterations.
 
-2.  For each unique original owner name in the zone add a NSEC4 RR.
-    * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded.
-    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Zero hashing is used.
-    * The Next Owner Name field is left blank for the moment.
+2.  For each unique original owner name in the zone add a NSEC4 RR;
+    * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded;
+    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Zero hashing is used;
+    * The Next Owner Name field is left blank for the moment;
     * If Opt-Out is being used, set the Opt-Out bit to one.
 
 3.  For collision detection purposes, if hashing is used, optionally keep
     track of the original owner name with the NSEC4 RR. Create an additional
     NSEC4 RR corresponding to the original owner name with the asterisk label
-    prepended. Mark this NSEC4 RR as temporary.
+    prepended. Mark this NSEC4 RR as temporary;
 
 4.  If the original owner name is a wildcard domain, mark the NSEC4 to be
-    a NSEC4 RR that is matching a wildcard.
+    a NSEC4 RR that is matching a wildcard; [MG: what is a wildcard domain?]
 
 4.  For each RRSet at the original owner name, set the corresponding
-    bit in the Type Bit Maps field.
+    bit in the Type Bit Maps field;
 
 5.  Additional NSEC4 RRs need to be added for every empty non-terminal
     between the apex and the original owner name. Optionally keep track of the
     original owner names of these NSEC4 RRs and create temporary NSEC4 RRs for
-    wildcard collisions in a similar fashion to step 3.
+    wildcard collisions in a similar fashion to step 3; [MG: needs this also to
+    be done when Zero hashing is used?]
 
 6.  Sort the set of NSEC4 RRs into hash order or canonical order, depending
-    on the value of the hash algorithm.
+    on the value of the hash algorithm;
 
 7.  Combine NSEC4 RRs with identical hashed owner names by replacing
     them with a single NSEC4 RR with the Type Bit Maps field
     consisting of the union of the types represented by the set of NSEC4 RRs. 
     If hashing is used and the original owner name was tracked, then collisions
     may be detected when combining, as all of the matching NSEC4 RRs should
-    have the same original owner name. Discard any possible temporary NSEC4 RRs.
+    have the same original owner name. Discard any possible temporary NSEC4 RRs;
 
-8.  In each NSEC4 RR, insert the next hashed owner name by using the
+8.  In each NSEC4 RR, insert the next (hashed) owner name by using the
     value of the next NSEC4 RR in hash order.  The next hashed owner
     name of the last NSEC4 RR in the zone contains the value of the
     hashed owner name of the first NSEC4 RR in the hash order.
 
     If the NSEC4 is marked to be matching a wildcard, find the NSEC4 that
     matches the closest encloser. Set the Wildcard bit in the Flags field
-    of that NSEC4. 
+    of that NSEC4; [MG: what about Zero hashing here?]
 
 9.  Finally, add a NSEC4PARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
