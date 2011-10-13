@@ -133,4 +133,4 @@ Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
 the zone with this private algorithm and MUST NOT use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
-unless a response containss RRSIGs created with this private algorithm.
+unless a response contains RRSIGs created with this private algorithm.
