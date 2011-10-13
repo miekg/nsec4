@@ -3,9 +3,7 @@
 ## Hashed Denial of Existence
 
 This is the unsigned zone we are using for the NSEC4 examples. 
-The overall TTL and class are left out for clarity. The RRSIGs Signature field,
-the DNSKEYs Public Key field and the DS's Digest field are omitted. 
-The RRSIGs expiration and inception are set to ".".
+The overall TTL and class are left out for clarity. 
 <!-- 'q' can be found in /home/miekg/src/godns/_examples/q -->
 <!-- ./q -dnssec -port 8082 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
 
@@ -24,6 +22,9 @@ The RRSIGs expiration and inception are set to ".".
 ## Zero Hashing
 
 This is the same zone shown with zero hashing.
+The RRSIGs Signature field,
+the DNSKEYs Public Key field and the DS's Digest field are omitted. 
+The RRSIGs expiration and inception are set to ".".
 <!-- ./q -dnssec -port 8080 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1  -->
 
     $ORIGIN example.
@@ -36,7 +37,7 @@ This is the same zone shown with zero hashing.
                     NS      ns1.example.
                     DNSKEY  256 3 253 ...
                     NSEC4PARAM 0 0 0 -
-                    NSEC4   0 0 0 - ns1.example. SOA RRSIG DNSKEY NSEC4
+                    NSEC4   0 0 0 - ns1.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
     ns1             A       192.0.43.10
                     RRSIG   A 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
