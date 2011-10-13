@@ -200,11 +200,11 @@ NSEC3 record:
 
 NSEC4 record with Zero hashing:
 
-    example NSEC4 0 0 0 - a.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
+    example. NSEC4 0 0 0 - a.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
 
 NSEC4 record with SHA1 hashing:
 
-    3msev9usmd4br9s97v51r2tdvmr9iqo1.example NSEC4 1 0 0 - (
+    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 0 0 - (
                  6cd522290vma0nr8lqu1ivtcofj94rga.example. 
                  NS SOA RRSIG DNSKEY NSEC4PARAM )
 
