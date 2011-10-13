@@ -62,7 +62,7 @@ The RRSIGs' expiration and inception times are set to ".".
 
 ## SHA1 Hashing
 
-This is the same zone shown with SHA1 Hashing.
+This is the same zone shown with SHA1 hashing.
 <!-- ./q -dnssec -port 8081 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
 
     $ORIGIN example.
