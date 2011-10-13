@@ -22,9 +22,9 @@ The overall TTL and class are left out for clarity.
 ## Zero Hashing
 
 This is the same zone shown with Zero hashing.
-The RRSIGs Signature field,
-the DNSKEYs Public Key field and the DS's Digest field are omitted. 
-The RRSIGs expiration and inception are set to ".".
+The RRSIGs' Signature field,
+the DNSKEYs' Public Key field and the DS's Digest field are omitted. 
+The RRSIGs' expiration and inception times are set to ".".
 <!-- ./q -dnssec -port 8080 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1  -->
 
     $ORIGIN example.
