@@ -130,7 +130,7 @@ following private algorithm (using algorithm PRIVATEDNS):
 * Algorithm "5.nsec4.nlnetlabs.nl.", is an alias for algorithm 5, RSASHA1.
 
 Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
-the zone with ths private algorithm and MUST NOT use any other algorithms.
+the zone with this private algorithm and MUST NOT use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
-unless a zone is signed using one or more of this private algorithm.
+unless a response containss RRSIGs created with this private algorithm.
