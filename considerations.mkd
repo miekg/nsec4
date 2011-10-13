@@ -11,7 +11,7 @@ the corresponding NSEC4 RR MUST have the Wildcard bit set in the Flags field.
 The following steps describe one possible method of proper construction of
 NSEC4 RRs.
 
-1.  Select the hash algorithm and the values for salt and iterations.
+1.  Select the hash algorithm and the values for salt and iterations;
 
 2.  For each unique original owner name in the zone add a NSEC4 RR;
     * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded;
@@ -59,7 +59,7 @@ NSEC4 RRs.
     Iterations, and Salt fields to the zone apex.
 
 If a hash collision is detected, then a new salt has to be chosen,
-and the signing process restarted.
+and the signing process is restarted.
 
 ## Zone Serving
 
