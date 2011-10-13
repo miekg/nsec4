@@ -111,7 +111,7 @@ This is the same zone shown with SHA1 Hashing.
 # Example Responses
 
 The examples in this section show response messages using the signed
-zone example in [](#example-zones).
+zone example in [](#sha1-hashing).
 
 ## Name Error
 
