@@ -91,7 +91,7 @@ Zero hashing:
 :   Perform no hashing. Leave the name as-is.
 
 # Backwards Compatibility
-
+<!--
 This specification describes an experimental protocol change
 that is not generally backwards compatible with the existing DNSSEC family RFCs.
 In particular, security-aware resolvers that are unaware of this specification
@@ -105,7 +105,7 @@ this specification allocates four new DNSKEY algorithm aliases:
 * Algorithm [TBD], DSA-NSEC4-SHA1, is an alias for algorithm 3, DSA;
 * Algorithm [TBD], RSAHSHA1-NSEC4-SHA1, is an alias for algorithm 5, RSASHA1;
 * Algorithm [TBD], RSAHSHA1-NSEC4-SHA256, is an alias for algorithm 8, RSASHA256;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 10, RSASHA512;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 10, RSASHA512.
 
 Zones signed according to this specification MUST only use these
 algorithm identifiers for their DNSKEY RRs.  Because these new
@@ -120,8 +120,7 @@ allocation of a new alias (see Section 12.1.3 of [RFC5155]).
 Security aware resolvers that are aware of this specification MUST
 recognize the new algorithm identifiers and treat them as equivalent
 to the algorithms that they alias.
-
-[MM: Alternative]
+-->
 
 This document describes an EXPERIMENTAL extension to DNSSEC.
 It interoperates with non-experimental DNSSEC using the technique
