@@ -24,8 +24,8 @@ NSEC4 RRs.
     NSEC4 RR corresponding to the original owner name with the asterisk label
     prepended. Mark this NSEC4 RR as temporary;
 
-4.  If the original owner name is a wildcard domain, mark the NSEC4 to be
-    a NSEC4 RR that is matching a wildcard; [MG: what is a wildcard domain?]
+4.  If the original owner name is a wildcard domain name (Section 2.1.1. of [](#RFC4592)), 
+    mark the NSEC4 to be a NSEC4 RR that is matching a wildcard; 
 
 4.  For each RRSet at the original owner name, set the corresponding
     bit in the Type Bit Maps field;
@@ -78,7 +78,7 @@ matches some domain name, and that has the Wildcard bit clear.
 
 Note that without much knowledge of the domain name, this proof is not really
 useful. In particular, we don't know if this is the wildcard synthesis that
-we are looking for. This will change if we combine this proof with the
+we are looking for. This changes if we combine this proof with the
 closest encloser proof.
 
 ### Closest Encloser Proof
@@ -99,8 +99,8 @@ The Denial of Source of Synthesis proof consists of (up to) two NSEC4 RRs,
 the same that constructed the closest encloser proof:
 
 * a NSEC4 RR that matches the closest encloser, and that has the Wildcard bit
-  clear in the Flags field.
-* a NSEC4 RR that covers the "next closer" name to the closest encloser.
+  clear in the Flags field;
+* a NSEC4 RR that covers the next closer name to the closest encloser.
 
 The first NSEC4 RR essentially proves that the encloser exists, and that no
 wildcard synthesis at the encloser is possible.
@@ -145,7 +145,7 @@ the QTYPE or CNAME set in its Type Bit Maps field.
 
 Because of Opt-Out, the response can be different when QTYPE is DS. If no
 NSEC4 RR matches QNAME, the server MUST return a closest provable encloser
-proof for QNAME. The NSEC4 RR that covers the "next closer" name MUST have
+proof for QNAME. The NSEC4 RR that covers the next closer name MUST have
 the Opt-Out bit set.
 
 Note that we do not need to ensure the denial of source of synthesis proof,
@@ -214,12 +214,12 @@ Queries for NSEC4 owner names are handled in the same way as normal
 queries. When NSEC4 hashing is in effect the paradox (NSEC4 records
 deny their own existence) described in Section 7.2.8 of [](#RFC5155)
 is back. In light of this paradox, then the response MUST be constructed
-as a Name Error response ([](#name-error-responses). Or, in other words,
+as a Name Error response (see [](#name-error-responses)). Or, in other words,
 the authoritative name server will act as if the owner name of the NSEC4 RR
 did not exist.
 
 [MG: Why return a Name Error response? It might be useful to query for
-     Denial of Existence RRs.]
+     Denial of Existence RRs, esp. when Zero hashing is in use??]
 
 ### Server Response to a Run-Time Collision
 
@@ -259,9 +259,9 @@ Adding and removing wildcard names in a zone MUST account for the setting
 or clearing of the Wildcard bit in the Flags field:
 
 * When adding a wildcard name, the NSEC4 RR that matches the immediate
-  parent of the wildcard MUST set the Wildcard bit in the Flags field.
+  parent of the wildcard MUST set the Wildcard bit in the Flags field;
 
-* When adding a wildcard name, the NSEC4 RR that matches the immediate
+* When deleting a wildcard name, the NSEC4 RR that matches the immediate
   parent of the wildcard MUST clear the Wildcard bit in the Flags field.
 
 # Validator Considerations
