@@ -18,7 +18,6 @@
         <?rfc include="bib/reference.RFC.4955" ?>
         <?rfc include="bib/reference.RFC.4956" ?>
         <?rfc include="bib/reference.RFC.5155" ?>
-        <?rfc include="bib/reference.RFC.5226" ?>
         <reference anchor='Schaeffer10'>
             <front>
             <title>NSEC3 Hash Performance</title>
