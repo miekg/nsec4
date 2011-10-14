@@ -132,7 +132,7 @@ following private algorithm (using algorithm 253):
     RSAS1NSEC3SHA1.
 
 Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
-the zone with ths private algorithm and MUST NOT use any other algorithms.
+the zone with this private algorithm and MUST NOT use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
 unless a zone is signed using one or more of this private algorithm.
