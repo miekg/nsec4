@@ -3,9 +3,7 @@
 ## Hashed Denial of Existence
 
 This is the unsigned zone we are using for the NSEC4 examples. 
-The overall TTL and class are left out for clarity. The RRSIGs Signature field,
-the DNSKEYs Public Key field and the DS's Digest field are omitted. 
-The RRSIGs expiration and inception are set to ".".
+The overall TTL and class are left out for clarity. 
 <!-- 'q' can be found in /home/miekg/src/godns/_examples/q -->
 <!-- ./q -dnssec -port 8082 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
 
@@ -23,7 +21,10 @@ The RRSIGs expiration and inception are set to ".".
 
 ## Zero Hashing
 
-This is the same zone shown with zero hashing.
+This is the same zone shown with Zero hashing.
+The RRSIGs' Signature field,
+the DNSKEYs' Public Key field and the DS's Digest field are omitted. 
+The RRSIGs' expiration and inception times are set to ".".
 <!-- ./q -dnssec -port 8080 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1  -->
 
     $ORIGIN example.
@@ -36,7 +37,8 @@ This is the same zone shown with zero hashing.
                     NS      ns1.example.
                     DNSKEY  256 3 253 ...
                     NSEC4PARAM 0 0 0 -
-                    NSEC4   0 0 0 - ns1.example. SOA RRSIG DNSKEY NSEC4
+                    NSEC4   0 0 0 - ( 
+                    ns1.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM )
     ns1             A       192.0.43.10
                     RRSIG   A 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
@@ -60,9 +62,20 @@ This is the same zone shown with zero hashing.
 
 ## SHA1 Hashing
 
-This is the same zone shown with SHA1 Hashing.
+This is the same zone shown with SHA1 hashing.
 <!-- ./q -dnssec -port 8081 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
+<!-- for z in $(cat ~miekg/src/NSD_NSEC4/example.signed.zero | awk '{print $1}' | grep -v '^;' | sort -u); do
+echo "; H($z)\t= $(ldns-nsec3-hash -t 0 -a 1 -s "" $z)"; done -->
 
+    ; H(example.)           = 3msev9usmd4br9s97v51r2tdvmr9iqo1.
+    ; H(ns1.example.)       = m1o89lfdo9rrf2f8r8ss42d81d09v48m.
+    ; H(ns1.sd.example.)    = qrsbil3cs97oa4p5fql8dedp6jo0b9a6.
+    ; H(ns1.ud.example.)    = 7cuee8ri909f5r365jqr0k6j75thndpi.
+    ; H(sd.example.)        = 831naajdsm14h0md3kip92563ud3saav.
+    ; H(ud.example.)        = ub8e42kj4s2jdfve6aloo98jdoa425a9.
+    ; H(*.who.example.)     = ht6ocje68mtm96jpes8olrlbf67jjvdu.
+    ; H(who.example.)       = g4s20q3kptookhpt9mgr93k8bfhjs3fd.
+    ;
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
                     RRSIG   SOA 253 1 300 . . 39824 example. ...
@@ -109,7 +122,7 @@ This is the same zone shown with SHA1 Hashing.
 # Example Responses
 
 The examples in this section show response messages using the signed
-zone example in [](#example-zones).
+zone example in [](#sha1-hashing).
 
 ## Name Error
 

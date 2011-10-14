@@ -8,27 +8,27 @@ presence of a next closer name and a wildcard name. A validator can derive
 these names from the closest encloser.
 
 This is why most of the denial of existence responses with
-NSEC3 [](#RFC5155) contain three records:
+NSEC3 contain three records:
 
-* A record where the original owner name of the NSEC3 is the closest encloser;
-* A record which covers or matches the next closer, to deny or assert the
-  existence of the next closer name;
-* A record which covers or matches the wildcard, to deny or assert the
-  wildcard synthesis.
+1. A record where the original owner name of the NSEC3 is the closest encloser;
+1. A record which covers or matches the next closer, to deny or assert the
+   existence of the next closer name;
+1. A record which covers or matches the wildcard, to deny or assert 
+   wildcard synthesis.
 
-This document presents a new record NSEC4 that is similar to NSEC3,
+This document presents a new record, NSEC4, that is similar to NSEC3,
 but differs in the following ways:
 
-1. It provides a new way to deny the existence of the wildcard,
-   by introducing the Wildcard bit (described in [](#wildcard-flag));
-2. It allows for unhashed records, by introducing zero hashing
-   (described in [](#hash-algorithm)).
+* It provides a new way to deny the existence of the wildcard,
+  by introducing the Wildcard bit (described in [](#wildcard-flag));
+* It allows for unhashed records, by introducing Zero hashing
+  (described in [](#hash-algorithm)).
 
 With NSEC4 you will need a maximum of two records for any denial
 of existence response, saving one record and accompanying signature(s) compared
 to NSEC3.
 
-By defining zero hashing, we also fold back NSEC into NSEC4 and
+By defining Zero hashing, we also fold back NSEC into NSEC4 and
 add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
@@ -48,6 +48,11 @@ concepts described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034),
 
 Furthermore, the same terminology is used throughout this document as is
 described in Section 1.3 from [](#RFC5155), with the following changes:
+
+Original owner name:
+
+:   the owner name corresponding to a hashed owner name if hashing is used. Or
+    the owner name as-is if no hashing is used. [MG: is this correct?]
 
 Opt-Out NSEC4 RR:
 
@@ -72,7 +77,7 @@ To cover:
 :   When a hash algorithm is defined,
     a NSEC4 RR is said to "cover" a name if the hash of the name or
     "next closer" name falls between the owner name and the next hashed
-    owner name of the NSEC4. When no hash algorithm (zero hashing) is defined, 
+    owner name of the NSEC4. When no hash algorithm (Zero hashing) is defined, 
     a NSEC4 RR is
     said to "cover" a name if the name or "next closer" name falls between
     the owner name and the next owner name of the NSEC4. In other words, if
@@ -83,7 +88,7 @@ To match:
 
 :   When a hash algorithm is defined, a NSEC4 RR is said to "match" a name
     if the owner name of the NSEC4 RR is the same as the hashed owner name
-    of that name. When no hash algorithm (zero hashing) is defined, a NSEC4 RR is said to
+    of that name. When no hash algorithm (Zero hashing) is defined, a NSEC4 RR is said to
     "match" a name if the name and the owner name of the NSEC4 RR are equal.
 
 Zero hashing:
@@ -91,7 +96,7 @@ Zero hashing:
 :   Perform no hashing. Leave the name as-is.
 
 # Backwards Compatibility
-
+<!--
 This specification describes an experimental protocol change
 that is not generally backwards compatible with the existing DNSSEC family RFCs.
 In particular, security-aware resolvers that are unaware of this specification
@@ -104,8 +109,8 @@ this specification allocates four new DNSKEY algorithm aliases:
 
 * Algorithm [TBD], DSA-NSEC4-SHA1, is an alias for algorithm 3, DSA;
 * Algorithm [TBD], RSAHSHA1-NSEC4-SHA1, is an alias for algorithm 5, RSASHA1;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA256, is an alias for algorithm 5, RSASHA256;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 5, RSASHA512;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA256, is an alias for algorithm 8, RSASHA256;
+* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 10, RSASHA512.
 
 Zones signed according to this specification MUST only use these
 algorithm identifiers for their DNSKEY RRs.  Because these new
@@ -120,19 +125,17 @@ allocation of a new alias (see Section 12.1.3 of [RFC5155]).
 Security aware resolvers that are aware of this specification MUST
 recognize the new algorithm identifiers and treat them as equivalent
 to the algorithms that they alias.
-
-[MM: Alternative]
+-->
 
 This document describes an EXPERIMENTAL extension to DNSSEC.
 It interoperates with non-experimental DNSSEC using the technique
 described in [](#RFC4955).  This experiment is identified with the
-following private algorithm (using algorithm 253):
+following private algorithm (using algorithm PRIVATEDNS):
 
-* Algorithm "7.nsec4.nlnetlabs.nl.", is an alias for algorithm 7,
-    RSAS1NSEC3SHA1.
+* Algorithm "5.nsec4.nlnetlabs.nl.", is an alias for algorithm 5, RSASHA1.
 
 Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
 the zone with this private algorithm and MUST NOT use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
-unless a zone is signed using one or more of this private algorithm.
+unless a response contains RRSIGs created with this private algorithm.

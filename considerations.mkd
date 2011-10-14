@@ -11,54 +11,55 @@ the corresponding NSEC4 RR MUST have the Wildcard bit set in the Flags field.
 The following steps describe one possible method of proper construction of
 NSEC4 RRs.
 
-1.  Select the hash algorithm and the values for salt and iterations.
+1.  Select the hash algorithm and the values for salt and iterations;
 
-2.  For each unique original owner name in the zone add a NSEC4 RR.
-    * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded.
-    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if zero hashing is used.
-    * The Next Owner Name field is left blank for the moment.
+2.  For each unique original owner name in the zone add a NSEC4 RR;
+    * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded;
+    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Zero hashing is used;
+    * The Next Owner Name field is left blank for the moment;
     * If Opt-Out is being used, set the Opt-Out bit to one.
 
 3.  For collision detection purposes, if hashing is used, optionally keep
     track of the original owner name with the NSEC4 RR. Create an additional
     NSEC4 RR corresponding to the original owner name with the asterisk label
-    prepended. Mark this NSEC4 RR as temporary.
+    prepended. Mark this NSEC4 RR as temporary;
 
-4.  If the original owner name is a wildcard domain, mark the NSEC4 to be
-    a NSEC4 RR that is matching a wildcard.
+4.  If the original owner name is a wildcard domain name (Section 2.1.1. of [](#RFC4592)), 
+    mark the NSEC4 to be a NSEC4 RR that is matching a wildcard; 
 
 4.  For each RRSet at the original owner name, set the corresponding
-    bit in the Type Bit Maps field.
+    bit in the Type Bit Maps field;
 
 5.  Additional NSEC4 RRs need to be added for every empty non-terminal
     between the apex and the original owner name. Optionally keep track of the
     original owner names of these NSEC4 RRs and create temporary NSEC4 RRs for
-    wildcard collisions in a similar fashion to step 3.
+    wildcard collisions in a similar fashion to step 3; [MG: needs this also to
+    be done when Zero hashing is used?]
 
 6.  Sort the set of NSEC4 RRs into hash order or canonical order, depending
-    on the value of the hash algorithm.
+    on the value of the hash algorithm;
 
 7.  Combine NSEC4 RRs with identical hashed owner names by replacing
     them with a single NSEC4 RR with the Type Bit Maps field
     consisting of the union of the types represented by the set of NSEC4 RRs. 
     If hashing is used and the original owner name was tracked, then collisions
     may be detected when combining, as all of the matching NSEC4 RRs should
-    have the same original owner name. Discard any possible temporary NSEC4 RRs.
+    have the same original owner name. Discard any possible temporary NSEC4 RRs;
 
-8.  In each NSEC4 RR, insert the next hashed owner name by using the
+8.  In each NSEC4 RR, insert the next (hashed) owner name by using the
     value of the next NSEC4 RR in hash order.  The next hashed owner
     name of the last NSEC4 RR in the zone contains the value of the
     hashed owner name of the first NSEC4 RR in the hash order.
 
     If the NSEC4 is marked to be matching a wildcard, find the NSEC4 that
     matches the closest encloser. Set the Wildcard bit in the Flags field
-    of that NSEC4. 
+    of that NSEC4; [MG: what about Zero hashing here?]
 
 9.  Finally, add a NSEC4PARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
 
 If a hash collision is detected, then a new salt has to be chosen,
-and the signing process restarted.
+and the signing process is restarted.
 
 ## Zone Serving
 
@@ -77,7 +78,7 @@ matches some domain name, and that has the Wildcard bit clear.
 
 Note that without much knowledge of the domain name, this proof is not really
 useful. In particular, we don't know if this is the wildcard synthesis that
-we are looking for. This will change if we combine this proof with the
+we are looking for. This changes if we combine this proof with the
 closest encloser proof.
 
 ### Closest Encloser Proof
@@ -98,8 +99,8 @@ The Denial of Source of Synthesis proof consists of (up to) two NSEC4 RRs,
 the same that constructed the closest encloser proof:
 
 * a NSEC4 RR that matches the closest encloser, and that has the Wildcard bit
-  clear in the Flags field.
-* a NSEC4 RR that covers the "next closer" name to the closest encloser.
+  clear in the Flags field;
+* a NSEC4 RR that covers the next closer name to the closest encloser.
 
 The first NSEC4 RR essentially proves that the encloser exists, and that no
 wildcard synthesis at the encloser is possible.
@@ -144,7 +145,7 @@ the QTYPE or CNAME set in its Type Bit Maps field.
 
 Because of Opt-Out, the response can be different when QTYPE is DS. If no
 NSEC4 RR matches QNAME, the server MUST return a closest provable encloser
-proof for QNAME. The NSEC4 RR that covers the "next closer" name MUST have
+proof for QNAME. The NSEC4 RR that covers the next closer name MUST have
 the Opt-Out bit set.
 
 Note that we do not need to ensure the denial of source of synthesis proof,
@@ -203,7 +204,7 @@ the delegation. In this case, the closest provable encloser proof MUST be
 included in the response. The included NSEC4 RR that covers the "next closer"
 name for the delegation MUST have the Opt-Out flag set to one.
 
-Note that with zero hashing, the NSEC4 RR that matches the closest provable
+Note that with Zero hashing, the NSEC4 RR that matches the closest provable
 encloser does not need to be included in the response, as it can be
 derived from the NSEC4 that covers the "next closer" name.
 
@@ -213,12 +214,12 @@ Queries for NSEC4 owner names are handled in the same way as normal
 queries. When NSEC4 hashing is in effect the paradox (NSEC4 records
 deny their own existence) described in Section 7.2.8 of [](#RFC5155)
 is back. In light of this paradox, then the response MUST be constructed
-as a Name Error response ([](#name-error-responses). Or, in other words,
+as a Name Error response (see [](#name-error-responses)). Or, in other words,
 the authoritative name server will act as if the owner name of the NSEC4 RR
 did not exist.
 
 [MG: Why return a Name Error response? It might be useful to query for
-     Denial of Existence RRs.]
+     Denial of Existence RRs, esp. when Zero hashing is in use??]
 
 ### Server Response to a Run-Time Collision
 
@@ -258,9 +259,9 @@ Adding and removing wildcard names in a zone MUST account for the setting
 or clearing of the Wildcard bit in the Flags field:
 
 * When adding a wildcard name, the NSEC4 RR that matches the immediate
-  parent of the wildcard MUST set the Wildcard bit in the Flags field.
+  parent of the wildcard MUST set the Wildcard bit in the Flags field;
 
-* When adding a wildcard name, the NSEC4 RR that matches the immediate
+* When deleting a wildcard name, the NSEC4 RR that matches the immediate
   parent of the wildcard MUST clear the Wildcard bit in the Flags field.
 
 # Validator Considerations
@@ -292,8 +293,8 @@ present in the response.
 
 One possible algorithm for finding the closest encloser is as follows:
 
-1. Set SNAME=QNAME.
-2. If there is a NSEC4 RR in the response that matches SNAME, then we have found the closest encloser.
+1. Set SNAME=QNAME;
+2. If there is a NSEC4 RR in the response that matches SNAME, then we have found the closest encloser;
 3. Truncate SNAME by one label from the left, go to step 2.
 
 Once the closest encloser has been discovered, the validator MUST
@@ -306,7 +307,7 @@ using them to falsely deny the existence of RRs for which the server is
 not authoritative.
 
 In addition, the validator MUST verify that there is a NSEC4 RR that covers
-the "next closer" name.
+the next closer name.
 
 ## Validating No Data Responses
 
@@ -326,16 +327,16 @@ If there is no such NSEC4 RR, then the validator MUST verify that there is
 a closest provable encloser for QNAME present in the response. The closest
 provable encloser is found in a similar way as the closest encloser.
 In addition, the validator MUST verify that there is a NSEC4 RR that covers
-the "next closer" name and has the Opt-Out bit set.
+the next closer name and has the Opt-Out bit set.
 
 ## Validating Wildcard Answer Responses
 
 The verified wildcard answer RRSet in the response provides the validator
 with a closest encloser for QNAME. The validator can do so by checking the
-label count in the RRSIG and the number of labels in the answer domain name.
+label count in the RRSIG and the number of labels in the answer's owner name.
 
 The validator MUST verify that there is a NSEC4 RR that covers the
-"next closer" name to QNAME is present in the response. This proves that QNAME
+next closer name to QNAME is present in the response. This proves that QNAME
 itself did not exist and that the correct wildcard was used to generate the
 response.
 
@@ -365,8 +366,8 @@ the server did not encounter a referral (step 3b of the server algorithm [](#RFC
 nor did it encounter a DNAME (step 3c of the server algorithm [](#RFC1035)).
 
 Now that the validator knows the source of synthesis and thus the closest
-encloser, it can derive the "next closer" name. The validator MUST verify
-that there is a NSEC4 RR that covers the "next closer" name to QNAME, is
+encloser, it can derive the next closer name. The validator MUST verify
+that there is a NSEC4 RR that covers the next closer name to QNAME, is
 present in the response.
 
 Note that, because the response included a NSEC4 that matches the source
@@ -393,7 +394,7 @@ Maps field of the NSEC4 RR.
 If there is no NSEC4 RR present that matches the delegation name,
 then the validator MUST verify that there is a closest provable encloser 
 for the delegation name. In addition, the validator MUST verify that
-there is a NSEC4 RR that covers the "next closer" name and has the
+there is a NSEC4 RR that covers the next closer name and has the
 Opt-Out bit set.
 
 # Resolver Considerations
@@ -436,7 +437,7 @@ For authoritative servers the half performance count is around 100 iterations.
 
 ## More Special Considerations
 
-[](#RFC5155), Appendix C clarifies specific behavior and explains
+Appendix C of [](#RFC5155) clarifies specific behavior and explains
 more special considerations for implementations, regarding salting and
 hash collisions. These considerations for NSEC3 also apply to NSEC4.
 
@@ -509,7 +510,7 @@ Standards Action [](#RFC5226).
 # Security Considerations
 
 This document does not introduce any new security issues beyond those
-already discussed in [](#RFC4033), [](#RFC4034), [](#RFC4035) and [](#RFC5155),
+already discussed in [](#RFC4033), [](#RFC4034), [](#RFC4035) and [](#RFC5155).
 
 # Acknowledgements
 This document would not be possible without the help of Ed Lewis, Roy Arends, Wouter
