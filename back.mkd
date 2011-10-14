@@ -11,9 +11,11 @@ The overall TTL and class are left out for clarity.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
                     NS      ns1.example.
     ns1             A       192.0.43.10
+    ;; secure delegation
     sd              NS      ns1.sd.example.
                     DS      33694 253 2 ...
     ns1.sd          A       192.0.43.10
+    ;; unsecure delegation
     ud              NS      ns1.ud.example.
     ns1.ud          A       192.0.43.10
     *.who           TXT     "Wildcard"
@@ -22,9 +24,9 @@ The overall TTL and class are left out for clarity.
 ## Zero Hashing
 
 This is the same zone shown with Zero hashing.
-The RRSIGs' Signature field,
-the DNSKEYs' Public Key field and the DS's Digest field are omitted. 
-The RRSIGs' expiration and inception times are set to ".".
+The RRSIG Signature field,
+the DNSKEY Public Key field and the DS Digest field are omitted. 
+The RRSIG expiration and inception times are set to ".".
 <!-- ./q -dnssec -port 8080 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1  -->
 
     $ORIGIN example.
@@ -37,28 +39,26 @@ The RRSIGs' expiration and inception times are set to ".".
                     NS      ns1.example.
                     DNSKEY  256 3 253 ...
                     NSEC4PARAM 0 0 0 -
-                    NSEC4   0 0 0 - ( 
+                    NSEC4   0 1 0 - ( 
                     ns1.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM )
     ns1             A       192.0.43.10
                     RRSIG   A 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-                    NSEC4   0 0 0 - sd.example. A RRSIG NSEC4
+                    NSEC4   0 1 0 - sd.example. A RRSIG NSEC4
     sd              NS      ns1.sd.example.
                     DS      33694 253 2 ...
                     RRSIG   DS 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-                    NSEC4   0 0 0 - ud.example. NS DS RRSIG NSEC4
+                    NSEC4   0 1 0 - who.example. NS DS RRSIG NSEC4
     ns1.sd          A       192.0.43.10
     ud              NS      ns1.ud.example.
-                    NSEC4   0 0 0 - who.example. NS RRSIG NSEC4
-                    RRSIG   NSEC4 253 2 5 . . 39824 example. ...
     ns1.ud          A       192.0.43.10
-    who             NSEC4   0 2 0 - *.who.example.
+    who             NSEC4   0 3 0 - *.who.example.
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
     *.who           TXT     "Wildcard"
                     RRSIG   TXT 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-                    NSEC4   0 0 0 - example. TXT RRSIG NSEC4
+                    NSEC4   0 1 0 - example. TXT RRSIG NSEC4
 
 ## SHA1 Hashing
 
@@ -67,14 +67,11 @@ This is the same zone shown with SHA1 hashing.
 <!-- for z in $(cat ~miekg/src/NSD_NSEC4/example.signed.zero | awk '{print $1}' | grep -v '^;' | sort -u); do
 echo "; H($z)\t= $(ldns-nsec3-hash -t 0 -a 1 -s "" $z)"; done -->
 
-    ; H(example.)           = 3msev9usmd4br9s97v51r2tdvmr9iqo1.
-    ; H(ns1.example.)       = m1o89lfdo9rrf2f8r8ss42d81d09v48m.
-    ; H(ns1.sd.example.)    = qrsbil3cs97oa4p5fql8dedp6jo0b9a6.
-    ; H(ns1.ud.example.)    = 7cuee8ri909f5r365jqr0k6j75thndpi.
-    ; H(sd.example.)        = 831naajdsm14h0md3kip92563ud3saav.
-    ; H(ud.example.)        = ub8e42kj4s2jdfve6aloo98jdoa425a9.
-    ; H(*.who.example.)     = ht6ocje68mtm96jpes8olrlbf67jjvdu.
-    ; H(who.example.)       = g4s20q3kptookhpt9mgr93k8bfhjs3fd.
+    ; H(example)           = 3msev9usmd4br9s97v51r2tdvmr9iqo1
+    ; H(ns1.example)       = m1o89lfdo9rrf2f8r8ss42d81d09v48m
+    ; H(sd.example)        = 831naajdsm14h0md3kip92563ud3saav
+    ; H(*.who.example)     = ht6ocje68mtm96jpes8olrlbf67jjvdu
+    ; H(who.example)       = g4s20q3kptookhpt9mgr93k8bfhjs3fd
     ;
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
@@ -85,23 +82,23 @@ echo "; H($z)\t= $(ldns-nsec3-hash -t 0 -a 1 -s "" $z)"; done -->
                     NS      ns1.example.
                     DNSKEY  256 3 253 ...
                     NSEC4PARAM 1 0 0 -
-    3msev9usmd4br9s97v51r2tdvmr9iqo1 NSEC4 1 0 0 - (
+    3msev9usmd4br9s97v51r2tdvmr9iqo1 NSEC4 1 1 0 - (
                     831naajdsm14h0md3kip92563ud3saav.example.
                     NS SOA RRSIG DNSKEY NSEC4PARAM )
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-    831naajdsm14h0md3kip92563ud3saav NSEC4 1 0 0 - (
+    831naajdsm14h0md3kip92563ud3saav NSEC4 1 1 0 - (
                     g4s20q3kptookhpt9mgr93k8bfhjs3fd.example.
                     NS DS RRSIG )
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-    g4s20q3kptookhpt9mgr93k8bfhjs3fd NSEC4 1 2 0 - (
+    g4s20q3kptookhpt9mgr93k8bfhjs3fd NSEC4 1 3 0 - (
                     ht6ocje68mtm96jpes8olrlbf67jjvdu.example. )
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-    ht6ocje68mtm96jpes8olrlbf67jjvdu NSEC4 1 0 0 - (
+    ht6ocje68mtm96jpes8olrlbf67jjvdu NSEC4 1 1 0 - (
                     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example.
                     TXT RRSIG )
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-    m1o89lfdo9rrf2f8r8ss42d81d09v48m NSEC4 1 0 0 - (
-                    ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m NSEC4 1 1 0 - (
+                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
                     A RRSIG )
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
     ns1             A       192.0.43.10
@@ -110,10 +107,7 @@ echo "; H($z)\t= $(ldns-nsec3-hash -t 0 -a 1 -s "" $z)"; done -->
                     DS      33694 253 2 ...
                     RRSIG   DS 253 2 300 . . 39824 example. ...
     ns1.sd          A       192.0.43.10
-    ub8e42kj4s2jdfve6aloo98jdoa425a9 NSEC4 1 0 0 - (
-                            3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
-                            NS )
-                    RRSIG   NSEC4 253 2 5 . . 39824 example. ...
+
     ud              NS      ns1.ud.example.
     ns1.ud          A       192.0.43.10
     *.who           TXT     "Wildcard"
@@ -159,15 +153,15 @@ The corresponding RRSIGs indicate that the NSEC4 RRs are signed by an
 The resolver needs the corresponding DNSKEY RR in order to authenticate this
 answer.
 
-In the above example, the name 'example' hashes to
-'3msev9usmd4br9s97v51r2tdvmr9iqo1'. This indicates that this might
+In the above example, the name "example" hashes to
+"3msev9usmd4br9s97v51r2tdvmr9iqo1". This indicates that this might
 be the closest encloser.
 
-To prove that 'a.example' does not
-exist, the name is hashed to '6cd522290vma0nr8lqu1ivtcofj94rga'.
-The NSEC4 RR also proves that "next closer" name does not exist.
+To prove that "a.example" does not
+exist, the name is hashed to "6cd522290vma0nr8lqu1ivtcofj94rga".
+The NSEC4 RR also proves that next closer name does not exist.
 
-To prove that the source of synthesis '*.example' does not exist,
+To prove that the source of synthesis "*.example" does not exist,
 the Wildcard bit at the NSEC4 RR matching the closest encloser is inspected.
 The bit is clear and this shows that the source of synthesis does indeed not
 exist.
@@ -191,13 +185,13 @@ that the requested RR type does not.
     example.        RRSIG   SOA 253 1 300 . . 39824 example. ...
     ;; H(ns1.example) = m1o89lfdo9rrf2f8r8ss42d81d09v48m
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
-                    ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
+                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
                     A RRSIG )
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
                     . . 39824 example. ... )
 
 The query returned a NSEC4 RR that proves that the requested name
-exists ('ns1.example' hashes to 'm1o89lfdo9rrf2f8r8ss42d81d09v48m'),
+exists ("ns1.example" hashes to "m1o89lfdo9rrf2f8r8ss42d81d09v48m"),
 but the requested RR type does not exist (type MX is absent in the
 type code list of the NSEC3 RR), and was not a CNAME (type CNAME is
 also absent in the type code list of the NSEC4 RR).
@@ -219,46 +213,38 @@ There is no proof that the unsigned delegation exists.
 
     ;; Authority
     ud.example.     NS      ns1.ud.example.
-    ub8e42kj4s2jdfve6aloo98jdoa425a9.example. NSEC4 1 1 0 - (
+
+    ;; NSEC4 RR that matches the closest provable encloser (example)
+    ;; H(example) = 3msev9usmd4br9s97v51r2tdvmr9iqo1
+    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 1 0 - (
+                    831naajdsm14h0md3kip92563ud3saav.example.
+                    NS SOA RRSIG DNSKEY NSEC4PARAM )
+    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. RRSIG NSEC4 253 2 5 (
+                    . . 39824 example. ... )
+
+    ;; NSEC4 RR that covers the next closer name (ud.example)
+    ;; H(ud.example) = 
+    ;; H(ud.example) = ub8e42kj4s2jdfve6aloo98jdoa425a9
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
                     3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
-                    NS )
-    ub8e42kj4s2jdfve6aloo98jdoa425a9.example. RRSIG NSEC4 253 2 5 (
+                    A RRSIG )
+    m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
                     . . 39824 example. ... )
 
     ;; Additional
     ns1.ud.example. A       192.0.43.10
 
-
-    ;; NSEC3 RR that matches the closest provable encloser (example)
-    ;; H(example) = 98s648rese29576jgp2ni52qpum2n5ia.example.
-    98s648rese29576jgp2ni52qpum2n5ia.example. NSEC4 1 0 2 dead (
-                           f55ub17k97db78nulri04cqudhktu5n4.example.
-                           NS SOA MX RRSIG DNSKEY NSEC4PARAM )
-    98s648rese29576jgp2ni52qpum2n5ia.example. RRSIG NSEC4 16 2 3600 (
-                           20111026181129 20110928181129 22824
-                           example. jVL... )
-
-    ;; NSEC4 RR that covers the "next closer" name (civ.example)
-    ;; H(civ.example) = nfm90i688cdb55a5cfablopmpcrs7jfk
-    g9f2ivvhohrs5aua715gmp4d99987k7j.example. NSEC4 1 3 2 dead (
-                           r9l4uekucmbpsj3mvgpk4cvtp776d3ku.example. )
-    g9f2ivvhohrs5aua715gmp4d99987k7j.example. RRSIG NSEC4 16 2 3600 (
-                           20111026181129 20110928181129 22824
-                           example. WlL... )
-
-The query returned a referral to the unsigned 'ud.example.' zone.
-The response contains the closest provable encloser of 'a.ud.example', which
-is 'ud.example', since the hash of 'ud.example' is 'ub8e42kj4s2jdfve6aloo98jdoa425a9'.
-
-is covered by the second NSEC4 RR
-and its Opt-Out bit is set.
+The query returned a referral to the unsigned "ud.example." zone. The
+response contains the closest provable encloser of "ud.example" to be
+"example", since the hash of "ud.example" ("ub8e42kj4s2jdfve6aloo98jdoa425a9")
+is covered by the first NSEC4 RR and its Opt-Out bit is set.
 
 ## Wildcard Expansion
 
 A query that was answered with a response containing a wildcard expansion.
 The label count in the RRSIG RRSet in the answer section
 indicates that a wildcard RRSet was expanded to produce this
-response, and the NSEC4 RR proves that no "next closer" name exists
+response, and the NSEC4 RR proves that no next closer name exists
 in the zone.
 <!-- ./q -dnssec -port 8081 -short a.b.who.example. TXT 2>/dev/null |./answer-cleanup | expand -->
 
@@ -276,7 +262,7 @@ in the zone.
     ;; NSEC4 RR that covers the next closer name (b.who.example)
     ;; H(b.who.example) = rmv5tauk8nss83vo1st0tp1ps927j71e
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
-                    ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
+                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
                     A RRSIG )
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
                     . . 39824 example. ... )
@@ -297,7 +283,6 @@ NSEC4 RR that matches the closest encloser.
 
 The NSEC4 RR proves that no closer match could have been used to
 answer this query.
-[MG: dit zou ook laten staan, is beetje opm. in de stijl van rfc5151]
 
 ## Wildcard No Data Error
 
@@ -318,7 +303,7 @@ RRs of the requested type and that no closer match exists in the zone.
     ;; NSEC4 RR that covers the next closer name (b.who.example)
     ;; H(b.who.example) = rmv5tauk8nss83vo1st0tp1ps927j71e
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
-                    ub8e42kj4s2jdfve6aloo98jdoa425a9.example.
+                    3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
                     A RRSIG )
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
                     . . 39824 example. ... )

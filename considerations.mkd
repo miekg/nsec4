@@ -31,15 +31,15 @@ NSEC4 RRs.
     bit in the Type Bit Maps field;
 
 5.  Additional NSEC4 RRs need to be added for every empty non-terminal
-    between the apex and the original owner name. Optionally keep track of the
-    original owner names of these NSEC4 RRs and create temporary NSEC4 RRs for
-    wildcard collisions in a similar fashion to step 3; [MG: needs this also to
-    be done when Zero hashing is used?]
+    between the apex and the original owner name. If hashing is used,
+    optionally keep track of the original owner names of these NSEC4 RRs and
+    create temporary NSEC4 RRs for wildcard collisions in a similar fashion
+    to step 3;
 
 6.  Sort the set of NSEC4 RRs into hash order or canonical order, depending
     on the value of the hash algorithm;
 
-7.  Combine NSEC4 RRs with identical hashed owner names by replacing
+7.  Combine NSEC4 RRs with identical owner names by replacing
     them with a single NSEC4 RR with the Type Bit Maps field
     consisting of the union of the types represented by the set of NSEC4 RRs. 
     If hashing is used and the original owner name was tracked, then collisions
@@ -47,13 +47,14 @@ NSEC4 RRs.
     have the same original owner name. Discard any possible temporary NSEC4 RRs;
 
 8.  In each NSEC4 RR, insert the next (hashed) owner name by using the
-    value of the next NSEC4 RR in hash order.  The next hashed owner
+    domain name of the next NSEC4 RR in hashed (if hashing is used) or
+    canonical order (Zero hashing). The next (hashed) owner
     name of the last NSEC4 RR in the zone contains the value of the
-    hashed owner name of the first NSEC4 RR in the hash order.
+    (hashed) owner name of the first NSEC4 RR in hashed or canonical order.
 
     If the NSEC4 is marked to be matching a wildcard, find the NSEC4 that
     matches the closest encloser. Set the Wildcard bit in the Flags field
-    of that NSEC4; [MG: what about Zero hashing here?]
+    of that NSEC4;
 
 9.  Finally, add a NSEC4PARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
@@ -201,16 +202,16 @@ bit maps of the NSEC4 RR MUST NOT be set.
 
 If the zone is Opt-Out, then there may not be an NSEC4 RR corresponding to
 the delegation. In this case, the closest provable encloser proof MUST be
-included in the response. The included NSEC4 RR that covers the "next closer"
+included in the response. The included NSEC4 RR that covers the next closer
 name for the delegation MUST have the Opt-Out flag set to one.
 
 Note that with Zero hashing, the NSEC4 RR that matches the closest provable
 encloser does not need to be included in the response, as it can be
-derived from the NSEC4 that covers the "next closer" name.
+derived from the NSEC4 that covers the next closer name.
 
-### Responding to Queries for NSEC4 Owner Names
+### Responding to Queries for NSEC4 Only Owner Names
 
-Queries for NSEC4 owner names are handled in the same way as normal
+Queries for NSEC4 only owner names are handled in the same way as normal
 queries. When NSEC4 hashing is in effect the paradox (NSEC4 records
 deny their own existence) described in Section 7.2.8 of [](#RFC5155)
 is back. In light of this paradox, then the response MUST be constructed
@@ -219,7 +220,7 @@ the authoritative name server will act as if the owner name of the NSEC4 RR
 did not exist.
 
 [MG: Why return a Name Error response? It might be useful to query for
-     Denial of Existence RRs, esp. when Zero hashing is in use??]
+     Denial of Existence RRs]
 
 ### Server Response to a Run-Time Collision
 
@@ -441,83 +442,3 @@ Appendix C of [](#RFC5155) clarifies specific behavior and explains
 more special considerations for implementations, regarding salting and
 hash collisions. These considerations for NSEC3 also apply to NSEC4.
 
-# IANA Considerations
-
-Although the NSEC4 and NSEC4PARAM RR formats include a hash algorithm
-parameter, this document does not define a particular mechanism for
-safely transitioning from one NSEC4 hash algorithm to another. When
-specifying a new hash algorithm for use with NSEC4, a transition
-mechanism MUST also be defined.
-
-This document updates the IANA registry "DOMAIN NAME SYSTEM PARAMETERS"
-(http://www.iana.org/assignments/dns-parameters) in sub-registry "TYPES",
-by defining two new types. [](#the-nsec4-resource-record) defines the
-NSEC4 RR type [TBD]. [](#the-nsec4param-resource-record) defines the
-NSEC4PARAM RR type [TBD].
-
-This document possibly updates the IANA registry
-"DNS SECURITY ALGORITHM NUMBERS -- per [](#RFC4035)"
-(http://www.iana.org/assignments/dns-sec-alg-numbers). 
-
-This document creates a new IANA registry for NSEC4 flags. This
-registry is named "DNSSEC NSEC4 Flags". The initial contents of this
-registry are:
-
-      0    1    2    3    4    5    6    7
-    +----+----+----+----+----+----+----+----+
-    |    |    |    |    |    |    |Wild|Opt-|
-    |    |    |    |    |    |    |card|Out |
-    +----+----+----+----+----+----+----+----+
-
-    bit 6 is the Wildcard flag.
-
-    bit 7 is the Opt-Out flag.
-
-    bits 0 - 5 are available for assignment.
-
-Assignment of additional NSEC4 Flags in this registry requires IETF
-Standards Action [](#RFC5226).
-
-This document creates a new IANA registry for NSEC4PARAM flags. This
-registry is named "DNSSEC NSEC4PARAM Flags". The initial contents of
-this registry are:
-
-      0   1   2   3   4   5   6   7
-    +---+---+---+---+---+---+---+---+
-    |   |   |   |   |   |   |   | 0 |
-    +---+---+---+---+---+---+---+---+
-
-    bit 7 is reserved and must be 0.
-
-    bits 0 - 6 are available for assignment.
-
-Assignment of additional NSEC4PARAM Flags in this registry requires IETF
-Standards Action [](#RFC5226).
-
-Finally, this document creates a new IANA registry for NSEC4 hash
-algorithms. This registry is named "DNSSEC NSEC4 Hash Algorithms".
-The initial contents of this registry are:
-
-    0 is Zero hashing.
-
-    1 is SHA-1.
-
-    2-255 Available for assignment.
-
-Assignment of additional NSEC4 hash algorithms in this registry requires IETF
-Standards Action [](#RFC5226).
-
-# Security Considerations
-
-This document does not introduce any new security issues beyond those
-already discussed in [](#RFC4033), [](#RFC4034), [](#RFC4035) and [](#RFC5155).
-
-# Acknowledgements
-This document would not be possible without the help of Ed Lewis, Roy Arends, Wouter
-Wijngaards, Marco Davids, Esther Makaay and Antoin Verschuren.
-
-# Changelog
-
-## 00
-
-* Initial document

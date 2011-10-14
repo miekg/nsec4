@@ -17,7 +17,7 @@ The hashing technique is the same as with NSEC3 and is described in
 Section 5 of [](#RFC5155).
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
-A NSEC4 RR whose span covers an owner name or "next closer" name of an
+A NSEC4 RR whose span covers an owner name or next closer name of an
 unsigned delegation is referred to as an Opt-Out NSEC4 RR and is indicated by
 the presence of a flag.
 
@@ -111,7 +111,7 @@ The RDATA of the NSEC4 RR is as shown below.
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     |  Salt Length  |                     Salt                      /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-    |                 Next (Hashed) Owner Name                      /
+    /                 Next (Hashed) Owner Name                      /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     /                         Type Bit Maps                         /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
