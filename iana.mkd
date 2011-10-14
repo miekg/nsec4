@@ -1,0 +1,65 @@
+# IANA Considerations
+
+Although the NSEC4 and NSEC4PARAM RR formats include a hash algorithm
+parameter, this document does not define a particular mechanism for
+safely transitioning from one NSEC4 hash algorithm to another. When
+specifying a new hash algorithm for use with NSEC4, a transition
+mechanism MUST also be defined.
+
+This document updates the IANA registry "DOMAIN NAME SYSTEM PARAMETERS"
+(http://www.iana.org/assignments/dns-parameters) in sub-registry "TYPES",
+by defining two new types. [](#the-nsec4-resource-record) defines the
+NSEC4 RR type [TBD]. [](#the-nsec4param-resource-record) defines the
+NSEC4PARAM RR type [TBD].
+
+This document possibly updates the IANA registry
+"DNS SECURITY ALGORITHM NUMBERS -- per [](#RFC4035)"
+(http://www.iana.org/assignments/dns-sec-alg-numbers). 
+
+This document creates a new IANA registry for NSEC4 flags. This
+registry is named "DNSSEC NSEC4 Flags". The initial contents of this
+registry are:
+
+      0    1    2    3    4    5    6    7
+    +----+----+----+----+----+----+----+----+
+    |    |    |    |    |    |    |Wild|Opt-|
+    |    |    |    |    |    |    |card|Out |
+    +----+----+----+----+----+----+----+----+
+
+    bit 6 is the Wildcard flag.
+
+    bit 7 is the Opt-Out flag.
+
+    bits 0 - 5 are available for assignment.
+
+Assignment of additional NSEC4 Flags in this registry requires IETF
+Standards Action [](#RFC5226).
+
+This document creates a new IANA registry for NSEC4PARAM flags. This
+registry is named "DNSSEC NSEC4PARAM Flags". The initial contents of
+this registry are:
+
+      0   1   2   3   4   5   6   7
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |   |   | 0 |
+    +---+---+---+---+---+---+---+---+
+
+    bit 7 is reserved and must be 0.
+
+    bits 0 - 6 are available for assignment.
+
+Assignment of additional NSEC4PARAM Flags in this registry requires IETF
+Standards Action [](#RFC5226).
+
+Finally, this document creates a new IANA registry for NSEC4 hash
+algorithms. This registry is named "DNSSEC NSEC4 Hash Algorithms".
+The initial contents of this registry are:
+
+    0 is Zero hashing.
+
+    1 is SHA-1.
+
+    2-255 Available for assignment.
+
+Assignment of additional NSEC4 hash algorithms in this registry requires IETF
+Standards Action [](#RFC5226).
