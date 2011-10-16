@@ -223,7 +223,6 @@ There is no proof that the unsigned delegation exists.
                     . . 39824 example. ... )
 
     ;; NSEC4 RR that covers the next closer name (ud.example)
-    ;; H(ud.example) = 
     ;; H(ud.example) = ub8e42kj4s2jdfve6aloo98jdoa425a9
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. NSEC4 1 1 0 - (
                     3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
