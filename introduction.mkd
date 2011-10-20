@@ -58,6 +58,10 @@ This is an experiment
 ## Expected results
 
 * A working non-backwards compatible authenticated denial of existence. 
+* Show that NSEC3 is over specified
+* Show ....
+* Give a validation algorithm in pseudo code
+* Deploy server and client software
 
 ## Requirement
 
