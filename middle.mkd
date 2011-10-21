@@ -187,7 +187,7 @@ NSEC record:
 
     example. NSEC a.example NS SOA RRSIG DNSKEY NSEC
 
-NSEC3 record:
+They same data shown as a NSEC3 record:
 <!-- ldns-nsec3-hash -t 0 -a 1 -s "" example. -->
 <!-- ldns-nsec3-hash -t 0 -a 1 -s "" a.example. -->
 
@@ -195,11 +195,11 @@ NSEC3 record:
                         6cd522290vma0nr8lqu1ivtcofj94rga 
                         NS SOA RRSIG DNSKEY NSEC3PARAM )
 
-NSEC4 record with Zero hashing:
+As a NSEC4 record with Zero hashing:
 
     example. NSEC4 0 0 0 - a.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
 
-NSEC4 record with SHA1 hashing:
+An as a NSEC4 record with SHA1 hashing:
 
     3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 0 0 - (
                  6cd522290vma0nr8lqu1ivtcofj94rga.example. 

@@ -1,6 +1,8 @@
 # Introduction
 
 ## Rationale
+[EL: state that this is an experiment]
+
 Hashed authenticated denial of existence proofs frequently hinge on the 
 closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
 a hashed denial of existence response, a validator must deny or assert the
@@ -35,13 +37,33 @@ denial of existence in the DNS.
 
 ## Scope
 
+This is an experiment 
+
+
+
 ## Intent
+
+* Document authenticated denial of existence better
+* Why does NSEC3 work the way it does.
 
 ## Questions
 
+* Can hashed authenticated denial of existence be done more efficient than
+    NSEC3?
+* Is it easier to implement?
+* Can you write a server and a client
+* Can NSEC/NSEC3 be unified?
+* Is 1 validation algorithm sufficient for NSEC/NSEC3
+
 ## Expected results
 
-## Requirements
+* A working non-backwards compatible authenticated denial of existence. 
+* Show that NSEC3 is over specified
+* Show ....
+* Give a validation algorithm in pseudo code
+* Deploy server and client software
+
+## Requirement
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
