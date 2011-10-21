@@ -1,7 +1,9 @@
-back.xml
-middle.xml
 abstract.xml
+back.xml
+changelog.xml
 considerations.xml
+iana.xml
 introduction.xml
+middle.xml
 *.html
 *.txt
