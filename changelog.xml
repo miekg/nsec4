@@ -1,0 +1,33 @@
+
+  
+<section title="Security Considerations" anchor="security-considerations">
+  
+  <t>
+    This document does not introduce any new security issues beyond
+    those already discussed in <xref target="RFC4033"/>,
+    <xref target="RFC4034"/>, <xref target="RFC4035"/> and
+    <xref target="RFC5155"/>.
+  </t>
+</section>
+<section title="Acknowledgements" anchor="acknowledgements">
+  
+  <t>
+    This document would not be possible without the help of Ed Lewis,
+    Roy Arends, Wouter Wijngaards, Marco Davids, Esther Makaay and
+    Antoin Verschuren.
+  </t>
+</section>
+<section title="Changelog" anchor="changelog">
+  
+  <section title="00" anchor="section">
+    
+    <t><list style="symbols">
+      <t>
+        
+          Initial document
+        
+      </t>
+    </list></t>
+  </section>
+</section>
+
