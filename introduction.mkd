@@ -1,7 +1,6 @@
 # Introduction
 
 ## Rationale
-[EL: state that this is an experiment]
 
 Hashed authenticated denial of existence proofs frequently hinge on the 
 closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
@@ -34,34 +33,6 @@ By defining Zero hashing, we also fold back NSEC into NSEC4 and
 add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
-
-## Scope
-
-This is an experiment 
-
-
-
-## Intent
-
-* Document authenticated denial of existence better
-* Why does NSEC3 work the way it does.
-
-## Questions
-
-* Can hashed authenticated denial of existence be done more efficient than
-    NSEC3?
-* Is it easier to implement?
-* Can you write a server and a client
-* Can NSEC/NSEC3 be unified?
-* Is 1 validation algorithm sufficient for NSEC/NSEC3
-
-## Expected results
-
-* A working non-backwards compatible authenticated denial of existence. 
-* Show that NSEC3 is over specified
-* Show ....
-* Give a validation algorithm in pseudo code
-* Deploy server and client software
 
 ## Requirement
 
@@ -125,7 +96,7 @@ Zero hashing:
 
 :   Perform no hashing. Leave the name as-is.
 
-# Backwards Compatibility
+# Experimental Status
 <!--
 This specification describes an experimental protocol change
 that is not generally backwards compatible with the existing DNSSEC family RFCs.
@@ -169,3 +140,28 @@ the zone with this private algorithm and MUST NOT use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
 unless a response contains RRSIGs created with this private algorithm.
+
+## Scope and Intent
+
+This is an experiment to see if authenticated denial of existence
+can be made simpler and be done with only one resource record.
+We also want to give more insights in how hashed authenticated
+denial of existence works the way it works.
+
+We want to answer the following questions:
+
+* Can hashed authenticated denial of existence be done more efficient than
+    NSEC3 does it?
+* Is NSEC3 to optimal solution for hashed authenticated denial of existence?
+* Can hashed and unhashed authenticated denial of existence be be unified in
+    one records?
+* Does a validation algoritm exist for both hash and unhashed authenticated
+    denial of existence?
+
+And we expect to see the following results:
+
+* A working non-backwards compatible authenticated denial of existence. 
+* Show that NSEC3 is over specified
+* Show ....
+* Give a validation algorithm in pseudo code
+* Deploy server and client software

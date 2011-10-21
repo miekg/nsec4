@@ -1,18 +1,13 @@
 Running commentary:
 
+
+[MG: mee begonnen, zie "Experimental Status"]:, zie ook 1) hierboven
+
 1) The document should state explicitly that this is an experimental 
 effort.  There's no way that NSEC4 will unseat NSEC and NSEC3 and 
 you'll get an earful from the trolls that will talk about this taking 
 decade to even deploy and that by then DNSSEC will be firmly 
 encrusted with the current mistakes in it.
-
-2) I think this is a meritorious experiment in that it can be used to 
-measure the mistakes made in the design of DNSSEC.  As careful as we 
-were in the design phase of both DNS (before my time) and then 
-DNSSEC, the world set of expertise on how to define an Internet 
-protocol like DNS was woefully thin or completely lacking.  For 
-future generations sake, it's good for us to navel-gaze and see where 
-we fell short, not to fix the current world but to help the next one.
 
 3) I think that the scope, intent, questions being examined and when 
 results are expected should be part of any experiment and thus any 
@@ -21,6 +16,7 @@ same section.)  If you clearly lay out that this is an experiment and
 the goals, you'll have an easier time fending off the trolls.  (They 
 will bite, they always do.)
 
+[MG: heb jij al gefixt?]:
 4) I don't understand "wildcard synthesis is possible at the original 
 owner name".  The first NSEC4 you would see is either owned by the 
 qname (No error/no data) or the closest encloser (NXDOMAIN).  If it 
