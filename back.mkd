@@ -10,14 +10,14 @@ The overall TTL and class are left out for clarity.
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
                     NS      ns1.example.
-    ns1             A       192.0.43.10
+    ns1             A       192.0.2.10
     ;; secure delegation
     sd              NS      ns1.sd.example.
                     DS      33694 253 2 ...
-    ns1.sd          A       192.0.43.10
+    ns1.sd          A       192.0.2.10
     ;; unsecure delegation
     ud              NS      ns1.ud.example.
-    ns1.ud          A       192.0.43.10
+    ns1.ud          A       192.0.2.10
     *.who           TXT     "Wildcard"
 
 
@@ -41,7 +41,7 @@ The RRSIG expiration and inception times are set to ".".
                     NSEC4PARAM 0 0 0 -
                     NSEC4   0 1 0 - ( 
                     ns1.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM )
-    ns1             A       192.0.43.10
+    ns1             A       192.0.2.10
                     RRSIG   A 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
                     NSEC4   0 1 0 - sd.example. A RRSIG NSEC4
@@ -50,9 +50,9 @@ The RRSIG expiration and inception times are set to ".".
                     RRSIG   DS 253 2 300 . . 39824 example. ...
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
                     NSEC4   0 1 0 - who.example. NS DS RRSIG NSEC4
-    ns1.sd          A       192.0.43.10
+    ns1.sd          A       192.0.2.10
     ud              NS      ns1.ud.example.
-    ns1.ud          A       192.0.43.10
+    ns1.ud          A       192.0.2.10
     who             NSEC4   0 3 0 - *.who.example.
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
     *.who           TXT     "Wildcard"
@@ -101,15 +101,15 @@ echo "; H($z)\t= $(ldns-nsec3-hash -t 0 -a 1 -s "" $z)"; done -->
                     3msev9usmd4br9s97v51r2tdvmr9iqo1.example.
                     A RRSIG )
                     RRSIG   NSEC4 253 2 5 . . 39824 example. ...
-    ns1             A       192.0.43.10
+    ns1             A       192.0.2.10
                     RRSIG   A 253 2 300 . . 39824 example. ...
     sd              NS      ns1.sd.example.
                     DS      33694 253 2 ...
                     RRSIG   DS 253 2 300 . . 39824 example. ...
-    ns1.sd          A       192.0.43.10
+    ns1.sd          A       192.0.2.10
 
     ud              NS      ns1.ud.example.
-    ns1.ud          A       192.0.43.10
+    ns1.ud          A       192.0.2.10
     *.who           TXT     "Wildcard"
                     RRSIG   TXT 253 2 300 . . 39824 example. ...
 
@@ -231,7 +231,7 @@ There is no proof that the unsigned delegation exists.
                     . . 39824 example. ... )
 
     ;; Additional
-    ns1.ud.example. A       192.0.43.10
+    ns1.ud.example. A       192.0.2.10
 
 The query returned a referral to the unsigned "ud.example." zone. The
 response contains the closest provable encloser of "ud.example" to be
@@ -269,7 +269,7 @@ in the zone.
     example.        RRSIG   NS 253 1 300 . . 39824 example. ...
 
     ;; Additional
-    ns1.example.    A       192.0.43.10
+    ns1.example.    A       192.0.2.10
     ns1.example.    RRSIG   A 253 2 300 . . 39824 example. ...
 
 The query returned an answer that was produced as a result of a
