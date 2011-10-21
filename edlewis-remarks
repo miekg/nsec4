@@ -25,16 +25,6 @@ named "*".  That's what you are after, right?  Then I'd reword the
 quotes to be "s/at the original owner name/because the owner name has 
 no child node named \"*\\"/".
 
-5) About this
-
-
-    [MM: If Hash Algorithm is zero (Zero hashing), we could omit the
-    Iterations field, Salt Length field and Salt field.]
-
-Bad idea. ;)  The DNS is a fixed field protocol.  Don't make fields 
-optional.  I know you'd save a few bytes but it's not worth the 
-complexity.  Compare this to XML.
-
 6) I began to skim a bit but caught this:
 
     [MM: Instead or returning the NSEC3 RR that covers the next closer,
@@ -45,29 +35,6 @@ I think you need the CE and the proof that the next closer one fails,
 not the CE and the QNAME fails.  Because there might by N (>0) labels 
 between the CE and QNAME, you have to prove the CE asserted is really 
 the closest you can get.
-
-7) This is a mistaken use of MUST:
-
-    6.2.8.  Referrals to Unsigned Subzones
-
-        If there is an NSEC4 RR that matches the delegation name, then that
-        NSEC4 RR MUST be included in the response.  The DS and CNAME bit in
-        the type bit maps of the NSEC4 RR MUST NOT be set.
-
-Here it's not MUST, it's by definition.  If the subzone is unsigned, then
-there would be no DS.  (Of course, no CNAME or even DNAME, SOA, ....)  You
-might think a subzone could be unsigned with a DS in place - resulting in
-validation errors, but the zone you are working in can't know that.  (While
-signing the zone you don't inspect the children zones.)
-
-8) This:
-
-    [MG: Why return a Name Error response?  It might be useful to query
-    for Denial of Existence RRs]
-
-With NSEC3, there is always hashing in place, so the NSEC3 would be 
-in a different namespace, sort of, that we wanted to hide.  With 
-NSEC4, you'd have to rethink this assumption.
 
 9) Comparing a bit field with an integer:
 

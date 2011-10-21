@@ -209,16 +209,12 @@ derived from the NSEC4 that covers the next closer name.
 
 ### Responding to Queries for NSEC4 Only Owner Names
 
-Queries for NSEC4 only owner names are handled in the same way as normal
-queries. When NSEC4 hashing is in effect the paradox (NSEC4 records
+When NSEC4 hashing is in effect the paradox (NSEC4 records
 deny their own existence) described in Section 7.2.8 of [](#RFC5155)
-is back. In light of this paradox, then the response MUST be constructed
-as a Name Error response (see [](#name-error-responses)). Or, in other words,
-the authoritative name server will act as if the owner name of the NSEC4 RR
-did not exist.
-
-[MG: Why return a Name Error response? It might be useful to query for
-     Denial of Existence RRs]
+is back. When Zero hashing is used, there is no paradox. 
+In light of this, queries for the NSEC4 resource type are handled in the
+same way as normal queries. Resolvers initiating these queries
+SHOULD disregard any information learned from this.
 
 ### Server Response to a Run-Time Collision
 
