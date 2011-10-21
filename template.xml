@@ -64,6 +64,7 @@
 <?rfc include="introduction.xml"?>
 <?rfc include="middle.xml"?>
 <?rfc include="considerations.xml"?>
+<?rfc include="iana.xml"?>
 <?rfc include="changelog.xml"?>
 </middle>
 

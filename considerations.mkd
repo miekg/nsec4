@@ -5,7 +5,8 @@
 Zones using NSEC4 must satisfy the same properties as described in 
 Section 7.1 of [](#RFC5155), with NSEC3 replaced by NSEC4.
 
-In addition, for each original owner name where wildcard synthesis is possible,
+In addition, for each original owner name that has a wildcard domain name
+immediately from the original owner name,
 the corresponding NSEC4 RR MUST have the Wildcard bit set in the Flags field.
 
 The following steps describe one possible method of proper construction of
@@ -72,7 +73,8 @@ NSEC3 RRs in such responses with NSEC4 RRs.
 
 Instead of wasting a whole denial of existence RR to deny a wildcard, we have
 introduced a bit in the Flags field of the NSEC4 RR that indicates whether
-wildcard synthesis was possible at the original owner name.
+wildcard synthesis was possible because there exists a wildcard domain name
+immediately descending from the original owner name.
 
 The Denial of Wildcard Synthesis proof consists of one NSEC4 RR, that
 matches some domain name, and that has the Wildcard bit clear.
@@ -123,10 +125,6 @@ and a NSEC RR that covers the wildcard RR at the closest encloser.
 With NSEC3, the server includes in the response a NSEC3 RR that covers the
 next closer, a NSEC3 RR that covers the wildcard RR at the closest
 encloser, and a NSEC3 RR that matches the closest encloser.
-
-[MM: Instead or returning the NSEC3 RR that covers the next closer,
-     the server could have returned the NSEC3 RR that covers the QNAME in
-     order to proof that there is no exact match for QNAME.]
 
 To prove the nonexistence of QNAME with NSEC4, the server MUST include a
 denial of source of synthesis proof. This collection of (up to) two NSEC4 RRs
@@ -198,7 +196,7 @@ that matches the wildcard. From that, the next closer can be derived.
 
 If there is an NSEC4 RR that matches the delegation name, then that
 NSEC4 RR MUST be included in the response. The DS and CNAME bit in the type
-bit maps of the NSEC4 RR MUST NOT be set.
+bit maps of the NSEC4 RR must not be set (by definition).
 
 If the zone is Opt-Out, then there may not be an NSEC4 RR corresponding to
 the delegation. In this case, the closest provable encloser proof MUST be
@@ -275,8 +273,8 @@ RRs will generally be considered bogus.
 
 ## Verifying NSEC4 RRs
 
-A validator MUST ignore NSEC4 RRs with a Flag fields value greater than
-three.
+A validator MUST ignore the undefined bits (0-5) in the Flags field of
+NSEC4 RRs.
 
 A validator MAY treat a response as bogus if the response contains
 NSEC4 RRs that contain different values for hash algorithm,
