@@ -6,7 +6,7 @@ Zones using NSEC4 must satisfy the same properties as described in
 Section 7.1 of [](#RFC5155), with NSEC3 replaced by NSEC4.
 
 In addition, for each original owner name that has a wildcard domain name
-immediately from the original owner name,
+immediately descending from the original owner name,
 the corresponding NSEC4 RR MUST have the Wildcard bit set in the Flags field.
 
 The following steps describe one possible method of proper construction of
