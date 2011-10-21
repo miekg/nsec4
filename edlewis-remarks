@@ -1,6 +1,3 @@
-Running commentary:
-
-
 [MG: mee begonnen, zie "Experimental Status"]:, zie ook 1) hierboven
 
 1) The document should state explicitly that this is an experimental 
@@ -35,71 +32,3 @@ I think you need the CE and the proof that the next closer one fails,
 not the CE and the QNAME fails.  Because there might by N (>0) labels 
 between the CE and QNAME, you have to prove the CE asserted is really 
 the closest you can get.
-
-9) Comparing a bit field with an integer:
-
-     7.2.  Verifying NSEC4 RRs
-
-        A validator MUST ignore NSEC4 RRs with a Flag fields value greater
-        than three.
-
-You have to say this some other way.  It gets sticky because someone 
-might use a 'int' of 64 bits to hold the 8 bit Flag fields, etc. 
-Enforce that this is bitwise and say that 0xFC | flag field must be 0 
-- or whatever it should be.
-
-I didn't read the Appdx yet.  I wanted to get this response in first.
-
-I think this is worth going forward with, as an experiment.  If NSEC4 
-proves to be a worth while upgrade, we'd have to do a type code roll 
-again and name this NSEC5.  If that happens, there's Nobel prizes for 
-mathematics all around.  (You do know Nobel never instituted a math 
-prize.)  Still, we can learn a lot by seeing NSEC4 side by side with 
-the NSEC/NSEC3 world.
-
-At 18:37 +0200 10/16/11, Miek Gieben wrote:
->Hello,
->
->After understanding NSEC3 and writing a white paper (will be 
->published soonish on
->sidnlabs.nl) comes the next step: NSEC4 :-). Matthijs (Mekking) and I, after
->finally getting to grips with NSES3, thought we could do better and fix some
->of the NSEC3 issues. The abstract of this draft reads:
->
->    The Domain Name System Security (DNSSEC) Extensions introduced the
->    NSEC resource record (RR) for authenticated denial of existence, and
->    the NSEC3 resource record for hashed authenticated denial of
->    existence.  This document introduces an alternative resource record,
->    NSEC4, which similarly provides authenticated denial of existence.
->    It permits gradual expansion of delegation-centric zones, just like
->    NSEC3 does.  With NSEC4 it is possible, but not required, to provide
->    measures against zone enumeration.
->
->    NSEC4 reduces the size of the denial of existence response and adds
->    Opt-Out to unhashed names.
->
->It's (currently) aimed at the experimental track.
->
->Would you care to take a look at this doc, before we submit it to the IETF?
->
->Thank you very much!
->
->grtz,
->
->--
->     Miek
->
->Attachment converted: Macintosh HD:draft.txt (TEXT/ttxt) (0071BA02)
->Content-Type: application/pgp-signature; name="signature.asc"
->Content-Description: Digital signature
->
->Attachment converted: Macintosh HD:signature 1369.asc (    /    ) (0071BA08)
-
--- 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-Edward Lewis
-NeuStar                    You can leave a voice message at +1-571-434-5468
-
-Vote for the word of the day:
-"Papa"razzi - father that constantly takes photos of the baby
-Corpureaucracy - The institution of corporate "red tape"
