@@ -143,9 +143,12 @@ unless a response contains RRSIGs created with this private algorithm.
 
 ## Scope and Intent
 
-This is an experiment to see if authenticated denial of existence
-can be made simpler and be done with only one resource record.
-We also want to give more insights in how hashed authenticated
+This experiment resolves two things:
+
+* Reduces the size of the denial of existence response;
+* Adds Opt-Out to unhashed names.
+
+We also want to give more detailed documentation on how hashed authenticated 
 denial of existence works the way it works.
 
 We want to answer the following questions:
@@ -155,12 +158,12 @@ We want to answer the following questions:
 * Is NSEC3 to optimal solution for hashed authenticated denial of existence?
 * Can hashed and unhashed authenticated denial of existence be be unified in
     one records?
-* Does a validation algoritm exist for both hash and unhashed authenticated
+* Does a single validation algorithm exist for both hash and unhashed authenticated
     denial of existence?
 
 And we expect to see the following results:
 
-* A working non-backwards compatible authenticated denial of existence. 
+* A working non-backwards compatible authenticated denial of existence;
 * Show that NSEC3 is over specified
 * Show ....
 * Give a validation algorithm in pseudo code
