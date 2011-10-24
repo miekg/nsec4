@@ -163,8 +163,7 @@ We want to answer the following questions:
 
 And we expect to see the following results:
 
-* A working non-backwards compatible authenticated denial of existence;
+* A working (non-backwards) authenticated denial of existence;
 * Show that NSEC3 is over specified
-* Show ....
 * Give a validation algorithm in pseudo code
 * Deploy server and client software
