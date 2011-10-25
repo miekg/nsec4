@@ -140,30 +140,3 @@ the zone with this private algorithm and MUST NOT use any other algorithms.
 
 Resolvers MUST NOT apply NSEC4 validation described in this document
 unless a response contains RRSIGs created with this private algorithm.
-
-## Scope and Intent
-
-This experiment resolves two things:
-
-* Reduces the size of the denial of existence response;
-* Adds Opt-Out to unhashed names.
-
-We also want to give more detailed documentation on how hashed authenticated 
-denial of existence works the way it works.
-
-We want to answer the following questions:
-
-* Can hashed authenticated denial of existence be done more efficient than
-    NSEC3 does it?
-* Is NSEC3 to optimal solution for hashed authenticated denial of existence?
-* Can hashed and unhashed authenticated denial of existence be be unified in
-    one records?
-* Does a single validation algorithm exist for both hash and unhashed authenticated
-    denial of existence?
-
-And we expect to see the following results:
-
-* A working (non-backwards) authenticated denial of existence;
-* Show that NSEC3 is over specified
-* Give a validation algorithm in pseudo code
-* Deploy server and client software
