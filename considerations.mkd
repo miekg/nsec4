@@ -214,7 +214,7 @@ deny their own existence) described in Section 7.2.8 of [](#RFC5155)
 is back. When Zero hashing is used, there is no paradox. 
 In light of this, queries for the NSEC4 resource type are handled in the
 same way as normal queries. Resolvers initiating these queries
-SHOULD disregard any information learned from this.
+SHOULD disregard any information learned from the returned NSEC4 records.
 
 ### Server Response to a Run-Time Collision
 
