@@ -38,4 +38,16 @@
             <date year='2010' month='March'/>
             </front>
         </reference>
+        <reference anchor='GiebenMekking11'>
+            <front>
+            <title>Authenticated Denial of Existence in the DNS</title>
+            <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
+            <organization>SIDN</organization>
+            </author>
+            <author initials='W.' surname='Mekking' fullname='W. (Matthijs) Mekking'>
+            <organization>NLnet Labs</organization>
+            </author>
+            <date year='2011' month='November'/>
+            </front>
+        </reference>
 </references>
