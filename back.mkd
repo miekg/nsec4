@@ -318,3 +318,7 @@ RRs of the requested type and that no closer match exists in the zone.
 
 The query returned the NSEC4 RRs that prove that the requested data
 does not exist and shows the types that do exist at the wildcard.
+
+# Resolver validation algorithm
+
+[TBD]
