@@ -37,6 +37,7 @@
             </author>
             <date year='2010' month='March'/>
             </front>
+            <format type='PDF' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'/>
         </reference>
         <reference anchor='GiebenMekking11'>
             <front>
@@ -49,5 +50,6 @@
             </author>
             <date year='2011' month='November'/>
             </front>
+            <format type='PDF' target='http://www.sidnlabs.nl/fileadmin/docs/PDF-files_UK/wp-2011-0x01-v1.pdf'/>
         </reference>
 </references>
