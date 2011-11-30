@@ -261,6 +261,29 @@ or clearing of the Wildcard bit in the Flags field:
 
 # Validator Considerations
 
+The following steps describe one possible method of proper validation
+of an answer containing NSEC4 RRs.
+
+1. For each section in the answer:
+    * Count the number of RRs in the answer section, call this number "Nans";
+    * Count the number of RRs in the authority section, call this number "Nauth".
+
+2. If "Nans" and "Nauth" are both greater than zero, goto step 5;
+
+3. If "Nans" equals zero and "Nauth" is greater then zero, goto step YY;
+
+4. If both "Nans" and "Nauth" are zero there are no NSEC4 RRs..."Houston, we got a problem", goto step -1;
+
+5. We want to determine if we can proof an expanded wildcard answer or a CNAME/DNAME
+   a. dksdskl;
+   b. dsjdsjsk;
+
+9. Determine if this is a correct NXDOMAIN answer.
+
+
+
+
+
 ## Responses with Unknown Hash Types
 
 A validator MUST ignore NSEC4 RRs with unknown hash types.  The
