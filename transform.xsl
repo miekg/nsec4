@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<!-- Convert DocBook XML as created by Pandoc to XML suitable for
+<!-- 
+     Version: 0.8
+
+     Convert DocBook XML as created by Pandoc to XML suitable for
      RFCs. Should be parseble with xml2rfc.
 
      Some "awkward" conversions:
@@ -59,7 +62,7 @@
 </xsl:template>
 
 <!-- Transform a <para> to <t>, except in lists, then it is discarded -->
-<xsl:template match="para">
+<xsl:template match="para | simpara">
     <xsl:choose>
         <xsl:when test="ancestor::orderedlist">
                 <xsl:apply-templates/>
@@ -241,16 +244,17 @@
 </xsl:template>
 
 <!-- Transform <blockquote> to <figure><artwork> -->
+<!-- TODO: does work? ./para | ./simpara -->
 <xsl:template match="blockquote">
     <figure>
         <artwork>
-            <xsl:value-of select="./para"/>
+            <xsl:value-of select="./para | ./simpara"/>
         </artwork>
     </figure>
 </xsl:template>
 
 <!-- Transform <screen> and <programlisting> to <figure><artwork> -->
-<xsl:template match="screen | programlisting">
+<xsl:template match="screen | programlisting | literallayout">
     <figure>
         <artwork>
             <xsl:apply-templates/>
@@ -300,68 +304,11 @@
         <xsl:attribute name="align">
             <xsl:value-of select="@align"/>
         </xsl:attribute>
-        <!-- for some stupid reason position() div 2, does not work, so the loop is unrolled and we do it by hand -->
-        <!-- first column -->
-        <xsl:if test="position()=2">
-            <xsl:if test="../../../../table/col[1]">
+        <!-- Every even position() need to be dealt with: 2 look back to 1, 4 look back to 2, etc. -->
+        <xsl:if test="position() mod 2 = 0">
+            <xsl:if test="../../../../table/col[ position() div 2 ]">
                 <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[1]/@width"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:if>
-        <!-- second column -->
-        <xsl:if test="position()=4">
-            <xsl:if test="../../../../table/col[2]">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[2]/@width"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:if>
-        <!-- third column -->
-        <xsl:if test="position()=6">
-            <xsl:if test="../../../../table/col[3]">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[3]/@width"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:if>
-        <!-- fourth column -->
-        <xsl:if test="position()=8">
-            <xsl:if test="../../../../table/col[4]">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[4]/@width"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:if>
-        <!-- fifth column -->
-        <xsl:if test="position()=10">
-            <xsl:if test="../../../../table/col[5]">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[5]/@width"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:if>
-        <!-- sixth column -->
-        <xsl:if test="position()=12">
-            <xsl:if test="../../../../table/col[6]">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[6]/@width"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:if>
-        <!-- seventh column -->
-        <xsl:if test="position()=14">
-            <xsl:if test="../../../../table/col[7]">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[7]/@width"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:if>
-        <!-- eighth column -->
-        <xsl:if test="position()=16">
-            <xsl:if test="../../../../table/col[8]">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="../../../../table/col[8]/@width"/>
+                    <xsl:value-of select="../../../../table/col[ position() div 2 ]/@width"/>
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
@@ -372,99 +319,15 @@
 <!-- Table headers for CALS tables, Pandoc 1.8.2.x+ emit these -->
 <xsl:template match="table/tgroup/thead/row/entry">
     <ttcol>
-        <xsl:if test="position()=2">
-            <xsl:if test="../../../../../table/tgroup/colspec[1]">
+        <xsl:if test="position() mod 2 = 0">
+            <xsl:if test="../../../../../table/tgroup/colspec[ position() div 2 ]">
                 <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[1]/@align"/>
+                    <xsl:value-of select="../../../../../table/tgroup/colspec[position() div 2 ]/@align"/>
                 </xsl:attribute>
                 <!-- Optionally colwidth, translate * to % -->
-                <xsl:if test="../../../../../table/tgroup/colspec[1]/@colwidth">
+                <xsl:if test="../../../../../table/tgroup/colspec[ position() div 2 ]/@colwidth">
                     <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[1]/@colwidth, '*', '%')"/>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="position()=4">
-            <xsl:if test="../../../../../table/tgroup/colspec[2]">
-                <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[2]/@align"/>
-                </xsl:attribute>
-                <xsl:if test="../../../../../table/tgroup/colspec[2]/@colwidth">
-                    <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[2]/@colwidth, '*', '%')"/>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="position()=6">
-            <xsl:if test="../../../../../table/tgroup/colspec[3]">
-                <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[3]/@align"/>
-                </xsl:attribute>
-                <xsl:if test="../../../../../table/tgroup/colspec[3]/@colwidth">
-                    <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[3]/@colwidth, '*', '%')"/>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="position()=8">
-            <xsl:if test="../../../../../table/tgroup/colspec[4]">
-                <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[4]/@align"/>
-                </xsl:attribute>
-                <xsl:if test="../../../../../table/tgroup/colspec[4]/@colwidth">
-                    <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[4]/@colwidth, '*', '%')"/>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="position()=10">
-            <xsl:if test="../../../../../table/tgroup/colspec[5]">
-                <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[5]/@align"/>
-                </xsl:attribute>
-                <xsl:if test="../../../../../table/tgroup/colspec[5]/@colwidth">
-                    <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[5]/@colwidth, '*', '%')"/>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="position()=12">
-            <xsl:if test="../../../../../table/tgroup/colspec[6]">
-                <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[6]/@align"/>
-                </xsl:attribute>
-                <xsl:if test="../../../../../table/tgroup/colspec[6]/@colwidth">
-                    <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[6]/@colwidth, '*', '%')"/>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="position()=14">
-            <xsl:if test="../../../../../table/tgroup/colspec[7]">
-                <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[7]/@align"/>
-                </xsl:attribute>
-                <xsl:if test="../../../../../table/tgroup/colspec[7]/@colwidth">
-                    <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[7]/@colwidth, '*', '%')"/>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="position()=16">
-            <xsl:if test="../../../../../table/tgroup/colspec[8]">
-                <xsl:attribute name="align">
-                    <xsl:value-of select="../../../../../table/tgroup/colspec[8]/@align"/>
-                </xsl:attribute>
-                <xsl:if test="../../../../../table/tgroup/colspec[8]/@colwidth">
-                    <xsl:attribute name="width">
-                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[8]/@colwidth, '*', '%')"/>
+                        <xsl:value-of select="translate(../../../../../table/tgroup/colspec[ position div 2 ]/@colwidth, '*', '%')"/>
                     </xsl:attribute>
                 </xsl:if>
             </xsl:if>
