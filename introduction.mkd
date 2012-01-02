@@ -11,7 +11,7 @@ these names from the closest encloser.
 This is why most of the denial of existence responses with
 NSEC3 contain three records:
 
-1. A record where the original owner name of the NSEC3 is the closest encloser;
+1. A record which matches the closest encloser;
 1. A record which covers or matches the next closer, to deny or assert the
    existence of the next closer name;
 1. A record which covers or matches the wildcard, to deny or assert 
