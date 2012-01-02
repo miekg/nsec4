@@ -417,7 +417,7 @@ Opt-Out bit set.
 
 # Resolver Considerations
 
-## NSEC3 Resource Record Caching
+## NSEC4 Resource Record Caching
 
 The same considerations as described in Section 9.1 of [](#RFC5155) for
 NSEC3 apply to NSEC4.
