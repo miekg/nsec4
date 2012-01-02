@@ -1,27 +1,29 @@
 DRAFTNAME=$(shell grep docName template.xml | sed -e 's/.*docName=\"//' -e 's/\">//')
+XML=abstract.xml introduction.xml middle.xml considerations.xml iana.xml changelog.xml back.xml
+RFC=DISPLAY= xml2rfc template.xml
 
 all:	$(DRAFTNAME).txt $(DRAFTNAME).html
 
 %.xml:	%.mkd transform.xsl
 	pandoc $< -t docbook -s | xsltproc transform.xsl - > $@
 
-draft.txt:	abstract.xml introduction.xml middle.xml considerations.xml iana.xml changelog.xml back.xml template.xml
-	DISPLAY= xml2rfc template.xml draft.txt
+draft.txt:	$(XML) template.xml
+	$(RFC) $@
 
-draft.html:	abstract.xml introduction.xml middle.xml considerations.xml iana.xml changelog.xml back.xml template.xml
-	DISPLAY= xml2rfc template.xml draft.html
+draft.html: 	$(XML) template.xml
+	$(RFC) $@
 
 $(DRAFTNAME).txt:	draft.txt
-	ln -sf $< $(DRAFTNAME).txt
+	ln -sf $< $@
 
 $(DRAFTNAME).html:	draft.html
-	ln -sf $< $(DRAFTNAME).html
+	ln -sf $< $@
 
 nits:   $(DRAFTNAME).txt
 	idnits --year 2011 --verbose $<
 
 clean:
-	rm -f abstract.xml introduction.xml middle.xml considerations.xml iana.xml changelog.xml back.xml
+	rm -f $(XML)
 
 realclean: clean
 	rm -f $(DRAFTNAME).txt $(DRAFTNAME).html draft.txt draft.html

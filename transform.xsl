@@ -2,27 +2,27 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- 
-     Version: 0.8
+     Version: 0.8.2
      (c) Miek Gieben
      Licensed under the GPL version 2.
 
-     Convert DocBook XML as created by Pandoc to XML suitable for
-     RFCs and thus  parseble with xml2rfc.
+     Convert DocBook XML as created by Pandoc or AsciiDoc to 
+     XML suitable for RFCs and thus parseble with xml2rfc.
 
      Some "awkward" conversions:
 
      * blockquote -> <figure><artwork> ... 
 
-     It emits warnings (and removes the content) when encountering:
+     It (silently) removes the content when encountering:
 
-     * articleinfo;
+     * articleinfo - use the template.xml for that;
      * nested blockquotes;
      * footnotes.
 
     Not supported:
 
     * iref tag (index);
-    * cref tag (comments). Use HTML comments.
+    * cref tag (comments), use HTML comments.
 -->
 
 <xsl:output method="xml" omit-xml-declaration="yes"/>
@@ -38,16 +38,19 @@
 <!-- Remove the article info section, this should be handled
      in the <front> matter of the draft -->
 <xsl:template match="articleinfo">
-    <xsl:message terminate="no">
+    <!--    <xsl:message terminate="no">
         Warning: Author and article information is discarded.
     </xsl:message>
+    -->
 </xsl:template>
 
 <!-- Remove footnotes -->
 <xsl:template match="footnote">
+    <!--
     <xsl:message terminate="no">
         Warning: Footnote is not supported in RFC output.
     </xsl:message>
+    -->
 </xsl:template>
 
 <!-- Merge section with the title tags into one section -->
@@ -228,7 +231,7 @@
 </xsl:template>
 
 <!-- Transform <link> to <xref> crosslinks -->
-<!-- Use [see](#mysection) in pandoc -->
+<!-- Use [see](#mysection) in Pandoc -->
 <xsl:template match="link">
     <xref>
         <xsl:attribute name="target">
@@ -239,7 +242,7 @@
 </xsl:template>
 
 <!-- Transform <ulink> to <eref> links -->
-<!-- Use [see](uri) in pandoc -->
+<!-- Use [see](uri) in Pandoc -->
 <xsl:template match="ulink">
     <eref>
         <xsl:attribute name="target">
@@ -250,11 +253,10 @@
 </xsl:template>
 
 <!-- Transform <blockquote> to <figure><artwork> -->
-<!-- TODO: does work? ./para | ./simpara -->
 <xsl:template match="blockquote">
     <figure>
         <artwork>
-            <xsl:value-of select="./para | ./simpara"/>
+            <xsl:value-of select="./para"/>
         </artwork>
     </figure>
 </xsl:template>
@@ -262,6 +264,11 @@
 <!-- Transform <screen> and <programlisting> to <figure><artwork> -->
 <xsl:template match="screen | programlisting">
     <figure>
+        <xsl:if test="@id">
+            <xsl:attribute name="anchor">
+                <xsl:value-of select="@id"/>
+            </xsl:attribute>
+        </xsl:if>
         <artwork>
             <xsl:apply-templates/>
         </artwork>
@@ -270,11 +277,23 @@
 
 <!-- AsciiDoc; Transform <literallayout> to <figure><artwork> -->
 <!-- Insert a newline after the <artwork>-tag because AsciiDoc, does not
-     do this automatically. Check if we are inside a list -->
+     do this automatically, except when we are inside a list -->
 <xsl:template match="literallayout">
     <figure>
+        <xsl:if test="@id">
+            <xsl:attribute name="anchor">
+                <xsl:value-of select="@id"/>
+            </xsl:attribute>
+        </xsl:if>
         <artwork>
-            <xsl:text>&#10;</xsl:text>
+            <xsl:choose>
+                <xsl:when test="ancestor::orderedlist"></xsl:when>
+                <xsl:when test="ancestor::itemizedlist"></xsl:when>
+                <xsl:when test="ancestor::variablelist"></xsl:when>
+                <xsl:otherwise>
+                    <xsl:text>&#10;</xsl:text>
+                </xsl:otherwise>
+            </xsl:choose>
             <xsl:apply-templates/>
         </artwork>
     </figure>
@@ -306,6 +325,11 @@
 <!-- Tables -->
 <xsl:template match="table | informaltable">
     <texttable>
+        <xsl:if test="@id">
+            <xsl:attribute name="anchor">
+                <xsl:value-of select="@id"/>
+            </xsl:attribute>
+        </xsl:if>
         <xsl:apply-templates/>
     </texttable>
 </xsl:template>
@@ -360,7 +384,7 @@
     </xsl:if>
 </xsl:template>
 
-<!-- Table headers for CALS tables, Pandoc 1.8.2.x+ emit these -->
+<!-- Table headers for CALS tables, Pandoc 1.8.2.x+ emits these -->
 <xsl:template match="table/tgroup/thead/row/entry">
     <ttcol>
         <xsl:if test="position() = 2">
@@ -387,9 +411,12 @@
         <xsl:if test="position() = 16">
             <xsl:call-template name="get_colspec"><xsl:with-param name="column" select="8"/></xsl:call-template>
         </xsl:if>
-        <xsl:attribute name="align">
-            <xsl:value-of select="@align"/>
-        </xsl:attribute>
+        <!-- If the entry itself has align, we always use that -->
+        <xsl:if test="@align">
+            <xsl:attribute name="align">
+                <xsl:value-of select="@align"/>
+            </xsl:attribute>
+        </xsl:if>
         <xsl:apply-templates/>
     </ttcol>
 </xsl:template>
