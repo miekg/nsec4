@@ -264,6 +264,9 @@ or clearing of the Wildcard bit in the Flags field:
 The following steps describe one possible method of proper validation
 of an answer containing NSEC4 RRs.
 
+[TBD]
+
+<!--
 1. For each section in the answer:
     * Count the number of RRs in the answer section, call this number "Nans";
     * Count the number of RRs in the authority section, call this number "Nauth".
@@ -279,10 +282,7 @@ of an answer containing NSEC4 RRs.
    b. dsjdsjsk;
 
 9. Determine if this is a correct NXDOMAIN answer.
-
-
-
-
+-->
 
 ## Responses with Unknown Hash Types
 
