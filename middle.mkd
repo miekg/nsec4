@@ -14,7 +14,8 @@ hash function is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
 
 The hashing technique is the same as with NSEC3 and is described in
-Section 5 of [](#RFC5155).
+Section 5 of [](#RFC5155). NSEC3 creates hashes for empty non-terminals, NSEC4
+does the same, even when Zero hashing is in use.
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
 A NSEC4 RR whose span covers an owner name or next closer name of an
@@ -93,7 +94,7 @@ A sender MUST NOT use DNS name compression on the Next Owner Name field when
 transmitting a NSEC4 RR.
 
 Owner names of RRsets for which the given zone is not authoritative
-(such as glue records) MUST NOT be listed in the Next Owner Name
+(such as glue records) MUST NOT be listed in the Next Owner Name,
 unless at least one authoritative RRset exists at the same owner name.
 
 ### Type Bit Maps

@@ -45,7 +45,9 @@ NSEC4 RRs.
     consisting of the union of the types represented by the set of NSEC4 RRs. 
     If hashing is used and the original owner name was tracked, then collisions
     may be detected when combining, as all of the matching NSEC4 RRs should
-    have the same original owner name. Discard any possible temporary NSEC4 RRs;
+    have the same original owner name. If a hash collision is detected, then a 
+    new salt has to be chosen, and the signing process is restarted.
+    Discard any possible temporary NSEC4 RRs;
 
 8.  In each NSEC4 RR, insert the next (hashed) owner name by using the
     domain name of the next NSEC4 RR in hashed (if hashing is used) or
@@ -59,9 +61,6 @@ NSEC4 RRs.
 
 9.  Finally, add a NSEC4PARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
-
-If a hash collision is detected, then a new salt has to be chosen,
-and the signing process is restarted.
 
 ## Zone Serving
 
@@ -79,7 +78,7 @@ immediately descending from the original owner name.
 The Denial of Wildcard Synthesis proof consists of one NSEC4 RR, that
 matches some domain name, and that has the Wildcard bit clear.
 
-Note that without much knowledge of the domain name, this proof is not really
+Note that without much knowledge of the oritinal owner name, this proof is not really
 useful. In particular, we don't know if this is the wildcard synthesis that
 we are looking for. This changes if we combine this proof with the
 closest encloser proof.
