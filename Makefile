@@ -33,3 +33,6 @@ clean:
 
 realclean: clean
 	rm -f $(DRAFTNAME).txt $(DRAFTNAME).html $(DRAFTNAME).xml draft.txt draft.html draft.xml
+
+uberclean: realclean
+	rm draft-*
