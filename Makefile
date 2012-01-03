@@ -14,7 +14,7 @@ draft.html: 	$(XML) template.xml
 	$(RFC) $@
 
 draft.xml:	$(XML) template.xml
-	./single-xml template.xml > $@
+	perl single-xml template.xml > $@
 
 $(DRAFTNAME).txt:	draft.txt
 	ln -sf $< $@
