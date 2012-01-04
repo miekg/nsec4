@@ -203,7 +203,7 @@ that the requested RR type does not.
     m1o89lfdo9rrf2f8r8ss42d81d09v48m.example. RRSIG NSEC4 253 2 5 (
                     . . 39824 example. ... )
 
-The query returned a NSEC4 RR that proves that the requested name
+The query returned an NSEC4 RR that proves that the requested name
 exists ("ns1.example" hashes to "m1o89lfdo9rrf2f8r8ss42d81d09v48m"),
 but the requested RR type does not exist (type MX is absent in the
 type code list of the NSEC4 RR), and was not a CNAME (type CNAME is

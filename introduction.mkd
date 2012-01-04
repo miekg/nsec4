@@ -57,11 +57,11 @@ Original owner name:
 
 Opt-Out NSEC4 RR:
 
-:   a NSEC4 RR that has the Opt-Out flag set to 1.
+:   an NSEC4 RR that has the Opt-Out flag set to 1.
 
 Wildcard NSEC4 RR:
 
-:   a NSEC4 RR that has the Wildcard flag set to 1.
+:   an NSEC4 RR that has the Wildcard flag set to 1.
 
 Opt-Out zone:
 
@@ -76,10 +76,10 @@ Base32:
 To cover:
 
 :   When a hash algorithm is defined,
-    a NSEC4 RR is said to "cover" a name if the hash of the name or
+    an NSEC4 RR is said to "cover" a name if the hash of the name or
     next closer name falls between the owner name and the next hashed
     owner name of the NSEC4. When no hash algorithm (Zero hashing) is defined, 
-    a NSEC4 RR is
+    an NSEC4 RR is
     said to "cover" a name if the name or next closer name falls between
     the owner name and the next owner name of the NSEC4. In other words, if
     it proves the nonexistence of the name, either directly or by proving the
@@ -87,9 +87,9 @@ To cover:
 
 To match:
 
-:   When a hash algorithm is defined, a NSEC4 RR is said to "match" a name
+:   When a hash algorithm is defined, an NSEC4 RR is said to "match" a name
     if the owner name of the NSEC4 RR is the same as the hashed owner name
-    of that name. When no hash algorithm (Zero hashing) is defined, a NSEC4 RR is said to
+    of that name. When no hash algorithm (Zero hashing) is defined, an NSEC4 RR is said to
     "match" a name if the name and the owner name of the NSEC4 RR are equal.
 
 Zero hashing:

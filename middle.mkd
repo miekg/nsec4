@@ -18,7 +18,7 @@ Section 5 of [](#RFC5155). NSEC3 creates hashes for empty non-terminals, NSEC4
 does the same, even when Zero hashing is in use.
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
-A NSEC4 RR whose span covers an owner name or next closer name of an
+An NSEC4 RR whose span covers an owner name or next closer name of an
 unsigned delegation is referred to as an Opt-Out NSEC4 RR and is indicated by
 the presence of a flag.
 
@@ -91,7 +91,7 @@ If Zero hashing is used, the field contains the next owner name in the
 canonical ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
 
 A sender MUST NOT use DNS name compression on the Next Owner Name field when
-transmitting a NSEC4 RR.
+transmitting an NSEC4 RR.
 
 Owner names of RRsets for which the given zone is not authoritative
 (such as glue records) MUST NOT be listed in the Next Owner Name,
@@ -188,7 +188,7 @@ NSEC record:
 
     example. NSEC a.example NS SOA RRSIG DNSKEY NSEC
 
-The same data shown as a NSEC3 record:
+The same data shown as an NSEC3 record:
 <!-- ldns-nsec3-hash -t 0 -a 1 -s "" example. -->
 <!-- ldns-nsec3-hash -t 0 -a 1 -s "" a.example. -->
 
@@ -196,11 +196,11 @@ The same data shown as a NSEC3 record:
                         6cd522290vma0nr8lqu1ivtcofj94rga 
                         NS SOA RRSIG DNSKEY NSEC3PARAM )
 
-As a NSEC4 record with Zero hashing:
+As an NSEC4 record with Zero hashing:
 
     example. NSEC4 0 0 0 - a.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
 
-And as a NSEC4 record with SHA1 hashing:
+And as an NSEC4 record with SHA1 hashing:
 
     3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 0 0 - (
                  6cd522290vma0nr8lqu1ivtcofj94rga.example. 

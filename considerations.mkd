@@ -14,7 +14,7 @@ NSEC4 RRs.
 
 1.  Select the hash algorithm and the values for salt and iterations;
 
-2.  For each unique original owner name in the zone add a NSEC4 RR;
+2.  For each unique original owner name in the zone add an NSEC4 RR;
     * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded;
     * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Zero hashing is used;
     * The Next Owner Name field is left blank for the moment;
@@ -26,7 +26,7 @@ NSEC4 RRs.
     prepended. Mark this NSEC4 RR as temporary;
 
 4.  If the original owner name is a wildcard domain name (Section 2.1.1. of [](#RFC4592)), 
-    mark the NSEC4 to be a NSEC4 RR that is matching a wildcard; 
+    mark the NSEC4 to be an NSEC4 RR that is matching a wildcard; 
 
 4.  For each RRSet at the original owner name, set the corresponding
     bit in the Type Bit Maps field;
@@ -59,7 +59,7 @@ NSEC4 RRs.
     matches the closest encloser. Set the Wildcard bit in the Flags field
     of that NSEC4;
 
-9.  Finally, add a NSEC4PARAM RR with the same Hash Algorithm,
+9.  Finally, add an NSEC4PARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
 
 ## Zone Serving
@@ -100,9 +100,9 @@ the closest encloser.
 The Denial of Source of Synthesis proof consists of (up to) two NSEC4 RRs,
 the same that constructed the closest encloser proof:
 
-* a NSEC4 RR that matches the closest encloser, and that has the Wildcard bit
+* an NSEC4 RR that matches the closest encloser, and that has the Wildcard bit
   clear in the Flags field;
-* a NSEC4 RR that covers the next closer name to the closest encloser.
+* an NSEC4 RR that covers the next closer name to the closest encloser.
 
 The first NSEC4 RR essentially proves that the encloser exists, and that no
 wildcard synthesis at the encloser is possible.
@@ -118,12 +118,12 @@ via wildcard name expansion, then the name server must include proof that:
 * the zone contains no RRsets that would match QNAME via wildcard name
   expansion.
 
-With NSEC, the server includes in the response a NSEC RR that covers QNAME,
-and a NSEC RR that covers the wildcard RR at the closest encloser.
+With NSEC, the server includes in the response an NSEC RR that covers QNAME,
+and an NSEC RR that covers the wildcard RR at the closest encloser.
 
-With NSEC3, the server includes in the response a NSEC3 RR that covers the
-next closer, a NSEC3 RR that covers the wildcard RR at the closest
-encloser, and a NSEC3 RR that matches the closest encloser.
+With NSEC3, the server includes in the response an NSEC3 RR that covers the
+next closer, an NSEC3 RR that covers the wildcard RR at the closest
+encloser, and an NSEC3 RR that matches the closest encloser.
 
 To prove the nonexistence of QNAME with NSEC4, the server MUST include a
 denial of source of synthesis proof. This collection of (up to) two NSEC4 RRs
@@ -157,27 +157,27 @@ that the wildcard match was valid. This proof is accomplished by proving
 that QNAME does not exist and that the closest encloser of QNAME and the
 immediate ancestor of the wildcard are equal.
 
-Both with NSEC and NSEC3, the server includes in the response a NSEC RR
+Both with NSEC and NSEC3, the server includes in the response an NSEC RR
 that covers the next closer. It is not necessary to return a RR that
 matches the closest encloser, as the existence of this closest encloser
 is proven by the presence of the expanded wildcard in the response.
 
 To prove that the wildcard name expansion was valid with NSEC4,
-the server MUST include in the response a NSEC4 RR that covers the
+the server MUST include in the response an NSEC4 RR that covers the
 next closer. For the same reasons as with NSEC and NSEC3, it is not necessary
 to return a RR that matches the closest encloser.
 
 ### Wildcard No Data Responses
 
-With NSEC, the server includes in the response a NSEC RR that matches the
+With NSEC, the server includes in the response an NSEC RR that matches the
 wildcard, in addition to the NSEC RR that covers the next closer. The
 NSEC RR does not have the bits corresponding to QTYPE or CNAME set in its
 Type Bit Maps field.
 
-Again, with NSEC3, the server includes in the response a NSEC3 RR that
+Again, with NSEC3, the server includes in the response an NSEC3 RR that
 matches the wildcard, in addition to the NSEC3 RR that covers the next
 closer. The NSEC3 RR does not have the bits corresponding to QTYPE or
-CNAME set in its Type Bit Maps field. Besides that, a NSEC3 RR that
+CNAME set in its Type Bit Maps field. Besides that, an NSEC3 RR that
 matches the closest encloser is included, because there was no expanded
 wildcard in the response that can be used to determine the closest
 encloser.
@@ -187,7 +187,7 @@ immediate ancestor of the wildcard RR, which is also defined in [](#RFC4592).
 A closest encloser proof is not necessitated.
 
 To prove the wildcard no data response with NSEC4, the server MUST include
-in the response a NSEC4 RR that matches the wildcard, and a NSEC4 RR that
+in the response an NSEC4 RR that matches the wildcard, and an NSEC4 RR that
 covers the next closer. The closest encloser can be derived from the NSEC4 RR
 that matches the wildcard. From that, the next closer can be derived.
 
@@ -282,13 +282,13 @@ in the response. A validator MUST verify that the Wildcard bit is clear in
 the Flags field of the NSEC4 RR that matches the closest encloser.
 
 In order to find the closest encloser, the validator MUST find the longest
-name, X, such that X is an ancestor of QNAME that is matched by a NSEC4 RR
+name, X, such that X is an ancestor of QNAME that is matched by an NSEC4 RR
 present in the response.
 
 One possible algorithm for finding the closest encloser is as follows:
 
 1. Set SNAME=QNAME;
-2. If there is a NSEC4 RR in the response that matches SNAME, then we have found the closest encloser;
+2. If there is an NSEC4 RR in the response that matches SNAME, then we have found the closest encloser;
 3. Truncate SNAME by one label from the left, go to step 2.
 
 Once the closest encloser has been discovered, the validator MUST
@@ -300,12 +300,12 @@ If this is not the case, it would be an indication that an attacker is
 using them to falsely deny the existence of RRs for which the server is
 not authoritative.
 
-In addition, the validator MUST verify that there is a NSEC4 RR that covers
+In addition, the validator MUST verify that there is an NSEC4 RR that covers
 the next closer name.
 
 ## Validating No Data Responses
 
-If QTYPE is not DS, a validator MUST verify that a NSEC4 RR that matches
+If QTYPE is not DS, a validator MUST verify that an NSEC4 RR that matches
 QNAME is present and that both the QTYPE and the CNAME type are not set in
 its Type Bit Maps field.
 
@@ -313,14 +313,14 @@ Note that this test also covers the case where the NSEC4 RR exists because
 it corresponds to an empty non-terminal, in which case the NSEC4 RR will
 have an empty Type Bit Maps field.
 
-If QTYPE is DS, and there is a NSEC4 RR that matches QNAME present in the
+If QTYPE is DS, and there is an NSEC4 RR that matches QNAME present in the
 response, then that NSEC4 RR MUST NOT have the bits corresponding to DS and
 CNAME set in its Type Bit Maps field.
 
 If there is no such NSEC4 RR, then the validator MUST verify that there is
 a closest provable encloser for QNAME present in the response. The closest
 provable encloser is found in a similar way as the closest encloser.
-In addition, the validator MUST verify that there is a NSEC4 RR that covers
+In addition, the validator MUST verify that there is an NSEC4 RR that covers
 the next closer name and has the Opt-Out bit set.
 
 ## Validating Wildcard Answer Responses
@@ -329,14 +329,14 @@ The verified wildcard answer RRSet in the response provides the validator
 with a closest encloser for QNAME. The validator can do so by checking the
 label count in the RRSIG and the number of labels in the answer's owner name.
 
-The validator MUST verify that there is a NSEC4 RR that covers the
+The validator MUST verify that there is an NSEC4 RR that covers the
 next closer name to QNAME is present in the response. This proves that QNAME
 itself did not exist and that the correct wildcard was used to generate the
 response.
 
 ## Validating Wildcard No Data Responses
 
-The validator MUST verify that there is a NSEC4 RR present in the response
+The validator MUST verify that there is an NSEC4 RR present in the response
 that matches the source of synthesis. 
 
 In order to find the source of synthesis, the validator MUST find the longest
@@ -349,22 +349,22 @@ One possible algorithm for finding the source of synthesis is as follows:
 2.  Truncate SNAME by one label from the left. This is a candidate for the
     closest encloser;
 3.  Set WNAME to be SNAME with the asterisk label prepended: WNAME=*.SNAME;
-4.  If there is a NSEC4 RR in the response that matches WNAME, then we have
+4.  If there is an NSEC4 RR in the response that matches WNAME, then we have
     found the source of synthesis, with SNAME being the closest encloser;
 5.  Go to step 2.
 
 The validator does not need to check that the closest encloser is from the
-proper zone. The authoritative server returned a NSEC4 that matches the
+proper zone. The authoritative server returned an NSEC4 that matches the
 source of synthesis. According to [](#RFC2672), this proves that
 the server did not encounter a referral (step 3b of the server algorithm [](#RFC1035)),
 nor did it encounter a DNAME (step 3c of the server algorithm [](#RFC1035)).
 
 Now that the validator knows the source of synthesis and thus the closest
 encloser, it can derive the next closer name. The validator MUST verify
-that there is a NSEC4 RR that covers the next closer name to QNAME, is
+that there is an NSEC4 RR that covers the next closer name to QNAME, is
 present in the response.
 
-Note that, because the response included a NSEC4 that matches the source
+Note that, because the response included an NSEC4 that matches the source
 of synthesis, we know that there exists data in the zone below the closest
 encloser. Therefore, the closest encloser cannot be a delegation, nor can there
 exists a DNAME RRset at the closest encloser.
@@ -374,21 +374,21 @@ exists a DNAME RRset at the closest encloser.
 The delegation name in a referral is the owner name of the NS RRSet
 present in the authority section of the referral response.
 
-If there is a NSEC4 RR present in the response that matches the
+If there is an NSEC4 RR present in the response that matches the
 delegation name, then the validator MUST ensure that the NS bit is
 set and that the DS bit is not set in the Type Bit Maps field of the
 NSEC4 RR. The validator MUST also ensure that the NSEC4 RR is from
 the correct (i.e., parent) zone. This is done by ensuring that the
 SOA bit is not set in the Type Bit Maps field of this NSEC4 RR.
 
-Note that the presence of a NS bit implies the absence of a DNAME
+Note that the presence of an NS bit implies the absence of a DNAME
 bit, so there is no need to check for the DNAME bit in the Type Bit
 Maps field of the NSEC4 RR.
 
 If there is no NSEC4 RR present that matches the delegation name,
 then the validator MUST verify that there is a closest provable encloser 
 for the delegation name. In addition, the validator MUST verify that
-there is a NSEC4 RR that covers the next closer name and has the
+there is an NSEC4 RR that covers the next closer name and has the
 Opt-Out bit set.
 
 ## Validator Algorithm
