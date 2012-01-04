@@ -9,7 +9,7 @@ not want to discomfort the ongoing DNSSEC deployment.
 However, we do want to document this to archive the insights we have gained
 by doing this experiment. Therefor, we have submitted the following draft:
 
-    http://www.ietf.org/id/<draft>
+    http://www.ietf.org/id/draft-gieben-nsec4-00.txt
 
 This experiment resolves two things:
 * Reduces the size of the denial of existence response;
