@@ -78,7 +78,7 @@ immediately descending from the original owner name.
 The Denial of Wildcard Synthesis proof consists of one NSEC4 RR, that
 matches some domain name, and that has the Wildcard bit clear.
 
-Note that without much knowledge of the oritinal owner name, this proof is not really
+Note that without much knowledge of the original owner name, this proof is not really
 useful. In particular, we don't know if this is the wildcard synthesis that
 we are looking for. This changes if we combine this proof with the
 closest encloser proof.
@@ -260,29 +260,6 @@ or clearing of the Wildcard bit in the Flags field:
 
 # Validator Considerations
 
-The following steps describe one possible method of proper validation
-of an answer containing NSEC4 RRs.
-
-[TBD]
-
-<!--
-1. For each section in the answer:
-    * Count the number of RRs in the answer section, call this number "Nans";
-    * Count the number of RRs in the authority section, call this number "Nauth".
-
-2. If "Nans" and "Nauth" are both greater than zero, goto step 5;
-
-3. If "Nans" equals zero and "Nauth" is greater then zero, goto step YY;
-
-4. If both "Nans" and "Nauth" are zero there are no NSEC4 RRs..."Houston, we got a problem", goto step -1;
-
-5. We want to determine if we can proof an expanded wildcard answer or a CNAME/DNAME
-   a. dksdskl;
-   b. dsjdsjsk;
-
-9. Determine if this is a correct NXDOMAIN answer.
--->
-
 ## Responses with Unknown Hash Types
 
 A validator MUST ignore NSEC4 RRs with unknown hash types.  The
@@ -413,6 +390,31 @@ then the validator MUST verify that there is a closest provable encloser
 for the delegation name. In addition, the validator MUST verify that
 there is a NSEC4 RR that covers the next closer name and has the
 Opt-Out bit set.
+
+## Validator Algorithm
+
+The following steps describe one possible method of proper validation
+of an answer containing NSEC4 RRs.
+
+[TBD]
+
+<!--
+1. For each section in the answer:
+    * Count the number of RRs in the answer section, call this number "Nans";
+    * Count the number of RRs in the authority section, call this number "Nauth".
+
+2. If "Nans" and "Nauth" are both greater than zero, goto step 5;
+
+3. If "Nans" equals zero and "Nauth" is greater then zero, goto step YY;
+
+4. If both "Nans" and "Nauth" are zero there are no NSEC4 RRs..."Houston, we got a problem", goto step -1;
+
+5. We want to determine if we can proof an expanded wildcard answer or a CNAME/DNAME
+   a. dksdskl;
+   b. dsjdsjsk;
+
+9. Determine if this is a correct NXDOMAIN answer.
+-->
 
 # Resolver Considerations
 
