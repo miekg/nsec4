@@ -85,7 +85,9 @@ closest encloser proof.
 
 ### Closest Encloser Proof
 
-For some NSEC4 responses a proof of the closest encloser is required.
+For some NSEC4 responses, namely Name Error Response ([](#name-error-responses))
+and Referrals to Unsigned Subzones ([](#referrals-to-unsigned-subzones)),
+a proof of the closest encloser is required.
 This is a proof that some ancestor of the QNAME is the closest encloser of QNAME.
 The proof is described in Section 7.2.1 of [](#RFC5155), and is the same
 for NSEC4.

@@ -14,7 +14,12 @@ This document was produced using the xml2rfc tool ([](#RFC2629)) and Pandoc2RFC 
 
 # Changelog
 
+## 01
+
+* Clarification throughout the text;
+
+
 ## 00
 
-* Initial document
+* Initial document.
 
