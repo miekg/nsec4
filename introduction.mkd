@@ -11,17 +11,21 @@ these names from the closest encloser.
 This is why most of the denial of existence responses with
 NSEC3 contain three records:
 
-1. A record which matches the closest encloser;
+1. A record which matches the closest encloser, this tells the validator
+   what the (unhashed) name of the closest encloser is;
 1. A record which covers or matches the next closer, to deny or assert the
-   existence of the next closer name;
+   existence of the next closer name. The validator needs to know the closest encloser
+   to construct the next closer name;
 1. A record which covers or matches the wildcard, to deny or assert 
-   wildcard synthesis.
+   wildcard synthesis. The validator needs to know the closest encloser to 
+   construct the source of synthesis.
 
 This document presents a new record, NSEC4, that is similar to NSEC3,
 but differs in the following ways:
 
 * It provides a new way to deny the existence of the wildcard,
-  by introducing the Wildcard bit (described in [](#wildcard-flag));
+  by introducing the Wildcard flag (described in [](#wildcard-flag)). This
+  bit makes the third record, from the list above, redundant;
 * It allows for unhashed records, by introducing Zero hashing
   (described in [](#hash-algorithm)).
 
