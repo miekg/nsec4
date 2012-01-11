@@ -1,3 +1,32 @@
+# Empty non-terminals
+
+With NSEC3 every empty non-terminal will get an NSEC3 record. This
+is mentioned multiple times in [](#RFC5155). The first mention is
+in section 7.1, at the second bullet point:
+
+    o  Each empty non-terminal MUST have a corresponding NSEC3 RR, unless
+       the empty non-terminal is only derived from an insecure delegation
+       covered by an Opt-Out NSEC3 RR.
+
+This is a crucial difference with respect to NSEC, where no such provision
+exists.
+
+As NSEC4 unifies NSEC and NSEC3 we also state that each empty non-terminal
+will get an NSEC4 record (for specifics see ... in this document).
+
+By eliminating empty non-terminals the proof for the denial of a name
+becomes much simpler in the un-hashed case.
+
+With NSEC a resolver must bla bla bla
+With NSEC3 a resolver can just use a hash comparison. 
+With NSEC4 a resolver can always use a 
+
+Don't need to be sorted in canonical ordering, only the byte order
+is important.
+
+
+
+
 # Authoritative Server Considerations
 
 ## Zone Signing
