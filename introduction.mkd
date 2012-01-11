@@ -26,14 +26,14 @@ but differs in the following ways:
 * It provides a new way to deny the existence of the wildcard,
   by introducing the Wildcard flag (described in [](#wildcard-flag)). This
   bit makes the third record, from the list above, redundant;
-* It allows for unhashed records, by introducing Zero hashing
+* It allows for unhashed records, by introducing the Identity function
   (described in [](#hash-algorithm)).
 
 With NSEC4 you will need a maximum of two records for any denial
 of existence response, saving one record and accompanying signature(s) compared
 to NSEC3.
 
-By defining Zero hashing, we also fold back NSEC into NSEC4 and
+By defining the Identity function, we also fold back NSEC into NSEC4 and
 add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
@@ -82,7 +82,7 @@ To cover:
 :   When a hash algorithm is defined,
     an NSEC4 RR is said to "cover" a name if the hash of the name or
     next closer name falls between the owner name and the next hashed
-    owner name of the NSEC4. When no hash algorithm (Zero hashing) is defined, 
+    owner name of the NSEC4. When no hash algorithm (Identify function) is defined, 
     an NSEC4 RR is
     said to "cover" a name if the name or next closer name falls between
     the owner name and the next owner name of the NSEC4. In other words, if
@@ -93,10 +93,10 @@ To match:
 
 :   When a hash algorithm is defined, an NSEC4 RR is said to "match" a name
     if the owner name of the NSEC4 RR is the same as the hashed owner name
-    of that name. When no hash algorithm (Zero hashing) is defined, an NSEC4 RR is said to
+    of that name. When no hash algorithm (Identity function) is defined, an NSEC4 RR is said to
     "match" a name if the name and the owner name of the NSEC4 RR are equal.
 
-Zero hashing:
+Identity function:
 
 :   Perform no hashing. Leave the name as-is.
 
@@ -124,7 +124,7 @@ resolvers, those resolvers will then treat responses from the NSEC4
 signed zone as insecure, as detailed in Section 5.2 of [](#RFC4035).
 
 These algorithm identifiers are used with the NSEC4 hash algorithms
-Zero hashing and SHA1.  Using other NSEC4 hash algorithms requires
+Identity function and SHA1.  Using other NSEC4 hash algorithms requires
 allocation of a new alias (see Section 12.1.3 of [RFC5155]).
 
 Security aware resolvers that are aware of this specification MUST

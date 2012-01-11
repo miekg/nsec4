@@ -45,7 +45,7 @@ NSEC4 RRs.
 
 2.  For each unique original owner name in the zone add an NSEC4 RR;
     * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded;
-    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Zero hashing is used;
+    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Identity function is used;
     * The Next Owner Name field is left blank for the moment;
     * If Opt-Out is being used, set the Opt-Out bit to one.
 
@@ -80,7 +80,7 @@ NSEC4 RRs.
 
 8.  In each NSEC4 RR, insert the next (hashed) owner name by using the
     domain name of the next NSEC4 RR in hashed (if hashing is used) or
-    canonical order (Zero hashing). The next (hashed) owner
+    canonical order (Identity function). The next (hashed) owner
     name of the last NSEC4 RR in the zone contains the value of the
     (hashed) owner name of the first NSEC4 RR in hashed or canonical order.
 
@@ -233,7 +233,7 @@ the delegation. In this case, the closest provable encloser proof MUST be
 included in the response. The included NSEC4 RR that covers the next closer
 name for the delegation MUST have the Opt-Out flag set to one.
 
-Note that with Zero hashing, the NSEC4 RR that matches the closest provable
+Note that with the Identity function, the NSEC4 RR that matches the closest provable
 encloser does not need to be included in the response, as it can be
 derived from the NSEC4 that covers the next closer name.
 
@@ -241,7 +241,7 @@ derived from the NSEC4 that covers the next closer name.
 
 When NSEC4 hashing is in effect the paradox (NSEC4 records
 deny their own existence) described in Section 7.2.8 of [](#RFC5155)
-is back. When Zero hashing is used, there is no paradox. 
+is back. When the Identity function is used, there is no paradox. 
 In light of this, queries for the NSEC4 resource type are handled in the
 same way as normal queries. Resolvers initiating these queries
 SHOULD disregard any information learned from the returned NSEC4 records.

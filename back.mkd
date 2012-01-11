@@ -40,9 +40,9 @@ The overall TTL and class are left out for clarity.
     *.who           TXT     "Wildcard"
 
 
-## Zero Hashing
+## Identity Function
 
-This is the same zone shown with Zero hashing.
+This is the same zone shown with the Identity function.
 The RRSIG Signature field,
 the DNSKEY Public Key field and the DS Digest field are omitted. 
 The RRSIG expiration and inception times are set to ".".

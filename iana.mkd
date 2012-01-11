@@ -55,7 +55,7 @@ Finally, this document creates a new IANA registry for NSEC4 hash
 algorithms. This registry is named "DNSSEC NSEC4 Hash Algorithms".
 The initial contents of this registry are:
 
-    0 is Zero hashing.
+    0 is the Identity function.
 
     1 is SHA-1.
 
