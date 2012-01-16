@@ -97,6 +97,9 @@ Owner names of RRsets for which the given zone is not authoritative
 (such as glue records) MUST NOT be listed in the Next Owner Name,
 unless at least one authoritative RRset exists at the same owner name.
 
+[MG: this section needs to be altered, as everything can be in byte
+ordering]
+
 ### Type Bit Maps
 
 Like the Type Bit Maps field defined in Section 3.1.8 of [](#RFC5155).
