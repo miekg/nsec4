@@ -2,30 +2,18 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- 
-     Version: 0.8.2
-     (c) Miek Gieben
-     Licensed under the GPL version 2.
+    Version: 0.8.7
+    (c) Miek Gieben
+    Licensed under the GPL version 2.
 
-     Convert DocBook XML as created by Pandoc or AsciiDoc to 
-     XML suitable for RFCs and thus parseble with xml2rfc.
-
-     Some "awkward" conversions:
-
-     * blockquote -> <figure><artwork> ... 
-
-     It (silently) removes the content when encountering:
-
-     * articleinfo - use the template.xml for that;
-     * nested blockquotes;
-     * footnotes.
-
-    Not supported:
-
-    * iref tag (index);
-    * cref tag (comments), use HTML comments.
+    Convert DocBook XML as created by Pandoc to XML suitable for RFCs and thus
+    parseble with xml2rfc. 
 -->
 
 <xsl:output method="xml" omit-xml-declaration="yes"/>
+
+<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'"/>
+<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 
 <xsl:template match="/">
     <xsl:apply-templates/>
@@ -38,23 +26,14 @@
 <!-- Remove the article info section, this should be handled
      in the <front> matter of the draft -->
 <xsl:template match="articleinfo">
-    <!--    <xsl:message terminate="no">
-        Warning: Author and article information is discarded.
-    </xsl:message>
-    -->
 </xsl:template>
 
 <!-- Remove footnotes -->
 <xsl:template match="footnote">
-    <!--
-    <xsl:message terminate="no">
-        Warning: Footnote is not supported in RFC output.
-    </xsl:message>
-    -->
 </xsl:template>
 
 <!-- Merge section with the title tags into one section -->
-<xsl:template match="section">
+<xsl:template match="section | simplesect | sect1 | sect2 | sect3 | sect4 | sect5">
     <section>
         <xsl:attribute name="title">
             <xsl:value-of select="normalize-space(translate(./title, '&#xA;', ' '))" />
@@ -67,15 +46,25 @@
 </xsl:template>
 
 <!-- Transform a <para> to <t>, except in lists, then it is discarded -->
+<!-- If somebody tries to use multiple paragraphs, we insert a <vspace> *yech* -->
 <xsl:template match="para | simpara">
     <xsl:choose>
         <xsl:when test="ancestor::orderedlist">
+                <xsl:if test="position() > 2">
+                    <vspace blankLines='1' />
+                </xsl:if>
                 <xsl:apply-templates/>
         </xsl:when>
         <xsl:when test="ancestor::itemizedlist">
+                <xsl:if test="position() > 2">
+                    <vspace blankLines='1' />
+                </xsl:if>
                 <xsl:apply-templates/>
         </xsl:when>
         <xsl:when test="ancestor::variablelist">
+                <xsl:if test="position() > 2">
+                    <vspace blankLines='1' />
+                </xsl:if>
                 <xsl:apply-templates/>
         </xsl:when>
         <!-- AsciiDoc puts simpara in each table element, remove it -->
@@ -100,7 +89,7 @@
     </xsl:choose>
 </xsl:template>
 
-<!-- Transform lists, for lists in list we do not put it in a new <t></t>  -->
+<!-- Transform lists, for lists in list we do not put it in a new <t></t> -->
 <xsl:template match="orderedlist">
     <xsl:choose>
        <xsl:when test="contains(@numeration,'arabic')">
@@ -170,16 +159,16 @@
        <xsl:otherwise> 
         <xsl:choose>
             <xsl:when test="ancestor::orderedlist">
-                <list style="letters"><xsl:apply-templates/></list>
+                <list style="empty"><xsl:apply-templates/></list>
             </xsl:when>
             <xsl:when test="ancestor::itemizedlist">
-                <list style="letters"><xsl:apply-templates/></list>
+                <list style="empty"><xsl:apply-templates/></list>
             </xsl:when>
             <xsl:when test="ancestor::variablelist">
-                <list style="letters"><xsl:apply-templates/></list>
+                <list style="empty"><xsl:apply-templates/></list>
             </xsl:when>
             <xsl:otherwise>
-                <t><list style="letters"><xsl:apply-templates/></list></t>
+                <t><list style="empty"><xsl:apply-templates/></list></t>
             </xsl:otherwise>
         </xsl:choose>
        </xsl:otherwise>
@@ -264,20 +253,33 @@
 <!-- Transform <screen> and <programlisting> to <figure><artwork> -->
 <xsl:template match="screen | programlisting">
     <figure>
-        <xsl:if test="@id">
-            <xsl:attribute name="anchor">
-                <xsl:value-of select="@id"/>
-            </xsl:attribute>
-        </xsl:if>
-        <artwork>
-            <xsl:apply-templates/>
-        </artwork>
+        <xsl:choose>
+            <xsl:when test="contains(., 'Figure: ')">
+                <xsl:attribute name="anchor">
+                    <xsl:text>fig:</xsl:text>
+                    <xsl:value-of select="translate( translate(substring(normalize-space(translate( substring-after(., 'Figure: ') , '&#xA;', ' ')), 1, 10), ' ', '-'), $uppercase, $smallcase)"/>
+                </xsl:attribute>
+                <!-- If there is an caption, center the figure -->
+                <xsl:attribute name="align">
+                    <xsl:text>center</xsl:text>
+                </xsl:attribute>
+                <preamble>
+                    <xsl:value-of select="substring-after(., 'Figure: ')"/>
+                </preamble>
+                <artwork>
+                    <xsl:value-of select="substring-before(., 'Figure: ')"/>
+                </artwork>
+            </xsl:when>
+            <xsl:otherwise>
+                <artwork>
+                    <xsl:value-of select="."/>
+                </artwork>
+            </xsl:otherwise>
+        </xsl:choose>
     </figure>
 </xsl:template>
 
-<!-- AsciiDoc; Transform <literallayout> to <figure><artwork> -->
-<!-- Insert a newline after the <artwork>-tag because AsciiDoc, does not
-     do this automatically, except when we are inside a list -->
+<!-- AsciiDoc: TODO(mg) this can go
 <xsl:template match="literallayout">
     <figure>
         <xsl:if test="@id">
@@ -298,6 +300,7 @@
         </artwork>
     </figure>
 </xsl:template>
+-->
 
 <!-- Kill title tags + content -->
 <xsl:template match="title"> </xsl:template>
@@ -325,9 +328,17 @@
 <!-- Tables -->
 <xsl:template match="table | informaltable">
     <texttable>
-        <xsl:if test="@id">
+        <!-- If there is a caption, fake an anchor attribute -->
+        <xsl:if test="./caption">
             <xsl:attribute name="anchor">
-                <xsl:value-of select="@id"/>
+                <xsl:text>tab:</xsl:text>
+                <xsl:value-of select="translate( translate(substring(normalize-space(translate(./caption, '&#xA;', ' ')), 1, 10), ' ', '-'), $uppercase, $smallcase)" />
+            </xsl:attribute>
+        </xsl:if>
+        <xsl:if test="./title">
+            <xsl:attribute name="anchor">
+                <xsl:text>tab:</xsl:text>
+                <xsl:value-of select="translate( translate(substring(normalize-space(translate(./title, '&#xA;', ' ')), 1, 10), ' ', '-'), $uppercase, $smallcase)" />
             </xsl:attribute>
         </xsl:if>
         <xsl:apply-templates/>
@@ -382,6 +393,11 @@
             <xsl:value-of select="../../../../table/col[$column]/@width"/>
         </xsl:attribute>
     </xsl:if>
+    <xsl:if test="../../../../informaltable/col[$column]">
+        <xsl:attribute name="width">
+            <xsl:value-of select="../../../../informaltable/col[$column]/@width"/>
+        </xsl:attribute>
+    </xsl:if>
 </xsl:template>
 
 <!-- Table headers for CALS tables, Pandoc 1.8.2.x+ emits these -->
@@ -431,6 +447,58 @@
             <xsl:if test="../../../../../table/tgroup/colspec[$column]/@colwidth">
                 <xsl:attribute name="width">
                     <xsl:value-of select="translate(../../../../../table/tgroup/colspec[$column]/@colwidth, '*', '%')"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
+</xsl:template>
+
+<!-- Table headers for CALS tables, Pandoc 1.9.x+ emits these -->
+<xsl:template match="informaltable/tgroup/thead/row/entry">
+    <ttcol>
+        <xsl:if test="position() = 2">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="1"/></xsl:call-template>
+        </xsl:if>
+        <xsl:if test="position() = 4">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="2"/></xsl:call-template>
+        </xsl:if>
+        <xsl:if test="position() = 6">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="3"/></xsl:call-template>
+        </xsl:if>
+        <xsl:if test="position() = 8">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="4"/></xsl:call-template>
+        </xsl:if>
+        <xsl:if test="position() = 10">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="5"/></xsl:call-template>
+        </xsl:if>
+        <xsl:if test="position() = 12">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="6"/></xsl:call-template>
+        </xsl:if>
+        <xsl:if test="position() = 14">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="7"/></xsl:call-template>
+        </xsl:if>
+        <xsl:if test="position() = 16">
+            <xsl:call-template name="get_colspec_informal"><xsl:with-param name="column" select="8"/></xsl:call-template>
+        </xsl:if>
+        <!-- If the entry itself has align, we always use that -->
+        <xsl:if test="@align">
+            <xsl:attribute name="align">
+                <xsl:value-of select="@align"/>
+            </xsl:attribute>
+        </xsl:if>
+        <xsl:apply-templates/>
+    </ttcol>
+</xsl:template>
+
+<xsl:template name="get_colspec_informal">
+    <xsl:param name="column"/>
+        <xsl:if test="../../../../../informaltable/tgroup/colspec[$column]">
+            <xsl:attribute name="align">
+                <xsl:value-of select="../../../../../informaltable/tgroup/colspec[$column]/@align"/>
+            </xsl:attribute>
+            <!-- Optionally colwidth, translate * to % -->
+            <xsl:if test="../../../../../informaltable/tgroup/colspec[$column]/@colwidth">
+                <xsl:attribute name="width">
+                    <xsl:value-of select="translate(../../../../../informaltable/tgroup/colspec[$column]/@colwidth, '*', '%')"/>
                 </xsl:attribute>
             </xsl:if>
         </xsl:if>
