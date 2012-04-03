@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- 
-    Version: 0.8.7
+    Version: 0.8.8
     (c) Miek Gieben
     Licensed under the GPL version 2.
 
@@ -28,8 +28,25 @@
 <xsl:template match="articleinfo">
 </xsl:template>
 
-<!-- Remove footnotes -->
+<!-- Use footnotes for indexes (iref) -->
 <xsl:template match="footnote">
+    <xsl:element name="iref">
+        <xsl:choose>
+        <xsl:when test="contains(./para, '!')">
+            <xsl:attribute name="item">
+                <xsl:value-of select="substring-before (normalize-space(translate(./para, '&#xA;', ' ')), '!')" />               
+            </xsl:attribute>
+            <xsl:attribute name="subitem">
+                <xsl:value-of select="substring-after (normalize-space(translate(./para, '&#xA;', ' ')), '!')" />               
+            </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:attribute name="item">
+                <xsl:value-of select="normalize-space(translate(./para, '&#xA;', ' '))" />               
+            </xsl:attribute>
+        </xsl:otherwise>
+        </xsl:choose>
+    </xsl:element>
 </xsl:template>
 
 <!-- Merge section with the title tags into one section -->
@@ -215,6 +232,8 @@
         <xsl:attribute name="hangText">
             <xsl:value-of select="normalize-space(translate(./term, '&#x20;&#x9;&#xD;&#xA;', ' '))"/>
         </xsl:attribute>
+        <!-- OPTION: enable this to get a newline after the hangText -->
+        <!-- <xsl:element name="vspace"/> -->
         <xsl:apply-templates select="./listitem"/>
     </t>
 </xsl:template>
@@ -241,13 +260,11 @@
     </eref>
 </xsl:template>
 
-<!-- Transform <blockquote> to <figure><artwork> -->
+<!-- Transform <blockquote> to <list style="hanging"> -->
 <xsl:template match="blockquote">
-    <figure>
-        <artwork>
-            <xsl:value-of select="./para"/>
-        </artwork>
-    </figure>
+    <t><list style="hanging" hangIndent="3">
+        <xsl:apply-templates/>   
+    </list></t>
 </xsl:template>
 
 <!-- Transform <screen> and <programlisting> to <figure><artwork> -->
@@ -278,29 +295,6 @@
         </xsl:choose>
     </figure>
 </xsl:template>
-
-<!-- AsciiDoc: TODO(mg) this can go
-<xsl:template match="literallayout">
-    <figure>
-        <xsl:if test="@id">
-            <xsl:attribute name="anchor">
-                <xsl:value-of select="@id"/>
-            </xsl:attribute>
-        </xsl:if>
-        <artwork>
-            <xsl:choose>
-                <xsl:when test="ancestor::orderedlist"></xsl:when>
-                <xsl:when test="ancestor::itemizedlist"></xsl:when>
-                <xsl:when test="ancestor::variablelist"></xsl:when>
-                <xsl:otherwise>
-                    <xsl:text>&#10;</xsl:text>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:apply-templates/>
-        </artwork>
-    </figure>
-</xsl:template>
--->
 
 <!-- Kill title tags + content -->
 <xsl:template match="title"> </xsl:template>
@@ -388,14 +382,9 @@
 
 <xsl:template name="get_col">
     <xsl:param name="column"/>
-    <xsl:if test="../../../../table/col[$column]">
+    <xsl:if test="../../../col[$column]">
         <xsl:attribute name="width">
-            <xsl:value-of select="../../../../table/col[$column]/@width"/>
-        </xsl:attribute>
-    </xsl:if>
-    <xsl:if test="../../../../informaltable/col[$column]">
-        <xsl:attribute name="width">
-            <xsl:value-of select="../../../../informaltable/col[$column]/@width"/>
+            <xsl:value-of select="../../../col[$column]/@width"/>
         </xsl:attribute>
     </xsl:if>
 </xsl:template>
@@ -439,17 +428,17 @@
 
 <xsl:template name="get_colspec">
     <xsl:param name="column"/>
-        <xsl:if test="../../../../../table/tgroup/colspec[$column]">
-            <xsl:attribute name="align">
-                <xsl:value-of select="../../../../../table/tgroup/colspec[$column]/@align"/>
+    <xsl:if test="../../../../tgroup/colspec[$column]">
+        <xsl:attribute name="align">
+            <xsl:value-of select="../../../../tgroup/colspec[$column]/@align"/>
+        </xsl:attribute>
+        <!-- Optionally colwidth, translate * to % -->
+        <xsl:if test="../../../../tgroup/colspec[$column]/@colwidth">
+            <xsl:attribute name="width">
+                <xsl:value-of select="translate(../../../../tgroup/colspec[$column]/@colwidth, '*', '%')"/>
             </xsl:attribute>
-            <!-- Optionally colwidth, translate * to % -->
-            <xsl:if test="../../../../../table/tgroup/colspec[$column]/@colwidth">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="translate(../../../../../table/tgroup/colspec[$column]/@colwidth, '*', '%')"/>
-                </xsl:attribute>
-            </xsl:if>
         </xsl:if>
+    </xsl:if>
 </xsl:template>
 
 <!-- Table headers for CALS tables, Pandoc 1.9.x+ emits these -->
@@ -491,17 +480,17 @@
 
 <xsl:template name="get_colspec_informal">
     <xsl:param name="column"/>
-        <xsl:if test="../../../../../informaltable/tgroup/colspec[$column]">
-            <xsl:attribute name="align">
-                <xsl:value-of select="../../../../../informaltable/tgroup/colspec[$column]/@align"/>
+    <xsl:if test="../../../../tgroup/colspec[$column]">
+        <xsl:attribute name="align">
+            <xsl:value-of select="../../../../tgroup/colspec[$column]/@align"/>
+        </xsl:attribute>
+        <!-- Optionally colwidth, translate * to % -->
+        <xsl:if test="../../../../tgroup/colspec[$column]/@colwidth">
+            <xsl:attribute name="width">
+                <xsl:value-of select="translate(../../../../tgroup/colspec[$column]/@colwidth, '*', '%')"/>
             </xsl:attribute>
-            <!-- Optionally colwidth, translate * to % -->
-            <xsl:if test="../../../../../informaltable/tgroup/colspec[$column]/@colwidth">
-                <xsl:attribute name="width">
-                    <xsl:value-of select="translate(../../../../../informaltable/tgroup/colspec[$column]/@colwidth, '*', '%')"/>
-                </xsl:attribute>
-            </xsl:if>
         </xsl:if>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template match="table/tbody/tr/td | informaltable/tbody/tr/td | table/tgroup/tbody/row/entry | informaltable/tgroup/tbody/row/entry">

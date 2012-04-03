@@ -4,9 +4,9 @@ With NSEC3 every empty non-terminal will gets a record. This
 is mentioned in [](#RFC5155), for instance in
 section 7.1, the second bullet point:
 
-    o  Each empty non-terminal MUST have a corresponding NSEC3 RR, unless
-       the empty non-terminal is only derived from an insecure delegation
-       covered by an Opt-Out NSEC3 RR.
+> Each empty non-terminal MUST have a corresponding NSEC3 RR, unless
+> the empty non-terminal is only derived from an insecure delegation
+> covered by an Opt-Out NSEC3 RR.
 
 This is a crucial difference with respect to NSEC, where no such provision
 exists.
@@ -15,19 +15,12 @@ With NSEC4 we unify NSEC and NSEC3 and we state that each empty non-terminal
 will get an NSEC4 record. See [](#zone-signing), the 6th bullet. 
 
 By elminiating empty non-terminals the proof for the denial of existence
-becomes must simpler. Just as it is the case now with NSEC3, we can use
-the byte ordering of two domains.
+becomes much simpler. Just as NSEC3 uses byte ordering to compare owner names,
+we can just revert back to canonical ordering for NSEC4. All owner names
+that are to be compared will be on the same level. [TODO(mg): dit moet misschien
+wel even extra uitgelegd worden.] 
 
-With NSEC a resolver needs to be smart and figure out if there are any
-empty non-terminals in between BLA BLA BLA.
-
-With NSEC3 a simple hash comparison is enough.
-
-With NSEC4 a simple hash (byte) comparison is enough for both the hashed
-and unhashed case.
-
-So we don't need to be sorted in canonical ordering, only the byte order
-is important.
+This greatly simplifies the comparison code, because there is only canonical ordering.
 
 # Authoritative Server Considerations
 
