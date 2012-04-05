@@ -1,6 +1,6 @@
 # Empty non-terminals
 
-With NSEC3 every empty non-terminal will gets a record. This
+With NSEC3, every empty non-terminal will gets a record. This
 is mentioned in [](#RFC5155), for instance in
 section 7.1, the second bullet point:
 
@@ -11,16 +11,13 @@ section 7.1, the second bullet point:
 This is a crucial difference with respect to NSEC, where no such provision
 exists.
 
-With NSEC4 we unify NSEC and NSEC3 and we state that each empty non-terminal
-will get an NSEC4 record. See [](#zone-signing), the 6th bullet. 
+With NSEC4 we unify NSEC and NSEC3 and consequently, each empty non-terminal
+will get an NSEC4 record (see [](#zone-signing), the 6th bullet). Furthermore,
+NSEC4 represents the next owner name as a domain name, like NSEC, while
+NSEC3 represents the next name as an unmodified binary hash value.
 
-By elminiating empty non-terminals the proof for the denial of existence
-becomes much simpler. Just as NSEC3 uses byte ordering to compare owner names,
-we can just revert back to canonical ordering for NSEC4. All owner names
-that are to be compared will be on the same level. [TODO(mg): dit moet misschien
-wel even extra uitgelegd worden.] 
-
-This greatly simplifies the comparison code, because there is only canonical ordering.
+Due to these changes, we can revert back to canonical ordering for NSEC4.
+This greatly simplifies the comparison code, because there is one ordering mechanism.
 
 # Authoritative Server Considerations
 

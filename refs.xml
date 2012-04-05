@@ -29,7 +29,7 @@
         <?rfc include="bib/reference.RFC.4956" ?>
         <?rfc include="bib/reference.RFC.5155" ?>
         <?rfc include="bib/reference.RFC.5226" ?>
-        <reference anchor='Schaeffer10'>
+        <reference anchor='Schaeffer10' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'>
             <front>
             <title>NSEC3 Hash Performance</title>
             <author initials='Y.' surname='Schaeffer' fullname='Yuri Schaeffer'>
@@ -39,7 +39,7 @@
             </front>
             <format type='PDF' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'/>
         </reference>
-        <reference anchor='GiebenMekking11'>
+        <reference anchor='GiebenMekking11' target='http://www.sidn.nl/fileadmin/docs/PDF-files_UK/wp-2011-0x01-v2.pdf'>
             <front>
             <title>Authenticated Denial of Existence in the DNS</title>
             <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
@@ -48,8 +48,9 @@
             <author initials='W.' surname='Mekking' fullname='W. (Matthijs) Mekking'>
             <organization>NLnet Labs</organization>
             </author>
-            <date year='2011' month='November'/>
+            <date year='2012' month='January'/>
             </front>
-            <format type='PDF' target='http://www.sidnlabs.nl/fileadmin/docs/PDF-files_UK/wp-2011-0x01-v1.pdf'/>
+            <format type='PDF' target='http://www.sidn.nl/fileadmin/docs/PDF-files_UK/wp-2011-0x01-v2.pdf'/>
         </reference>
 </references>
+
