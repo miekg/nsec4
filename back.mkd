@@ -23,8 +23,6 @@ b.who.example.      rmv5tauk8nss83vo1st0tp1ps927j71e
 
 This is the unsigned zone we are using for the NSEC4 examples. 
 The overall TTL and class are left out for clarity. 
-<!-- 'q' can be found in /home/miekg/src/godns/_examples/q -->
-<!-- ./q -dnssec -port 8082 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
 
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
@@ -46,7 +44,6 @@ This is the same zone shown with the Identity function.
 The RRSIG Signature field,
 the DNSKEY Public Key field and the DS Digest field are omitted. 
 The RRSIG expiration and inception times are set to ".".
-<!-- ./q -dnssec -port 8080 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1  -->
 
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
@@ -82,9 +79,6 @@ The RRSIG expiration and inception times are set to ".".
 ## SHA1 Hashing
 
 This is the same zone shown with SHA1 hashing.
-<!-- ./q -dnssec -port 8081 -short AXFR example. | ./nsec4-cleanup | expand | head -n -1 -->
-<!-- for z in $(cat ~miekg/src/NSD_NSEC4/example.signed.zero | awk '{print $1}' | grep -v '^;' | sort -u); do
-echo "; H($z)\t= $(ldns-nsec3-hash -t 0 -a 1 -s "" $z)"; done -->
 
     $ORIGIN example.
     @               SOA     ns1.example. bugs.example. 1 2 3 4 5
@@ -136,7 +130,6 @@ zone example in [](#sha1-hashing).
 An authoritative name error. The NSEC4 RRs prove that the name does
 not exist and that there is no wildcard RR that should have been
 expanded.
-<!-- ./q -dnssec -port 8081 -short a.example. 2>/dev/null |./answer-cleanup | expand -->
 
     ;; Header: QR AA RD RCODE=NXDOMAIN
     ;;
@@ -183,7 +176,6 @@ exist.
 
 A No Data Response. The NSEC4 RR proves that the name exists and
 that the requested RR type does not.
-<!-- ./q -dnssec -port 8081 -short ns1.example. MX 2>/dev/null |./answer-cleanup | expand -->
 
     ;; Header: QR AA RD RCODE=NOERROR
     ;;
@@ -213,8 +205,6 @@ also absent in the type code list of the NSEC4 RR).
 
 The NSEC4 RRs prove that nothing for this delegation was signed.
 There is no proof that the unsigned delegation exists.
-<!-- ./q -dnssec -port 8081 -short a.ud.example. MX 2>/dev/null |./answer-cleanup | expand -->
-<!-- ldns-signzone does not do the correct thing, this example need to be constructed manual -->
 
     ;; Header: QR RD RCODE=NOERROR
     ;;
@@ -258,7 +248,6 @@ The label count in the RRSIG RRSet in the answer section
 indicates that a wildcard RRSet was expanded to produce this
 response, and the NSEC4 RR proves that no next closer name exists
 in the zone.
-<!-- ./q -dnssec -port 8081 -short a.b.who.example. TXT 2>/dev/null |./answer-cleanup | expand -->
 
     ;; Header: QR AA RD RCODE=NOERROR
     ;;
@@ -301,7 +290,6 @@ answer this query.
 A No Data Response for a name covered by a wildcard.
 The NSEC4 RRs prove that the matching wildcard name does not have any
 RRs of the requested type and that no closer match exists in the zone.
-<!-- ./q -dnssec -port 8081 -short a.b.who.example. AAAA 2>/dev/null |./answer-cleanup | expand -->
 
     ;; Header: QR AA RD RCODE=NOERROR
     ;;

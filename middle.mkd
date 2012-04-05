@@ -192,8 +192,6 @@ NSEC record:
     example. NSEC a.example NS SOA RRSIG DNSKEY NSEC
 
 The same data shown as an NSEC3 record:
-<!-- ldns-nsec3-hash -t 0 -a 1 -s "" example. -->
-<!-- ldns-nsec3-hash -t 0 -a 1 -s "" a.example. -->
 
     3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC3 1 0 0 - (
                         6cd522290vma0nr8lqu1ivtcofj94rga 
