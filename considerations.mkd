@@ -402,6 +402,9 @@ of synthesis, we know that there exists data in the zone below the closest
 encloser. Therefore, the closest encloser cannot be a delegation, nor can there
 exists a DNAME RRset at the closest encloser.
 
+[MM: As an additional check, the validator can verify if the NSEC4 matching
+the closest encloser has the Wildcard Flag set.]
+
 ## Validating Referrals to Unsigned Subzones
 
 The delegation name in a referral is the owner name of the NS RRSet
@@ -426,15 +429,23 @@ Opt-Out bit set.
 
 ## Validator Algorithm
 
+Section 5 of [](#RFC4035) describes how a security-aware resolver can
+authenticate DNS responses. Section 5.4 of [](#RFC4035) describes
+authenticating of denial of existence responses. 
+
 The following steps describe one possible method of proper validation
 of an answer containing NSEC4 RRs.
 
 [TBD]
 
+[MM: Is there really a need for text on validator algorithm?]
+
 <!--
 1. For each section in the answer:
     * Count the number of RRs in the answer section, call this number "Nans";
     * Count the number of RRs in the authority section, call this number "Nauth".
+
+[MM: This is just ANCOUNT and NSCOUNT?]
 
 2. If "Nans" and "Nauth" are both greater than zero, goto step 5;
 
