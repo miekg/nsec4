@@ -3,14 +3,14 @@
 The NSEC4 RR provides authenticated denial of existence for DNS RRsets.
 
 The NSEC4 RR lists RR types present at the original owner name of the NSEC4 RR.
-It includes the next (hashed) owner name in the (hash) order of the zone.
+It includes the next (hashed) owner name in the canonical order of the zone.
 The complete set of NSEC4 RRs in a zone indicates which RRSets exist for the
 original owner name of the RR and form a chain. This information is used to
 provide authenticated denial of existence for DNS data. To provide protection
 against zone enumeration, the owner names used in the NSEC4 RR can be
 cryptographic hashes of the original owner name prepended as a single label
-to the name of the zone. If hashing is used, the NSEC4 RR indicates which
-hash function is used to construct the hash, which salt is used, and how many
+to the name of the zone. The NSEC4 RR indicates which
+hash function (if any) is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
 
 The hashing technique is the same as with NSEC3 and is described in
@@ -44,6 +44,10 @@ differences:
   descending from the original owner name?);
 * The hash length does not need to be stored, as all domain names are 
   stored as domain names, not raw hashes.
+
+[MM: Hash length is one byte. In general, NSEC3 is used in TLD zones. 
+Those domain names are relatively short (on average 3 characters (5 bytes
+wireformat), so in that case NSEC3 RRs become 4 bytes longer.]
 
 ### Hash Algorithm
 
@@ -87,7 +91,7 @@ Like the Salt field defined in Section 3.1.5 of [](#RFC5155).
 The Next Owner Name field contains the next owner name that exists in the
 definition of Section 2.2.3 of [](#RFC4592).
 
-If the Identity function is used, the field contains the next owner name in the
+The field contains the next owner name in the
 canonical ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
 
 A sender MUST NOT use DNS name compression on the Next Owner Name field when
@@ -96,9 +100,6 @@ transmitting an NSEC4 RR.
 Owner names of RRsets for which the given zone is not authoritative
 (such as glue records) MUST NOT be listed in the Next Owner Name,
 unless at least one authoritative RRset exists at the same owner name.
-
-[MG: this section needs to be altered, as everything can be in byte
-ordering]
 
 ### Type Bit Maps
 

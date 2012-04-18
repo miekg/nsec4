@@ -1,6 +1,6 @@
 # Empty non-terminals
 
-With NSEC3, every empty non-terminal will gets a record. This
+With NSEC3, every empty non-terminal will have a record. This
 is mentioned in [](#RFC5155), for instance in
 section 7.1, the second bullet point:
 
@@ -17,7 +17,7 @@ NSEC4 represents the next owner name as a domain name, like NSEC, while
 NSEC3 represents the next name as an unmodified binary hash value.
 
 Due to these changes, we can revert back to canonical ordering for NSEC4.
-This greatly simplifies the comparison code, because there is one ordering mechanism.
+This greatly simplifies the comparison code, because there is only one ordering mechanism.
 
 # Authoritative Server Considerations
 
@@ -58,8 +58,7 @@ NSEC4 RRs.
     create temporary NSEC4 RRs for wildcard collisions in a similar fashion
     to step 3;
 
-6.  Sort the set of NSEC4 RRs into hash order or canonical order, depending
-    on the value of the hash algorithm;
+6.  Sort the set of NSEC4 RRs into canonical order.
 
 7.  Combine NSEC4 RRs with identical owner names by replacing
     them with a single NSEC4 RR with the Type Bit Maps field
@@ -71,10 +70,10 @@ NSEC4 RRs.
     Discard any possible temporary NSEC4 RRs;
 
 8.  In each NSEC4 RR, insert the next (hashed) owner name by using the
-    domain name of the next NSEC4 RR in hashed (if hashing is used) or
-    canonical order (Identity function). The next (hashed) owner
+    domain name of the next NSEC4 RR in
+    canonical order. The next (hashed) owner
     name of the last NSEC4 RR in the zone contains the value of the
-    (hashed) owner name of the first NSEC4 RR in hashed or canonical order.
+    (hashed) owner name of the first NSEC4 RR in canonical order.
 
     If the NSEC4 is marked to be matching a wildcard, find the NSEC4 that
     matches the closest encloser. Set the Wildcard bit in the Flags field
