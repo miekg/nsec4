@@ -303,16 +303,16 @@ A validator MUST verify that there is a closest encloser for QNAME present
 in the response. A validator MUST verify that the Wildcard bit is clear in
 the Flags field of the NSEC4 RR that matches the closest encloser.
 
-        Note: In denial of existence responses, the Wildcard flag
-        will never be set. Setting the bit indicated that wildcard
-        synthesis is possible at the closest encloser. Obviously,
-        that contradicts with the denial of existence of the query
-        name. Nevertheless, a validator must verify that the Wildcard
-        bit is clear. If a validator fails to check the bit, it is
-        vulnerable to replay attacks. For example, if you do not check
-        the Wildcard Flag in the example.com NSEC4 (but *.example.com
-        does exist), an attacker can use the record to deny names that
-        would otherwise match the wildcard name.
+> Note: In denial of existence responses, the Wildcard flag
+> will never be set. Setting the bit indicated that wildcard
+> synthesis is possible at the closest encloser. Obviously,
+> that contradicts with the denial of existence of the query
+> name. Nevertheless, a validator must verify that the Wildcard
+> bit is clear. If a validator fails to check the bit, it is
+> vulnerable to replay attacks. For example, if you do not check
+> the Wildcard Flag in the example.com NSEC4 (but *.example.com
+> does exist), an attacker can use the record to deny names that
+> would otherwise match the wildcard name.
 
 In order to find the closest encloser, the validator MUST find the longest
 name, X, such that X is an ancestor of QNAME that is matched by an NSEC4 RR
