@@ -312,7 +312,7 @@ the Flags field of the NSEC4 RR that matches the closest encloser.
 > vulnerable to replay attacks. For example, if you do not check
 > the Wildcard Flag in the example.com NSEC4 (but *.example.com
 > does exist), an attacker can use the record to deny names that
-> would otherwise match the wildcard name.
+> would otherwise match the wildcard name. 
 
 In order to find the closest encloser, the validator MUST find the longest
 name, X, such that X is an ancestor of QNAME that is matched by an NSEC4 RR
