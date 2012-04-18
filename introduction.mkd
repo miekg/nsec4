@@ -33,7 +33,7 @@ With NSEC4 you will need a maximum of two records for any denial
 of existence response, saving one record and accompanying signature(s) compared
 to NSEC3.
 
-By defining and Identity function, we also fold back NSEC into NSEC4 and
+By defining an Identity function, we also fold back NSEC into NSEC4 and
 add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
