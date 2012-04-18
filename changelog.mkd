@@ -17,7 +17,7 @@ This document was produced using the xml2rfc tool ([](#RFC2629)) and Pandoc2rfc 
 ## 01
 
 * Clarification throughout the text;
-* Add section about emtpy non-terminals in NSEC, NSEC3 and NSEC4;
+* Add section about empty non-terminals in NSEC, NSEC3 and NSEC4;
 * Rename Zero hashing to Identity function.
 
 
