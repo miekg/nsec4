@@ -16,7 +16,7 @@
 <title abbrev="NSEC4"> DNS Security (DNSSEC) Authenticated Denial of Existence </title>
 
         <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
-            <organization>SIDN</organization>
+            <organization>SIDN Labs</organization>
             <address>
                 <postal>
                     <street>Meander 501</street>
