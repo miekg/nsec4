@@ -20,6 +20,7 @@ This document was produced using the xml2rfc tool ([](#RFC2629)) and Pandoc2rfc 
 * Add section about empty non-terminals in NSEC, NSEC3 and NSEC4;
 * Rename Zero hashing to Identity function.
 * No need for different ordering mechanisms: canonical ordering only.
+* Remove section on validator algorithm (already explained in RFC4035).
 
 ## 00
 

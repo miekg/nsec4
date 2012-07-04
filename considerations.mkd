@@ -427,6 +427,8 @@ for the delegation name. In addition, the validator MUST verify that
 there is an NSEC4 RR that covers the next closer name and has the
 Opt-Out bit set.
 
+
+<!-- 
 ## Validator Algorithm
 
 Section 5 of [](#RFC4035) describes how a security-aware resolver can
@@ -437,6 +439,8 @@ The following steps describe one possible method of proper validation
 of an answer containing NSEC4 RRs.
 
 [TBD]
+
+-->
 
 <!--
 1. For each section in the answer:
