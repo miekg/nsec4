@@ -388,7 +388,7 @@ One possible algorithm for finding the source of synthesis is as follows:
 
 The validator does not need to check that the closest encloser is from the
 proper zone. The authoritative server returned an NSEC4 that matches the
-source of synthesis. According to [](#RFC2672), this proves that
+source of synthesis. According to [](#RFC6672), this proves that
 the server did not encounter a referral (step 3b of the server algorithm [](#RFC1035)),
 nor did it encounter a DNAME (step 3c of the server algorithm [](#RFC1035)).
 
@@ -482,7 +482,7 @@ The same considerations as described in Section 10.1 of [](#RFC5155) apply.
 
 ## DNAME at the Zone Apex
 
-The DNAME specification in Section 3 of [](#RFC2672) has a
+The DNAME specification in Section 3 of [](#RFC6672) has a
 'no-descendants' limitation. If a DNAME RR is present at node N,
 there MUST be no data at any descendant of N.
 
