@@ -1,6 +1,6 @@
 # Empty non-terminals
 
-With NSEC3, every empty non-terminal will have a record. This
+With NSEC3, every empty non-terminal will have a NSEC3 record. This
 is mentioned in [](#RFC5155), for instance in
 section 7.1, the second bullet point:
 
@@ -437,8 +437,6 @@ The following steps describe one possible method of proper validation
 of an answer containing NSEC4 RRs.
 
 [TBD]
-
-[MM: Is there really a need for text on validator algorithm?]
 
 <!--
 1. For each section in the answer:

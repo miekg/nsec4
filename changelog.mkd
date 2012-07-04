@@ -16,10 +16,10 @@ This document was produced using the xml2rfc tool ([](#RFC2629)) and Pandoc2rfc 
 
 ## 01
 
-* Clarification throughout the text;
+* Clarification throughout the text (Mohan Parthasarathy);
 * Add section about empty non-terminals in NSEC, NSEC3 and NSEC4;
 * Rename Zero hashing to Identity function.
-
+* No need for different ordering mechanisms: canonical ordering only.
 
 ## 00
 
