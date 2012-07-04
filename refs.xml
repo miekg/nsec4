@@ -1,7 +1,7 @@
 <references title="Informative References">
         <?rfc include="bib/reference.RFC.2629" ?>
-        <?rfc include="bib/reference.RFC.2672" ?>
         <?rfc include="bib/reference.RFC.4592" ?>
+        <?rfc include="bib/reference.RFC.6672" ?>
         <reference anchor='Gieben11' target="https://github.com/miekg/pandoc2rfc/">
             <front>
             <title>Pandoc2RFC</title>
