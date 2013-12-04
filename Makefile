@@ -1,44 +1,34 @@
-DRAFTNAME=$(shell grep docName template.xml | sed -e 's/.*docName=\"//' -e 's/\">//')
 XML=abstract.xml body.xml back.xml
 # Use the file `nl` to introduce newlines
-BODY=introduction.mkd nl middle.mkd nl considerations.mkd nl iana.mkd nl changelog.mkd
-RFC=DISPLAY= xml2rfc template.xml
+BODY=introduction.mkd middle.mkd considerations.mkd iana.mkd changelog.mkd
+RFC=xml2rfc template.xml
 
-all:	$(DRAFTNAME).txt $(DRAFTNAME).html $(DRAFTNAME).xml
+all: draft.txt draft.html draft.xml
 
-body.xml:	$(BODY) transform.xsl
-	cat $(BODY) > body.mkd
-	pandoc body.mkd  -t docbook -s | xsltproc transform.xsl - > body.xml
+body.mkd: $(BODY)
+	> body.mkd
+	for i in $(BODY); do cat $(BODY) >> body.mkd; echo >> body.mkd; done
 
 %.xml:	%.mkd transform.xsl
 	pandoc $< -t docbook -s | xsltproc transform.xsl - > $@
 
-draft.txt:	$(XML) template.xml
-	$(RFC) $@
+draft.txt: $(XML) template.xml
+	$(RFC) -f $@ --text
 
-draft.html: 	$(XML) template.xml
-	$(RFC) $@
+draft.html: $(XML) template.xml
+	$(RFC) -f $@  --html
 
-draft.xml:	$(XML) template.xml
-	perl single-xml template.xml > $@
-
-$(DRAFTNAME).txt:	draft.txt
-	ln -sf $< $@
-
-$(DRAFTNAME).html:	draft.html
-	ln -sf $< $@
-
-$(DRAFTNAME).xml:	draft.xml
-	ln -sf $< $@
+draft.xml: $(XML) template.xml
+	$(RFC) -f $@ --exp
 
 nits:   $(DRAFTNAME).txt
-	idnits --year 2011 --verbose $<
+	idnits --year 2013 --verbose $<
 
 clean:
 	rm -f $(XML) body.xml body.mkd
 
 realclean: clean
-	rm -f $(DRAFTNAME).txt $(DRAFTNAME).html $(DRAFTNAME).xml draft.txt draft.html draft.xml
+	rm -f draft.txt draft.html draft.xml
 
 uberclean: realclean
 	rm draft-*

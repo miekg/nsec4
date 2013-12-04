@@ -1,5 +1,11 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<!DOCTYPE rfc SYSTEM 'rfc2629.dtd'>
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+<!ENTITY pandocAbs    PUBLIC '' 'abstract.xml'>
+<!ENTITY pandocBody   PUBLIC '' 'body.xml'>
+<!ENTITY pandocBack   PUBLIC '' 'back.xml'>
+<!ENTITY pandocRefs   PUBLIC '' 'refs.xml'>
+]>
+
 <?rfc toc="yes"?>         <!-- generate a table of contents -->
 <?rfc tocompact="no"?>
 <?rfc tocdepth="6"?>
@@ -56,16 +62,16 @@
         <workgroup>DNSEXT</workgroup>
         <keyword>DNSSEC</keyword>
         <abstract>
-        <?rfc include="abstract.xml"?>
+        &pandocAbs;
         </abstract>
 </front>
 
 <middle>
-<?rfc include="body.xml"?>
+    &pandocBody;
 </middle>
 
 <back>
- <?rfc include="refs.xml"?>
- <?rfc include="back.xml"?>
+    &pandocRefs;
+    &pandocBack;
 </back>
 </rfc>
