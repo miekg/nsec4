@@ -1,34 +1,31 @@
 <?xml version='1.0' encoding="UTF-8"?>
-<!DOCTYPE rfc SYSTEM 'rfc2629.dtd'>
-<?rfc toc="yes"?>         <!-- generate a table of contents -->
+<!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+<!ENTITY middle       PUBLIC '' 'middle.xml'>
+<!ENTITY abstract     PUBLIC '' 'abstract.xml'>
+<!ENTITY appendix     PUBLIC '' 'appendix.xml'>
+<!ENTITY refs         PUBLIC '' 'refs.xml'>
+]>
+
+<?rfc toc="yes"?>
 <?rfc tocompact="no"?>
 <?rfc tocdepth="6"?>
-<?rfc symrefs="yes"?>     <!-- use anchors instead of numbers for references -->
-<?rfc sortrefs="yes" ?>   <!-- alphabetize the references -->
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
 <?rfc rfcedstyle="yes"?>
 <?rfc strict="yes"?>
 <?rfc autobreaks="yes"?>
-<?rfc compact="yes" ?>    <!-- conserve vertical whitespace -->
-<?rfc subcompact="no" ?>  <!-- but keep a blank line between list items -->
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
 <rfc ipr="trust200902" category="exp" docName="draft-gieben-nsec4-01">
 <front>
 
 <title abbrev="NSEC4"> DNS Security (DNSSEC) Authenticated Denial of Existence </title>
 
         <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
-            <organization>SIDN Labs</organization>
+            <organization>Google</organization>
             <address>
-                <postal>
-                    <street>Meander 501</street>
-                    <street></street>
-                    <city>Arnhem</city> <region></region>
-                    <code>6825 MD</code>
-                    <country>NL</country>
-                </postal>
-
                 <phone></phone>
-                <email>miek.gieben@sidn.nl</email>
-                <uri>https://sidn.nl/</uri>
+                <email>miek@google.com</email>
             </address>
         </author>
 
@@ -50,22 +47,22 @@
             </address>
         </author>
 
-        <date day="04" month='July' year='2012' />
+        <date day="06" month='December' year='2013' />
 
         <area>Internet</area>
         <workgroup>DNSEXT</workgroup>
         <keyword>DNSSEC</keyword>
         <abstract>
-        <?rfc include="abstract.xml"?>
+            &abstract;
         </abstract>
 </front>
 
 <middle>
-<?rfc include="body.xml"?>
+    &middle;
 </middle>
 
 <back>
- <?rfc include="refs.xml"?>
- <?rfc include="back.xml"?>
+    &refs;
+    &back;
 </back>
 </rfc>
