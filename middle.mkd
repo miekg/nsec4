@@ -954,8 +954,6 @@ Karst Koymans,
 Mohan Parthasarathy,
 Marco Davids, Esther Makaay and Antoin Verschuren.
 
-This document was produced using the xml2rfc tool ([](#RFC2629)) and Pandoc2rfc ([](#Gieben11)).
-
 # Changelog
 
 ## 01
