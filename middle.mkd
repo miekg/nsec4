@@ -1,5 +1,17 @@
 # Introduction
 
+The Domain Name System Security (DNSSEC) Extensions introduced the NSEC
+resource record for authenticated denial of existence, and the NSEC3
+resource record for hashed authenticated denial of existence.  This document
+introduces an alternative resource record, NSEC4, which similarly provides 
+authenticated denial of existence. It permits gradual expansion of
+delegation-centric zones, just like NSEC3 does. 
+With NSEC4 it is possible, but not required, to provide 
+measures against zone enumeration.
+
+NSEC4 reduces the size of the denial of existence response and
+adds Opt-Out to unhashed names. NSEC4 unifies NSEC and NSEC3.
+
 ## Rationale
 
 Hashed authenticated denial of existence proofs frequently hinge on the 
@@ -264,6 +276,7 @@ The RDATA of the NSEC4 RR is as shown below.
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     /                         Type Bit Maps                         /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+^[fig:nsec4-wire::The NSEC4 on-the-wire format.]
 
 Hash Algorithm is a single octet. 
 If Hash Algorithm is zero (Identity function), the Iterations field,
