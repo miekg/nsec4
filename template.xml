@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
+<<<<<<< HEAD
 <!ENTITY pandocAbs    PUBLIC '' 'abstract.xml'>
 <!ENTITY pandocBody   PUBLIC '' 'body.xml'>
 <!ENTITY pandocBack   PUBLIC '' 'back.xml'>
@@ -7,34 +8,55 @@
 ]>
 
 <?rfc toc="yes"?>         <!-- generate a table of contents -->
+=======
+<!ENTITY abstract  PUBLIC '' 'abstract.xml'>
+<!ENTITY middle    PUBLIC '' 'middle.xml'>
+<!ENTITY back      PUBLIC '' 'back.xml'>
+
+<!-- informative -->
+<!ENTITY RFC.2629  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629'>
+<!ENTITY RFC.4592  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4592'>
+<!ENTITY RFC.6672  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6672'>
+
+<!-- normative -->
+<!ENTITY RFC.1034 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034'>
+<!ENTITY RFC.1035 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035'>
+<!ENTITY RFC.2119 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119'>
+<!ENTITY RFC.2136 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2136'>
+<!ENTITY RFC.2181 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2181'>
+<!ENTITY RFC.2308 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2308'>
+<!ENTITY RFC.3597 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3597'>
+<!ENTITY RFC.4033 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4033'>
+<!ENTITY RFC.4034 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4034'>
+<!ENTITY RFC.4035 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4035'>
+<!ENTITY RFC.4648 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648'>
+<!ENTITY RFC.4955 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4955'>
+<!ENTITY RFC.4956 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4956'>
+<!ENTITY RFC.5155 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5155'>
+<!ENTITY RFC.5226 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226'>
+]>
+
+<?rfc toc="yes"?>
+>>>>>>> 97ae3b0946798aca7aab15755b303f61696a7833
 <?rfc tocompact="no"?>
 <?rfc tocdepth="6"?>
-<?rfc symrefs="yes"?>     <!-- use anchors instead of numbers for references -->
-<?rfc sortrefs="yes" ?>   <!-- alphabetize the references -->
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
 <?rfc rfcedstyle="yes"?>
 <?rfc strict="yes"?>
 <?rfc autobreaks="yes"?>
-<?rfc compact="yes" ?>    <!-- conserve vertical whitespace -->
-<?rfc subcompact="no" ?>  <!-- but keep a blank line between list items -->
-<rfc ipr="trust200902" category="exp" docName="draft-gieben-nsec4-01">
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<rfc ipr="trust200902" category="exp" docName="draft-gieben-nsec4-02">
 <front>
 
 <title abbrev="NSEC4"> DNS Security (DNSSEC) Authenticated Denial of Existence </title>
 
         <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
-            <organization>SIDN Labs</organization>
+            <organization>Google</organization>
             <address>
-                <postal>
-                    <street>Meander 501</street>
-                    <street></street>
-                    <city>Arnhem</city> <region></region>
-                    <code>6825 MD</code>
-                    <country>NL</country>
-                </postal>
-
                 <phone></phone>
-                <email>miek.gieben@sidn.nl</email>
-                <uri>https://sidn.nl/</uri>
+                <email>miek@google.com</email>
             </address>
         </author>
 
@@ -56,22 +78,67 @@
             </address>
         </author>
 
-        <date day="04" month='July' year='2012' />
+        <date day="06" month='December' year='2013' />
 
         <area>Internet</area>
         <workgroup>DNSEXT</workgroup>
         <keyword>DNSSEC</keyword>
         <abstract>
+<<<<<<< HEAD
         &pandocAbs;
+=======
+            &abstract;
+>>>>>>> 97ae3b0946798aca7aab15755b303f61696a7833
         </abstract>
 </front>
 
 <middle>
+<<<<<<< HEAD
     &pandocBody;
 </middle>
 
 <back>
     &pandocRefs;
     &pandocBack;
+=======
+    &middle;
+</middle>
+
+<back>
+<references title="Informative References">
+        &RFC.2629;
+        &RFC.4592;
+        &RFC.6672;
+</references>
+
+<references title="Normative References">
+        &RFC.1034;
+        &RFC.1035;
+        &RFC.2119;
+        &RFC.2136;
+        &RFC.2181;
+        &RFC.2308;
+        &RFC.3597;
+        &RFC.4033;
+        &RFC.4034;
+        &RFC.4035;
+        &RFC.4648;
+        &RFC.4955;
+        &RFC.4956;
+        &RFC.5155;
+        &RFC.5226;
+        <reference anchor='Schaeffer10' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'>
+            <front>
+            <title>NSEC3 Hash Performance</title>
+            <author initials='Y.' surname='Schaeffer' fullname='Yuri Schaeffer'>
+            <organization>NLnet Labs</organization>
+            </author>
+            <date year='2010' month='March'/>
+            </front>
+            <format type='PDF' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'/>
+        </reference>
+</references>
+    &back;
+>>>>>>> 97ae3b0946798aca7aab15755b303f61696a7833
 </back>
 </rfc>
