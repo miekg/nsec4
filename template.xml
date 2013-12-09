@@ -1,14 +1,5 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM 'rfc2629.dtd' [
-<<<<<<< HEAD
-<!ENTITY pandocAbs    PUBLIC '' 'abstract.xml'>
-<!ENTITY pandocBody   PUBLIC '' 'body.xml'>
-<!ENTITY pandocBack   PUBLIC '' 'back.xml'>
-<!ENTITY pandocRefs   PUBLIC '' 'refs.xml'>
-]>
-
-<?rfc toc="yes"?>         <!-- generate a table of contents -->
-=======
 <!ENTITY abstract  PUBLIC '' 'abstract.xml'>
 <!ENTITY middle    PUBLIC '' 'middle.xml'>
 <!ENTITY back      PUBLIC '' 'back.xml'>
@@ -37,7 +28,6 @@
 ]>
 
 <?rfc toc="yes"?>
->>>>>>> 97ae3b0946798aca7aab15755b303f61696a7833
 <?rfc tocompact="no"?>
 <?rfc tocdepth="6"?>
 <?rfc symrefs="yes"?>
@@ -84,23 +74,11 @@
         <workgroup>DNSEXT</workgroup>
         <keyword>DNSSEC</keyword>
         <abstract>
-<<<<<<< HEAD
-        &pandocAbs;
-=======
             &abstract;
->>>>>>> 97ae3b0946798aca7aab15755b303f61696a7833
         </abstract>
 </front>
 
 <middle>
-<<<<<<< HEAD
-    &pandocBody;
-</middle>
-
-<back>
-    &pandocRefs;
-    &pandocBack;
-=======
     &middle;
 </middle>
 
@@ -139,6 +117,5 @@
         </reference>
 </references>
     &back;
->>>>>>> 97ae3b0946798aca7aab15755b303f61696a7833
 </back>
 </rfc>
