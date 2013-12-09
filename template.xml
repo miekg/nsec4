@@ -5,26 +5,26 @@
 <!ENTITY back      PUBLIC '' 'back.xml'>
 
 <!-- informative -->
-<!ENTITY RFC.2629  PUBLIC '' 'bib/reference.RFC.2629'>
-<!ENTITY RFC.4592  PUBLIC '' 'bib/reference.RFC.4592'>
-<!ENTITY RFC.6672  PUBLIC '' 'bib/reference.RFC.6672'>
+<!ENTITY RFC.2629  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629'>
+<!ENTITY RFC.4592  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4592'>
+<!ENTITY RFC.6672  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6672'>
 
 <!-- normative -->
-<!ENTITY RFC.1034 PUBLIC '' 'bib/reference.RFC.1034'>
-<!ENTITY RFC.1035 PUBLIC '' 'bib/reference.RFC.1035'>
-<!ENTITY RFC.2119 PUBLIC '' 'bib/reference.RFC.2119'>
-<!ENTITY RFC.2136 PUBLIC '' 'bib/reference.RFC.2136'>
-<!ENTITY RFC.2181 PUBLIC '' 'bib/reference.RFC.2181'>
-<!ENTITY RFC.2308 PUBLIC '' 'bib/reference.RFC.2308'>
-<!ENTITY RFC.3597 PUBLIC '' 'bib/reference.RFC.3597'>
-<!ENTITY RFC.4033 PUBLIC '' 'bib/reference.RFC.4033'>
-<!ENTITY RFC.4034 PUBLIC '' 'bib/reference.RFC.4034'>
-<!ENTITY RFC.4035 PUBLIC '' 'bib/reference.RFC.4035'>
-<!ENTITY RFC.4648 PUBLIC '' 'bib/reference.RFC.4648'>
-<!ENTITY RFC.4955 PUBLIC '' 'bib/reference.RFC.4955'>
-<!ENTITY RFC.4956 PUBLIC '' 'bib/reference.RFC.4956'>
-<!ENTITY RFC.5155 PUBLIC '' 'bib/reference.RFC.5155'>
-<!ENTITY RFC.5226 PUBLIC '' 'bib/reference.RFC.5226'>
+<!ENTITY RFC.1034 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034'>
+<!ENTITY RFC.1035 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.1035'>
+<!ENTITY RFC.2119 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119'>
+<!ENTITY RFC.2136 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2136'>
+<!ENTITY RFC.2181 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2181'>
+<!ENTITY RFC.2308 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2308'>
+<!ENTITY RFC.3597 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3597'>
+<!ENTITY RFC.4033 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4033'>
+<!ENTITY RFC.4034 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4034'>
+<!ENTITY RFC.4035 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4035'>
+<!ENTITY RFC.4648 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4648'>
+<!ENTITY RFC.4955 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4955'>
+<!ENTITY RFC.4956 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4956'>
+<!ENTITY RFC.5155 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5155'>
+<!ENTITY RFC.5226 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226'>
 ]>
 
 <?rfc toc="yes"?>
