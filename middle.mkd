@@ -14,7 +14,7 @@ adds Opt-Out to unhashed names. NSEC4 unifies NSEC and NSEC3.
 
 ## Rationale
 
-Hashed authenticated denial of existence proofs frequently hinge on the 
+Hashed authenticated denial of existence proofs hinge on the 
 closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
 a hashed denial of existence response, a validator must deny or assert the
 presence of a next closer name and a wildcard name. A validator can derive
@@ -110,6 +110,10 @@ Identity function:
 # Experimental Status
 
 <!--
+TODO(miek) are we going to say something about this, or push for std track?
+-->
+
+<!--
 This specification describes an experimental protocol change
 that is not generally backwards compatible with the existing DNSSEC family RFCs.
 In particular, security-aware resolvers that are unaware of this specification
@@ -199,7 +203,7 @@ differences:
   is possible (e.g. does a wildcard domain name exist that is immediately
   descending from the original owner name?);
 * The hash length does not need to be stored, as all domain names are 
-  stored as domain names, not raw hashes.
+  stored as domain names, not raw hashes. [MG: this limits the hash to 63 octects..]
 
 [MM: Hash length is one byte. In general, NSEC3 is used in TLD zones. 
 Those domain names are relatively short (on average 3 characters (5 bytes
@@ -808,40 +812,6 @@ there is an NSEC4 RR that covers the next closer name and has the
 Opt-Out bit set.
 
 
-<!-- 
-## Validator Algorithm
-
-Section 5 of [](#RFC4035) describes how a security-aware resolver can
-authenticate DNS responses. Section 5.4 of [](#RFC4035) describes
-authenticating of denial of existence responses. 
-
-The following steps describe one possible method of proper validation
-of an answer containing NSEC4 RRs.
-
-[TBD]
-
--->
-
-<!--
-1. For each section in the answer:
-    * Count the number of RRs in the answer section, call this number "Nans";
-    * Count the number of RRs in the authority section, call this number "Nauth".
-
-[MM: This is just ANCOUNT and NSCOUNT?]
-
-2. If "Nans" and "Nauth" are both greater than zero, goto step 5;
-
-3. If "Nans" equals zero and "Nauth" is greater then zero, goto step YY;
-
-4. If both "Nans" and "Nauth" are zero there are no NSEC4 RRs..."Houston, we got a problem", goto step -1;
-
-5. We want to determine if we can proof an expanded wildcard answer or a CNAME/DNAME
-   a. dksdskl;
-   b. dsjdsjsk;
-
-9. Determine if this is a correct NXDOMAIN answer.
--->
-
 # Resolver Considerations
 
 ## NSEC4 Resource Record Caching
@@ -885,7 +855,6 @@ For authoritative servers the half performance count is around 100 iterations.
 Appendix C of [](#RFC5155) clarifies specific behavior and explains
 more special considerations for implementations, regarding salting and
 hash collisions. These considerations for NSEC3 also apply to NSEC4.
-
 
 
 # IANA Considerations
@@ -969,6 +938,10 @@ Marco Davids, Esther Makaay and Antoin Verschuren.
 
 # Changelog
 
+## 02
+
+With `denialid` published revisit this one.
+
 ## 01
 
 * Clarification throughout the text (Mohan Parthasarathy);
@@ -980,4 +953,3 @@ Marco Davids, Esther Makaay and Antoin Verschuren.
 ## 00
 
 * Initial document.
-
