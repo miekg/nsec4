@@ -205,6 +205,8 @@ differences:
 * The hash length does not need to be stored, as all domain names are 
   stored as domain names, not raw hashes. [MG: this limits the hash to 63 octects..]
 
+[MG:how to go from hash to domain name, hex? Raw data]
+
 [MM: Hash length is one byte. In general, NSEC3 is used in TLD zones. 
 Those domain names are relatively short (on average 3 characters (5 bytes
 wireformat), so in that case NSEC3 RRs become 4 bytes longer.]
