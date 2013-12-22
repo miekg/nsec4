@@ -278,7 +278,7 @@ The query returned an answer that was produced as a result of a
 wildcard expansion. The answer section contains a wildcard RRSet
 expanded as it would be in a traditional DNS response. The RRSIG
 Labels field value of 2 indicates that the answer is the result of a
-wildcard expansion, as the "a.b.who.example" name contains 4 labels.
+wildcard expansion, as the `a.b.who.example` name contains 4 labels.
 This also shows that "who.example" exists, so there is no need for an
 NSEC4 RR that matches the closest encloser.
 
