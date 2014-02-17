@@ -1,6 +1,8 @@
 The Domain Name System Security (DNSSEC) Extensions introduced the NSEC
 resource record for authenticated denial of existence, and the NSEC3
-resource record for hashed authenticated denial of existence.  This document
+resource record for hashed authenticated denial of existence. 
+
+This document
 introduces an alternative resource record, DNSNXT, which similarly provides
 authenticated denial of existence. It permits gradual expansion of
 delegation-centric zones and hashed authenticated denial of existence,
