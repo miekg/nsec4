@@ -974,9 +974,18 @@ This document would not be possible without the help of Ed Lewis, Roy Arends,
 Wouter Wijngaards, 
 Karst Koymans, 
 Mohan Parthasarathy,
-Marco Davids, Esther Makaay and Antoin Verschuren.
+Marco Davids,
+Esther Makaay
+and Antoin Verschuren.
 
 # Changelog
+
+[ To be removed to the RFC editor before publication. ]
+
+## 02
+
+* Rename to DNSNXT and DNSNXTPARAM;
+* Make Iterations an octet.
 
 ## 01
 
@@ -989,4 +998,3 @@ Marco Davids, Esther Makaay and Antoin Verschuren.
 ## 00
 
 * Initial document.
-
