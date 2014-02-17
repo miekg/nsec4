@@ -982,12 +982,12 @@ and Antoin Verschuren.
 
 [ To be removed to the RFC editor before publication. ]
 
-## 02
+## -02
 
 * Rename to DNSNXT and DNSNXTPARAM;
 * Make Iterations an octet.
 
-## 01
+## -01
 
 * Clarification throughout the text (Mohan Parthasarathy);
 * Add section about empty non-terminals in NSEC, NSEC3 and DNSNXT;
@@ -995,6 +995,6 @@ and Antoin Verschuren.
 * No need for different ordering mechanisms: canonical ordering only.
 * Remove section on validator algorithm (already explained in RFC4035).
 
-## 00
+## -00
 
 * Initial document.
