@@ -89,6 +89,16 @@
         &RFC.4592;
         &RFC.6672;
         &RFC.7129;
+        <reference anchor='Schaeffer10' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'>
+            <front>
+            <title>NSEC3 Hash Performance</title>
+            <author initials='Y.' surname='Schaeffer' fullname='Yuri Schaeffer'>
+            <organization>NLnet Labs</organization>
+            </author>
+            <date year='2010' month='March'/>
+            </front>
+            <format type='PDF' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'/>
+        </reference>
 </references>
 
 <references title="Normative References">
@@ -107,16 +117,6 @@
         &RFC.4956;
         &RFC.5155;
         &RFC.5226;
-        <reference anchor='Schaeffer10' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'>
-            <front>
-            <title>NSEC3 Hash Performance</title>
-            <author initials='Y.' surname='Schaeffer' fullname='Yuri Schaeffer'>
-            <organization>NLnet Labs</organization>
-            </author>
-            <date year='2010' month='March'/>
-            </front>
-            <format type='PDF' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'/>
-        </reference>
 </references>
     &back;
 </back>
