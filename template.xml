@@ -41,7 +41,7 @@
 <rfc ipr="trust200902" category="exp" docName="draft-gieben-nsec4-02">
 <front>
 
-<title abbrev="DNSNXT">Unifying DNS Security Authenticated Denial of Existence</title>
+<title abbrev="NEXT">Unifying DNS Security Authenticated Denial of Existence</title>
 
         <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
             <organization>Google</organization>

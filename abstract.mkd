@@ -3,12 +3,12 @@ resource record for authenticated denial of existence, and the NSEC3
 resource record for hashed authenticated denial of existence. 
 
 This document
-introduces an alternative resource record, DNSNXT, which similarly provides
+introduces an alternative resource record, NEXT, which similarly provides
 authenticated denial of existence. It permits gradual expansion of
 delegation-centric zones and hashed authenticated denial of existence,
 just like NSEC3 does. But it also support unhashed authenticated denial of
-existence like NSEC. Thus with DNSNXT it is possible, but not required, to provide
+existence like NSEC. Thus with NEXT it is possible, but not required, to provide
 measures against zone enumeration.
 
-DNSNXT reduces the size of the denial of existence response and adds Opt-Out to
-unhashed names. DNSNXT unifies NSEC and NSEC3.
+NEXT reduces the size of the denial of existence response and adds Opt-Out to
+unhashed names. NEXT unifies NSEC and NSEC3.
