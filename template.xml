@@ -8,6 +8,7 @@
 <!ENTITY RFC.2629  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629'>
 <!ENTITY RFC.4592  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4592'>
 <!ENTITY RFC.6672  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6672'>
+<!ENTITY RFC.7129  PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.7129'>
 
 <!-- normative -->
 <!ENTITY RFC.1034 PUBLIC '' 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.1034'>
@@ -40,7 +41,7 @@
 <rfc ipr="trust200902" category="exp" docName="draft-gieben-nsec4-02">
 <front>
 
-<title abbrev="NSEC4"> DNS Security (DNSSEC) Authenticated Denial of Existence </title>
+<title abbrev="DNSNXT">Unifying DNS Security Authenticated Denial of Existence</title>
 
         <author initials='R.' surname='Gieben' fullname='R. (Miek) Gieben'>
             <organization>Google</organization>
@@ -68,10 +69,10 @@
             </address>
         </author>
 
-        <date day="06" month='December' year='2013' />
+        <date year='2014' />
 
         <area>Internet</area>
-        <workgroup>DNSEXT</workgroup>
+        <!--        <workgroup>DNSEXT</workgroup> -->
         <keyword>DNSSEC</keyword>
         <abstract>
             &abstract;
@@ -87,6 +88,17 @@
         &RFC.2629;
         &RFC.4592;
         &RFC.6672;
+        &RFC.7129;
+        <reference anchor='Schaeffer10' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'>
+            <front>
+            <title>NSEC3 Hash Performance</title>
+            <author initials='Y.' surname='Schaeffer' fullname='Yuri Schaeffer'>
+            <organization>NLnet Labs</organization>
+            </author>
+            <date year='2010' month='March'/>
+            </front>
+            <format type='PDF' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'/>
+        </reference>
 </references>
 
 <references title="Normative References">
@@ -105,16 +117,6 @@
         &RFC.4956;
         &RFC.5155;
         &RFC.5226;
-        <reference anchor='Schaeffer10' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'>
-            <front>
-            <title>NSEC3 Hash Performance</title>
-            <author initials='Y.' surname='Schaeffer' fullname='Yuri Schaeffer'>
-            <organization>NLnet Labs</organization>
-            </author>
-            <date year='2010' month='March'/>
-            </front>
-            <format type='PDF' target='http://www.nlnetlabs.nl/downloads/publications/nsec3_hash_performance.pdf'/>
-        </reference>
 </references>
     &back;
 </back>

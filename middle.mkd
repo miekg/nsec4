@@ -3,19 +3,20 @@
 The Domain Name System Security (DNSSEC) Extensions introduced the NSEC
 resource record for authenticated denial of existence, and the NSEC3
 resource record for hashed authenticated denial of existence.  This document
-introduces an alternative resource record, NSEC4, which similarly provides 
+introduces an alternative resource record, DNSNXT, which similarly provides 
 authenticated denial of existence. It permits gradual expansion of
 delegation-centric zones, just like NSEC3 does. 
-With NSEC4 it is possible, but not required, to provide 
+With DNSNXT it is possible, but not required, to provide 
 measures against zone enumeration.
 
-NSEC4 reduces the size of the denial of existence response and
-adds Opt-Out to unhashed names. NSEC4 unifies NSEC and NSEC3.
+DNSNXT reduces the size of the denial of existence response and
+adds Opt-Out to unhashed names. DNSNXT unifies NSEC and NSEC3.
 
 ## Rationale
 
 Hashed authenticated denial of existence proofs hinge on the 
-closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155)). When validating
+closest encloser proof (Section 7.2.1 and 8.3 of [](#RFC5155) and [](#RFC7129)).
+When validating
 a hashed denial of existence response, a validator must deny or assert the
 presence of a next closer name and a wildcard name. A validator can derive
 these names from the closest encloser.
@@ -26,26 +27,25 @@ NSEC3 contain three records:
 1. A record which matches the closest encloser, this tells the validator
    what the (unhashed) name of the closest encloser is;
 1. A record which covers or matches the next closer, to deny or assert the
-   existence of the next closer name. The validator needs to know the closest encloser
-   to construct the next closer name;
+   existence of the next closer name;
 1. A record which covers or matches the wildcard, to deny or assert 
    wildcard synthesis. The validator needs to know the closest encloser to 
    construct the source of synthesis.
 
-This document presents a new record, NSEC4, that is similar to NSEC3,
+This document presents a new record, DNSNXT, that is similar to NSEC3,
 but differs in the following ways:
 
 * It provides a new way to deny the existence of the wildcard,
   by introducing the Wildcard flag (described in [](#wildcard-flag)). This
-  bit makes the third record, from the list above, redundant;
+  bit makes the third record (and its RRSIG), from the list above, redundant;
 * It allows for unhashed records, by introducing an Identity function
   (described in [](#hash-algorithm)).
 
-With NSEC4 you will need a maximum of two records for any denial
+With DNSNXT you will get a maximum of two records for any denial
 of existence response, saving one record and accompanying signature(s) compared
 to NSEC3.
 
-By defining an Identity function, we also fold back NSEC into NSEC4 and
+By defining an Identity function, we also fold back NSEC into DNSNXT and
 add Opt-out to unhashed names. With this change we collapse NSEC
 and NSEC3 into one new record to leave only one form of authenticated
 denial of existence in the DNS.
@@ -61,7 +61,8 @@ NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
 The reader is assumed to be familiar with the basic DNS and DNSSEC
 concepts described in [](#RFC1034), [](#RFC1035), [](#RFC4033), [](#RFC4034),
 [](#RFC4035), and subsequent RFCs that update them: [](#RFC2136),
-[](#RFC2181), [](#RFC2308) and [](#RFC5155).
+[](#RFC2181), [](#RFC2308) and [](#RFC5155). A good explanation on how authenticated
+denial of existence works can be found in [](#RFC7129).
 
 Furthermore, the same terminology is used throughout this document as is
 described in Section 1.3 from [](#RFC5155), with the following changes:
@@ -71,37 +72,37 @@ Original owner name:
 :   the owner name corresponding to a hashed owner name if hashing is used. Or
     the owner name as-is if no hashing is used.
 
-Opt-Out NSEC4 RR:
+Opt-Out DNSNXT RR:
 
-:   an NSEC4 RR that has the Opt-Out flag set to 1.
+:   an DNSNXT RR that has the Opt-Out flag set to 1.
 
-Wildcard NSEC4 RR:
+Wildcard DNSNXT RR:
 
-:   an NSEC4 RR that has the Wildcard flag set to 1.
+:   an DNSNXT RR that has the Wildcard flag set to 1.
 
 Opt-Out zone:
 
-:   a zone with at least one Opt-Out NSEC4 RR.
+:   a zone with at least one Opt-Out DNSNXT RR.
 
 Base32:
 
 :   the "Base 32 Encoding with Extended Hex Alphabet" as specified
     in [](#RFC4648). Note that trailing padding characters ("=") are
-    not used in the NSEC4 specification.
+    not used in the DNSNXT specification.
 
 To cover:
 
-:   an NSEC4 RR is said to "cover" a name if the (hashed) name or (hashed) next closer name falls between
-    the owner name of the NSEC4 RR and the next (hashed) owner name of the NSEC4. In other words, if
+:   an DNSNXT RR is said to "cover" a name if the (hashed) name or (hashed) next closer name falls between
+    the owner name of the DNSNXT RR and the next (hashed) owner name of the DNSNXT. In other words, if
     it proves the nonexistence of the name, either directly or by proving the
     nonexistence of an ancestor of the name.
 
 To match:
 
-:   When a hash algorithm is defined, an NSEC4 RR is said to "match" a name
-    if the owner name of the NSEC4 RR is the same as the hashed owner name
-    of that name. When no hash algorithm (Identity function) is defined, an NSEC4 RR is said to
-    "match" a name if the name and the owner name of the NSEC4 RR are equal.
+:   When a hash algorithm is defined, an DNSNXT RR is said to "match" a name
+    if the owner name of the DNSNXT RR is the same as the hashed owner name
+    of that name. When no hash algorithm (Identity function) is defined, an DNSNXT RR is said to
+    "match" a name if the name and the owner name of the DNSNXT RR are equal.
 
 Identity function:
 
@@ -109,94 +110,61 @@ Identity function:
 
 # Experimental Status
 
-<!--
-TODO(miek) are we going to say something about this, or push for std track?
--->
-
-<!--
-This specification describes an experimental protocol change
-that is not generally backwards compatible with the existing DNSSEC family RFCs.
-In particular, security-aware resolvers that are unaware of this specification
-(NSEC4-unaware resolvers) may fail to validate the responses introduced by this
-document.
-
-It interoperates with non-experimental DNSSEC using the same signaling technique
-as presented in Section 2 of [](#RFC5155). For this purpose,
-this specification allocates four new DNSKEY algorithm aliases:
-
-* Algorithm [TBD], DSA-NSEC4-SHA1, is an alias for algorithm 3, DSA;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA1, is an alias for algorithm 5, RSASHA1;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA256, is an alias for algorithm 8, RSASHA256;
-* Algorithm [TBD], RSAHSHA1-NSEC4-SHA512, is an alias for algorithm 10, RSASHA512.
-
-Zones signed according to this specification MUST only use these
-algorithm identifiers for their DNSKEY RRs.  Because these new
-identifiers will be unknown algorithms to existing, NSEC4-unaware
-resolvers, those resolvers will then treat responses from the NSEC4
-signed zone as insecure, as detailed in Section 5.2 of [](#RFC4035).
-
-These algorithm identifiers are used with the NSEC4 hash algorithms
-Identity function and SHA1.  Using other NSEC4 hash algorithms requires
-allocation of a new alias (see Section 12.1.3 of [RFC5155]).
-
-Security aware resolvers that are aware of this specification MUST
-recognize the new algorithm identifiers and treat them as equivalent
-to the algorithms that they alias.
--->
-
 This document describes an EXPERIMENTAL extension to DNSSEC.
 It interoperates with non-experimental DNSSEC using the technique
 described in [](#RFC4955).  This experiment is identified with the
 following private algorithm (using algorithm PRIVATEDNS):
 
-* Algorithm "5.nsec4.nlnetlabs.nl.", is an alias for algorithm 5, RSASHA1.
+* Algorithm `5.dnsnxt.nlnetlabs.nl.`, is an alias for algorithm 5, RSASHA1.
 
-Servers wishing to sign and serve zones that utilize NSEC4 MUST sign
+Servers wishing to sign and serve zones that utilize DNSNXT MUST sign
 the zone with this private algorithm and MUST NOT use any other algorithms.
 
-Resolvers MUST NOT apply NSEC4 validation described in this document
+Resolvers MUST NOT apply DNSNXT validation described in this document
 unless a response contains RRSIGs created with this private algorithm.
 
+# The DNSNXT Resource Record
 
-# The NSEC4 Resource Record
+The DNSNXT RR provides authenticated denial of existence for DNS RRsets.
 
-The NSEC4 RR provides authenticated denial of existence for DNS RRsets.
-
-The NSEC4 RR lists RR types present at the original owner name of the NSEC4 RR.
+The DNSNXT RR lists RR types present at the original owner name of the DNSNXT RR.
 It includes the next (hashed) owner name in the canonical order of the zone.
-The complete set of NSEC4 RRs in a zone indicates which RRSets exist for the
+The complete set of DNSNXT RRs in a zone indicates which RRSets exist for the
 original owner name of the RR and form a chain. This information is used to
 provide authenticated denial of existence for DNS data. To provide protection
-against zone enumeration, the owner names used in the NSEC4 RR can be
+against zone enumeration, the owner names used in the DNSNXT RR can be
 cryptographic hashes of the original owner name prepended as a single label
-to the name of the zone. The NSEC4 RR indicates which
+to the name of the zone. The DNSNXT RR indicates which
 hash function (if any) is used to construct the hash, which salt is used, and how many
 iterations of the hash function are performed over the original owner name.
 
 The hashing technique is the same as with NSEC3 and is described in
-Section 5 of [](#RFC5155). NSEC3 creates hashes for empty non-terminals, NSEC4
+Section 5 of [](#RFC5155). NSEC3 creates hashes for empty non-terminals, DNSNXT
 does the same, even when the Identity function is in use.
 
 (Hashed) owner names of unsigned delegations may be excluded from the chain.
-An NSEC4 RR whose span covers an owner name or next closer name of an
-unsigned delegation is referred to as an Opt-Out NSEC4 RR and is indicated by
+An DNSNXT RR whose span covers an owner name or next closer name of an
+unsigned delegation is referred to as an Opt-Out DNSNXT RR and is indicated by
 the presence of a flag.
 
-If hashing is in use, the owner name for the NSEC4 RR is the base32 encoding
+If hashing is in use, the owner name for the DNSNXT RR is the base32 encoding
 of the hashed owner name prepended as a single label to the name of the zone.
+If hashing is not in use, the other name of the DNSNXT RR is the unmodified domain
+name.
 
-The type value for the NSEC4 RR is [TBD].
+The type value for the DNSNXT RR is [TBD].
 
-The NSEC4 RR RDATA format is class independent and is described below.
+The DNSNXT RR RDATA format is class independent and is described below.
 
-The class MUST be the same as the class of the original owner name.
+The class MUST be the same as the class of the original owner name, in case the
+original owner name is being hashed.
 
-The NSEC4 RR SHOULD have the same TTL value as the SOA minimum TTL field.
+The DNSNXT RR SHOULD have the same TTL value as the SOA minimum TTL field.
 This is in the spirit of negative caching [](#RFC2136).
 
 ## RDATA Fields
 
-The NSEC4 RDATA has many similarities with the NSEC3 RDATA, but there are
+The DNSNXT RDATA has many similarities with the NSEC3 RDATA, but there are
 differences:
 
 * There is an extra flag bit reserved to indicate whether wildcard synthesis
@@ -205,16 +173,10 @@ differences:
 * The hash length does not need to be stored, as all domain names are 
   stored as domain names, not raw hashes. [MG: this limits the hash to 63 octects..]
 
-[MG:how to go from hash to domain name, hex? Raw data]
-
-[MM: Hash length is one byte. In general, NSEC3 is used in TLD zones. 
-Those domain names are relatively short (on average 3 characters (5 bytes
-wireformat), so in that case NSEC3 RRs become 4 bytes longer.]
-
 ### Hash Algorithm
 
 [](#RFC5155) defines the NSEC3 hash algorithm registry. Hash algorithm
-0 is reserved. For NSEC4 we define hash algorithm 0 to be the Identity function,
+0 is reserved. For DNSNXT we define hash algorithm 0 to be the Identity function,
 meaning that no hashing is used.
 
 ### Flags
@@ -230,7 +192,7 @@ Like the Opt-Out Flag defined in Section 3.1.2.1 of [](#RFC5155).
 
 The Wildcard Flag indicates whether there is wildcard synthesis possible
 (e.g. does a wildcard domain name exist that is immediately descending from
-the original owner name of the NSEC4?).
+the original owner name of the DNSNXT?).
 
 If the Wildcard flag is set, wildcard synthesis is possible.
 
@@ -238,7 +200,11 @@ If the Wildcard flag is clear, wildcard synthesis is not possible.
 
 ### Iterations
 
-Like the Iterations field defined in Section 3.1.3 of [](#RFC5155).
+The Iterations field defines the number of additional times the hash
+function has been performed.  More iterations result in greater
+resiliency of the hash value against dictionary attacks, but at a
+higher computational cost for both the server and resolver, therefor this field
+has been limited to one octet.
 
 ### Salt Length
 
@@ -257,7 +223,7 @@ The field contains the next owner name in the
 canonical ordering of the zone, as explained in Section 6.1 of [](#RFC4034).
 
 A sender MUST NOT use DNS name compression on the Next Owner Name field when
-transmitting an NSEC4 RR.
+transmitting an DNSNXT RR.
 
 Owner names of RRsets for which the given zone is not authoritative
 (such as glue records) MUST NOT be listed in the Next Owner Name,
@@ -267,22 +233,22 @@ unless at least one authoritative RRset exists at the same owner name.
 
 Like the Type Bit Maps field defined in Section 3.1.8 of [](#RFC5155).
 
-## NSEC4 RDATA Wire Format
+## DNSNXT RDATA Wire Format
 
-The RDATA of the NSEC4 RR is as shown below.
+The RDATA of the DNSNXT RR is as shown below.
 
                          1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-    |   Hash Alg.   |     Flags     |          Iterations           |
+    |   Hash Alg.   |     Flags     |  Iterations   | Salt Length   |
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-    |  Salt Length  |                     Salt                      /
+    /                            Salt                               /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     /                 Next (Hashed) Owner Name                      /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     /                         Type Bit Maps                         /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-^[fig:nsec4-wire::The NSEC4 on-the-wire format.]
+^[fig:dnsnxt-wire::The DNSNXT on-the-wire format.]
 
 Hash Algorithm is a single octet. 
 If Hash Algorithm is zero (Identity function), the Iterations field,
@@ -298,8 +264,7 @@ Flags field is a single octet. The following one-bit flags are defined:
 * O - Opt-Out flag
 * W - Wildcard flag
 
-Iterations is represented as a 16-bit unsigned integer, with the most
-significant bit first.
+Iterations is represented as a unsigned octet.
 
 Salt Length is represented as an unsigned octet.  Salt Length
 represents the length of the Salt field in octets.  If the value is
@@ -315,7 +280,7 @@ label to the name of the zone.
 If Hash Algorithm is zero it is a plain domain name.
 
 The Type Bit Maps encode the existing types at the original owner name
-that matches the NSEC4 RR.
+that matches the DNSNXT RR.
 
 ### Type Bit Maps Encoding
 
@@ -333,7 +298,7 @@ The presentation format of the RDATA portion is as follows:
     The value has a maximum of 255.
 
 * The Iterations field is represented as an unsigned decimal
-    integer. The value is between 0 and 65535, inclusive.
+    integer. The value is between 0 and 255, inclusive.
 
 * The Salt Length field is not represented.
 
@@ -361,27 +326,75 @@ The same data shown as an NSEC3 record:
                         6cd522290vma0nr8lqu1ivtcofj94rga 
                         NS SOA RRSIG DNSKEY NSEC3PARAM )
 
-As an NSEC4 record with Identity function:
+As an DNSNXT record with Identity function:
 
-    example. NSEC4 0 0 0 - a.example. NS SOA RRSIG DNSKEY NSEC4 NSEC4PARAM
+    example. DNSNXT 0 0 0 - a.example. NS SOA RRSIG DNSKEY DNSNXT DNSNXTPARAM
 
-And as an NSEC4 record with SHA1 hashing:
+And as an DNSNXT record with SHA1 hashing:
 
-    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. NSEC4 1 0 0 - (
+    3msev9usmd4br9s97v51r2tdvmr9iqo1.example. DNSNXT 1 0 0 - (
                  6cd522290vma0nr8lqu1ivtcofj94rga.example. 
-                 NS SOA RRSIG DNSKEY NSEC4PARAM )
+                 NS SOA RRSIG DNSKEY DNSNXTPARAM )
 
-# The NSEC4PARAM Resource Record
+# The DNSNXTPARAM Resource Record
 
-Exactly like NSEC3PARAM described in Section 5 of [](#RFC5155),
-except the type code used [TBD] is that of NSEC4PARAM.
+DNSNXTPARAM is almost identical to NSEC3PARAM described in Section 5 of [](#RFC5155),
+except the type code used [TBD] is that of DNSNXTPARAM and the Iteration field is an
+octet.
+
+## DNSNXTPARAM RDATA Wire Format
+
+The RDATA of the DNSNXTPARAM RR is as shown below:
+
+                        1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |   Hash Alg.   |     Flags     |  Iterations   | Salt Length   |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             Salt                              /
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+^[fig:dnsnxtparam-wire::The DNSNXTPARAM on-the-wire format.]
+
+Hash Algorithm is a single octet.
+
+Flags field is a single octet.
+
+Iterations is a single octet.
+
+Salt Length is represented as an unsigned octet.  Salt Length
+represents the length of the following Salt field in octets.  If the
+value is zero, the Salt field is omitted.
+
+Salt, if present, is encoded as a sequence of binary octets.  The
+length of this field is determined by the preceding Salt Length
+field.
+
+##  Presentation Format
+
+The presentation format of the RDATA portion is as follows:
+
+The Hash Algorithm field is represented as an unsigned decimal
+integer.  The value has a maximum of 255.
+
+The Flags field is represented as an unsigned decimal integer.
+The value has a maximum value of 255.
+
+The Iterations field is represented as an unsigned decimal
+integer.  The value is between 0 and 255, inclusive.
+
+The Salt Length field is not represented.
+
+The Salt field is represented as a sequence of case-insensitive
+hexadecimal digits.  Whitespace is not allowed within the
+sequence.  This field is represented as "-" (without the quotes)
+when the Salt Length field is zero.
 
 # Opt-Out
 
 This specification adds Opt-Out as described in Section 6 of [](#RFC5155).
 Because of the Identity function, this allows for Opt-Out being used with
 unhashed names. A similar method is described in [](#RFC4956), but with
-NSEC4 we can reuse the Opt-Out bit from the Flags field. 
+DNSNXT we can reuse the Opt-Out bit from the Flags field. 
 
 
 # Empty non-terminals
@@ -397,91 +410,91 @@ section 7.1, the second bullet point:
 This is a crucial difference with respect to NSEC, where no such provision
 exists.
 
-With NSEC4 we unify NSEC and NSEC3 and consequently, each empty non-terminal
-will get an NSEC4 record (see [](#zone-signing), the 6th bullet). Furthermore,
-NSEC4 represents the next owner name as a domain name, like NSEC, while
+With DNSNXT we unify NSEC and NSEC3 and consequently, each empty non-terminal
+will get an DNSNXT record (see [](#zone-signing), the 6th bullet). Furthermore,
+DNSNXT represents the next owner name as a domain name, like NSEC, while
 NSEC3 represents the next name as an unmodified binary hash value.
 
-Due to these changes, we can revert back to canonical ordering for NSEC4.
+Due to these changes, we can revert back to canonical ordering for DNSNXT.
 This greatly simplifies the comparison code, because there is only one ordering mechanism.
 
 # Authoritative Server Considerations
 
 ## Zone Signing
 
-Zones using NSEC4 must satisfy the same properties as described in 
-Section 7.1 of [](#RFC5155), with NSEC3 replaced by NSEC4.
+Zones using DNSNXT must satisfy the same properties as described in 
+Section 7.1 of [](#RFC5155), with NSEC3 replaced by DNSNXT.
 
 In addition, for each original owner name that has a wildcard domain name
 immediately descending from the original owner name,
-the corresponding NSEC4 RR MUST have the Wildcard bit set in the Flags field.
+the corresponding DNSNXT RR MUST have the Wildcard bit set in the Flags field.
 
 The following steps describe one possible method of proper construction of
-NSEC4 RRs.
+DNSNXT RRs.
 
 1.  Select the hash algorithm and the values for salt and iterations;
 
-2.  For each unique original owner name in the zone add an NSEC4 RR;
+2.  For each unique original owner name in the zone add an DNSNXT RR;
     * If Opt-Out is being used, owner names of unsigned delegations MAY be excluded;
-    * The owner name of the NSEC4 RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Identity function is used;
+    * The owner name of the DNSNXT RR is either the hash of the original owner name, prepended as a single label to the zone name, or is equal to the original owner name if Identity function is used;
     * The Next Owner Name field is left blank for the moment;
     * If Opt-Out is being used, set the Opt-Out bit to one.
 
 3.  For collision detection purposes, if hashing is used, optionally keep
-    track of the original owner name with the NSEC4 RR. Create an additional
-    NSEC4 RR corresponding to the original owner name with the asterisk label
-    prepended. Mark this NSEC4 RR as temporary;
+    track of the original owner name with the DNSNXT RR. Create an additional
+    DNSNXT RR corresponding to the original owner name with the asterisk label
+    prepended. Mark this DNSNXT RR as temporary;
 
 4.  If the original owner name is a wildcard domain name (Section 2.1.1. of [](#RFC4592)), 
-    mark the NSEC4 to be an NSEC4 RR that is matching a wildcard; 
+    mark the DNSNXT to be an DNSNXT RR that is matching a wildcard; 
 
 4.  For each RRSet at the original owner name, set the corresponding
     bit in the Type Bit Maps field;
 
-5.  Additional NSEC4 RRs need to be added for every empty non-terminal
+5.  Additional DNSNXT RRs need to be added for every empty non-terminal
     between the apex and the original owner name. If hashing is used,
-    optionally keep track of the original owner names of these NSEC4 RRs and
-    create temporary NSEC4 RRs for wildcard collisions in a similar fashion
+    optionally keep track of the original owner names of these DNSNXT RRs and
+    create temporary DNSNXT RRs for wildcard collisions in a similar fashion
     to step 3;
 
-6.  Sort the set of NSEC4 RRs into canonical order.
+6.  Sort the set of DNSNXT RRs into canonical order.
 
-7.  Combine NSEC4 RRs with identical owner names by replacing
-    them with a single NSEC4 RR with the Type Bit Maps field
-    consisting of the union of the types represented by the set of NSEC4 RRs. 
+7.  Combine DNSNXT RRs with identical owner names by replacing
+    them with a single DNSNXT RR with the Type Bit Maps field
+    consisting of the union of the types represented by the set of DNSNXT RRs. 
     If hashing is used and the original owner name was tracked, then collisions
-    may be detected when combining, as all of the matching NSEC4 RRs should
+    may be detected when combining, as all of the matching DNSNXT RRs should
     have the same original owner name. If a hash collision is detected, then a 
     new salt has to be chosen, and the signing process is restarted.
-    Discard any possible temporary NSEC4 RRs;
+    Discard any possible temporary DNSNXT RRs;
 
-8.  In each NSEC4 RR, insert the next (hashed) owner name by using the
-    domain name of the next NSEC4 RR in
+8.  In each DNSNXT RR, insert the next (hashed) owner name by using the
+    domain name of the next DNSNXT RR in
     canonical order. The next (hashed) owner
-    name of the last NSEC4 RR in the zone contains the value of the
-    (hashed) owner name of the first NSEC4 RR in canonical order.
+    name of the last DNSNXT RR in the zone contains the value of the
+    (hashed) owner name of the first DNSNXT RR in canonical order.
 
-    If the NSEC4 is marked to be matching a wildcard, find the NSEC4 that
+    If the DNSNXT is marked to be matching a wildcard, find the DNSNXT that
     matches the closest encloser. Set the Wildcard bit in the Flags field
-    of that NSEC4;
+    of that DNSNXT;
 
-9.  Finally, add an NSEC4PARAM RR with the same Hash Algorithm,
+9.  Finally, add an DNSNXTPARAM RR with the same Hash Algorithm,
     Iterations, and Salt fields to the zone apex.
 
 ## Zone Serving
 
 This specification modifies DNSSEC-enabled DNS responses generated by
 authoritative servers. In particular, it replaces the use of NSEC or
-NSEC3 RRs in such responses with NSEC4 RRs.
+NSEC3 RRs in such responses with DNSNXT RRs.
 
 ### Denial of Wildcard Synthesis Proof
 
 Instead of wasting a whole denial of existence RR to deny a wildcard, we have
-introduced a bit in the Flags field of the NSEC4 RR that indicates whether
+introduced a bit in the Flags field of the DNSNXT RR that indicates whether
 wildcard synthesis was possible because there exists a wildcard domain name
 immediately descending from the original owner name.
 
-The Denial of Wildcard Synthesis proof consists of one NSEC4 RR, that
+The Denial of Wildcard Synthesis proof consists of one DNSNXT RR, that
 matches some domain name, and that has the Wildcard bit clear.
 
 Note that without much knowledge of the original owner name, this proof is not really
@@ -491,12 +504,12 @@ closest encloser proof.
 
 ### Closest Encloser Proof
 
-For some NSEC4 responses, namely Name Error Response ([](#name-error-responses))
+For some DNSNXT responses, namely Name Error Response ([](#name-error-responses))
 and Referrals to Unsigned Subzones ([](#referrals-to-unsigned-subzones)),
 a proof of the closest encloser is required.
 This is a proof that some ancestor of the QNAME is the closest encloser of QNAME.
 The proof is described in Section 7.2.1 of [](#RFC5155), and is the same
-for NSEC4.
+for DNSNXT.
 
 ### Denial of Source of Synthesis Proof
 
@@ -505,16 +518,16 @@ results in a denial of source of synthesis proof. The source of synthesis is
 defined in [](#RFC4592) as the wildcard domain name immediately descending from
 the closest encloser.
 
-The Denial of Source of Synthesis proof consists of (up to) two NSEC4 RRs,
+The Denial of Source of Synthesis proof consists of (up to) two DNSNXT RRs,
 the same that constructed the closest encloser proof:
 
-* an NSEC4 RR that matches the closest encloser, and that has the Wildcard bit
+* an DNSNXT RR that matches the closest encloser, and that has the Wildcard bit
   clear in the Flags field;
-* an NSEC4 RR that covers the next closer name to the closest encloser.
+* an DNSNXT RR that covers the next closer name to the closest encloser.
 
-The first NSEC4 RR essentially proves that the encloser exists, and that no
+The first DNSNXT RR essentially proves that the encloser exists, and that no
 wildcard synthesis at the encloser is possible.
-The second NSEC4 RR proves that the encloser is the closest, thus the
+The second DNSNXT RR proves that the encloser is the closest, thus the
 denial of the wildcard synthesis is the denial of the source of synthesis.
 
 ### Name Error Responses
@@ -533,8 +546,8 @@ With NSEC3, the server includes in the response an NSEC3 RR that covers the
 next closer, an NSEC3 RR that covers the wildcard RR at the closest
 encloser, and an NSEC3 RR that matches the closest encloser.
 
-To prove the nonexistence of QNAME with NSEC4, the server MUST include a
-denial of source of synthesis proof. This collection of (up to) two NSEC4 RRs
+To prove the nonexistence of QNAME with DNSNXT, the server MUST include a
+denial of source of synthesis proof. This collection of (up to) two DNSNXT RRs
 proves both that QNAME does not exist and that a wildcard that could have
 matched QNAME also does not exist.
 
@@ -543,15 +556,15 @@ matched QNAME also does not exist.
 #### QTYPE is not DS
 
 When a NODATA response needs to be returned, it is safe to say that QNAME
-exists. Similar to NSEC and NSEC3, server MUST include the NSEC4 RR that
-matches QNAME. This NSEC4 RR MUST NOT have the bits corresponding to either
+exists. Similar to NSEC and NSEC3, server MUST include the DNSNXT RR that
+matches QNAME. This DNSNXT RR MUST NOT have the bits corresponding to either
 the QTYPE or CNAME set in its Type Bit Maps field.
 
 #### QTYPE is DS
 
 Because of Opt-Out, the response can be different when QTYPE is DS. If no
-NSEC4 RR matches QNAME, the server MUST return a closest provable encloser
-proof for QNAME. The NSEC4 RR that covers the next closer name MUST have
+DNSNXT RR matches QNAME, the server MUST return a closest provable encloser
+proof for QNAME. The DNSNXT RR that covers the next closer name MUST have
 the Opt-Out bit set.
 
 Note that we do not need to ensure the denial of source of synthesis proof,
@@ -570,8 +583,8 @@ that covers the next closer. It is not necessary to return a RR that
 matches the closest encloser, as the existence of this closest encloser
 is proven by the presence of the expanded wildcard in the response.
 
-To prove that the wildcard name expansion was valid with NSEC4,
-the server MUST include in the response an NSEC4 RR that covers the
+To prove that the wildcard name expansion was valid with DNSNXT,
+the server MUST include in the response an DNSNXT RR that covers the
 next closer. For the same reasons as with NSEC and NSEC3, it is not necessary
 to return a RR that matches the closest encloser.
 
@@ -594,100 +607,100 @@ encloser.
 immediate ancestor of the wildcard RR, which is also defined in [](#RFC4592).
 A closest encloser proof is not necessitated.
 
-To prove the wildcard no data response with NSEC4, the server MUST include
-in the response an NSEC4 RR that matches the wildcard, and an NSEC4 RR that
-covers the next closer. The closest encloser can be derived from the NSEC4 RR
+To prove the wildcard no data response with DNSNXT, the server MUST include
+in the response an DNSNXT RR that matches the wildcard, and an DNSNXT RR that
+covers the next closer. The closest encloser can be derived from the DNSNXT RR
 that matches the wildcard. From that, the next closer can be derived.
 
 ### Referrals to Unsigned Subzones
 
-If there is an NSEC4 RR that matches the delegation name, then that
-NSEC4 RR MUST be included in the response. The DS and CNAME bit in the type
-bit maps of the NSEC4 RR must not be set (by definition).
+If there is an DNSNXT RR that matches the delegation name, then that
+DNSNXT RR MUST be included in the response. The DS and CNAME bit in the type
+bit maps of the DNSNXT RR must not be set (by definition).
 
-If the zone is Opt-Out, then there may not be an NSEC4 RR corresponding to
+If the zone is Opt-Out, then there may not be an DNSNXT RR corresponding to
 the delegation. In this case, the closest provable encloser proof MUST be
-included in the response. The included NSEC4 RR that covers the next closer
+included in the response. The included DNSNXT RR that covers the next closer
 name for the delegation MUST have the Opt-Out flag set to one.
 
-Note that with the Identity function, the NSEC4 RR that matches the closest provable
+Note that with the Identity function, the DNSNXT RR that matches the closest provable
 encloser does not need to be included in the response, as it can be
-derived from the NSEC4 that covers the next closer name.
+derived from the DNSNXT that covers the next closer name.
 
-### Responding to Queries for NSEC4 Only Owner Names
+### Responding to Queries for DNSNXT Only Owner Names
 
-When NSEC4 hashing is in effect the paradox (NSEC4 records
+When DNSNXT hashing is in effect the paradox (DNSNXT records
 deny their own existence) described in Section 7.2.8 of [](#RFC5155)
 is back. When the Identity function is used, there is no paradox. 
-In light of this, queries for the NSEC4 resource type are handled in the
+In light of this, queries for the DNSNXT resource type are handled in the
 same way as normal queries. Resolvers initiating these queries
-SHOULD disregard any information learned from the returned NSEC4 records.
+SHOULD disregard any information learned from the returned DNSNXT records.
 
 ### Server Response to a Run-Time Collision
 
 The same considerations as described in Section 7.2.9 of [](#RFC5155) for
-NSEC3 apply to NSEC4.
+NSEC3 apply to DNSNXT.
 
 ## Secondary Servers
 
 The same considerations as described in Section 7.3 of [](#RFC5155) for
-NSEC3 and NSEC3PARAM apply to NSEC4 and NSEC4PARAM.
+NSEC3 and NSEC3PARAM apply to DNSNXT and DNSNXTPARAM.
 
 ## Zones Using Unknown Hash Algorithms
 
 The same considerations as described in Section 7.4 of [](#RFC5155) for
-NSEC3 apply to NSEC4.
+NSEC3 apply to DNSNXT.
 
 ## Dynamic Update
 
-A zone signed using NSEC4 may accept dynamic updates [](#RFC2136).
-However, NSEC4 introduces some special considerations for dynamic updates.
+A zone signed using DNSNXT may accept dynamic updates [](#RFC2136).
+However, DNSNXT introduces some special considerations for dynamic updates.
 
 Adding and removing names in a zone MUST account for the creation or
 removal of empty non-terminals, similar to [](#RFC5155), Section 7.5.
 
 The presence of Opt-Out in a zone means that some additions or removals of
-unsigned delegations of names will not require changes to the NSEC4 RRs in a
+unsigned delegations of names will not require changes to the DNSNXT RRs in a
 zone. The same considerations as in [](#RFC5155), Section 7.5 for NSEC3 apply
-for NSEC4.
+for DNSNXT.
 
 The presence of Opt-Out in a zone means that when adding or removing
-NSEC4 RRs, the value of the Opt-Out flag that should be set in new or
-modified NSEC4 RRs is ambiguous. Servers SHOULD follow the set of
+DNSNXT RRs, the value of the Opt-Out flag that should be set in new or
+modified DNSNXT RRs is ambiguous. Servers SHOULD follow the set of
 basic rules to resolve the ambiguity, as described in [](#RFC5155),
 Section 7.5.
 
 Adding and removing wildcard names in a zone MUST account for the setting
 or clearing of the Wildcard bit in the Flags field:
 
-* When adding a wildcard name, the NSEC4 RR that matches the immediate
+* When adding a wildcard name, the DNSNXT RR that matches the immediate
   parent of the wildcard MUST set the Wildcard bit in the Flags field;
 
-* When deleting a wildcard name, the NSEC4 RR that matches the immediate
+* When deleting a wildcard name, the DNSNXT RR that matches the immediate
   parent of the wildcard MUST clear the Wildcard bit in the Flags field.
 
 # Validator Considerations
 
 ## Responses with Unknown Hash Types
 
-A validator MUST ignore NSEC4 RRs with unknown hash types.  The
-practical result of this is that responses containing only such NSEC4
+A validator MUST ignore DNSNXT RRs with unknown hash types.  The
+practical result of this is that responses containing only such DNSNXT
 RRs will generally be considered bogus.
 
-## Verifying NSEC4 RRs
+## Verifying DNSNXT RRs
 
 A validator MUST ignore the undefined bits (0-5) in the Flags field of
-NSEC4 RRs.
+DNSNXT RRs.
 
 A validator MAY treat a response as bogus if the response contains
-NSEC4 RRs that contain different values for hash algorithm,
+DNSNXT RRs that contain different values for hash algorithm,
 iterations, or salt from each other for that zone.
 
 ## Validating Name Error Responses
 
 A validator MUST verify that there is a closest encloser for QNAME present
 in the response. A validator MUST verify that the Wildcard bit is clear in
-the Flags field of the NSEC4 RR that matches the closest encloser.
+the Flags field of the DNSNXT RR that matches the closest encloser.
 
 > Note: In denial of existence responses, the Wildcard flag
 > will never be set. Setting the bit indicated that wildcard
@@ -696,22 +709,22 @@ the Flags field of the NSEC4 RR that matches the closest encloser.
 > name. Nevertheless, a validator must verify that the Wildcard
 > bit is clear. If a validator fails to check the bit, it is
 > vulnerable to replay attacks. For example, if you do not check
-> the Wildcard Flag in the example.com NSEC4 (but *.example.com
+> the Wildcard Flag in the example.com DNSNXT (but *.example.com
 > does exist), an attacker can use the record to deny names that
 > would otherwise match the wildcard name. 
 
 In order to find the closest encloser, the validator MUST find the longest
-name, X, such that X is an ancestor of QNAME that is matched by an NSEC4 RR
+name, X, such that X is an ancestor of QNAME that is matched by an DNSNXT RR
 present in the response.
 
 One possible algorithm for finding the closest encloser is as follows:
 
 1. Set SNAME=QNAME;
-2. If there is an NSEC4 RR in the response that matches SNAME, then we have found the closest encloser;
+2. If there is an DNSNXT RR in the response that matches SNAME, then we have found the closest encloser;
 3. Truncate SNAME by one label from the left, go to step 2.
 
 Once the closest encloser has been discovered, the validator MUST
-check that the NSEC4 RR that has the closest encloser as the original
+check that the DNSNXT RR that has the closest encloser as the original
 owner name is from the proper zone. The DNAME type bit MUST NOT be set and
 the NS type bit MUST be clear if the SOA type bit is clear.
 
@@ -719,27 +732,27 @@ If this is not the case, it would be an indication that an attacker is
 using them to falsely deny the existence of RRs for which the server is
 not authoritative.
 
-In addition, the validator MUST verify that there is an NSEC4 RR that covers
+In addition, the validator MUST verify that there is an DNSNXT RR that covers
 the next closer name.
 
 ## Validating No Data Responses
 
-If QTYPE is not DS, a validator MUST verify that an NSEC4 RR that matches
+If QTYPE is not DS, a validator MUST verify that an DNSNXT RR that matches
 QNAME is present and that both the QTYPE and the CNAME type are not set in
 its Type Bit Maps field.
 
-Note that this test also covers the case where the NSEC4 RR exists because
-it corresponds to an empty non-terminal, in which case the NSEC4 RR will
+Note that this test also covers the case where the DNSNXT RR exists because
+it corresponds to an empty non-terminal, in which case the DNSNXT RR will
 have an empty Type Bit Maps field.
 
-If QTYPE is DS, and there is an NSEC4 RR that matches QNAME present in the
-response, then that NSEC4 RR MUST NOT have the bits corresponding to DS and
+If QTYPE is DS, and there is an DNSNXT RR that matches QNAME present in the
+response, then that DNSNXT RR MUST NOT have the bits corresponding to DS and
 CNAME set in its Type Bit Maps field.
 
-If there is no such NSEC4 RR, then the validator MUST verify that there is
+If there is no such DNSNXT RR, then the validator MUST verify that there is
 a closest provable encloser for QNAME present in the response. The closest
 provable encloser is found in a similar way as the closest encloser.
-In addition, the validator MUST verify that there is an NSEC4 RR that covers
+In addition, the validator MUST verify that there is an DNSNXT RR that covers
 the next closer name and has the Opt-Out bit set.
 
 ## Validating Wildcard Answer Responses
@@ -748,19 +761,19 @@ The verified wildcard answer RRSet in the response provides the validator
 with a closest encloser for QNAME. The validator can do so by checking the
 label count in the RRSIG and the number of labels in the answer's owner name.
 
-The validator MUST verify that there is an NSEC4 RR that covers the
+The validator MUST verify that there is an DNSNXT RR that covers the
 next closer name to QNAME is present in the response. This proves that QNAME
 itself did not exist and that the correct wildcard was used to generate the
 response.
 
 ## Validating Wildcard No Data Responses
 
-The validator MUST verify that there is an NSEC4 RR present in the response
+The validator MUST verify that there is an DNSNXT RR present in the response
 that matches the source of synthesis. 
 
 In order to find the source of synthesis, the validator MUST find the longest
 name, X, such that X is an ancestor of QNAME and that *.X is matched by a
-NSEC4 RR present in the response.
+DNSNXT RR present in the response.
 
 One possible algorithm for finding the source of synthesis is as follows:
 
@@ -768,27 +781,27 @@ One possible algorithm for finding the source of synthesis is as follows:
 2.  Truncate SNAME by one label from the left. This is a candidate for the
     closest encloser;
 3.  Set WNAME to be SNAME with the asterisk label prepended: WNAME=*.SNAME;
-4.  If there is an NSEC4 RR in the response that matches WNAME, then we have
+4.  If there is an DNSNXT RR in the response that matches WNAME, then we have
     found the source of synthesis, with SNAME being the closest encloser;
 5.  Go to step 2.
 
 The validator does not need to check that the closest encloser is from the
-proper zone. The authoritative server returned an NSEC4 that matches the
+proper zone. The authoritative server returned an DNSNXT that matches the
 source of synthesis. According to [](#RFC6672), this proves that
 the server did not encounter a referral (step 3b of the server algorithm [](#RFC1035)),
 nor did it encounter a DNAME (step 3c of the server algorithm [](#RFC1035)).
 
 Now that the validator knows the source of synthesis and thus the closest
 encloser, it can derive the next closer name. The validator MUST verify
-that there is an NSEC4 RR that covers the next closer name to QNAME, is
+that there is an DNSNXT RR that covers the next closer name to QNAME, is
 present in the response.
 
-Note that, because the response included an NSEC4 that matches the source
+Note that, because the response included an DNSNXT that matches the source
 of synthesis, we know that there exists data in the zone below the closest
 encloser. Therefore, the closest encloser cannot be a delegation, nor can there
 exists a DNAME RRset at the closest encloser.
 
-[MM: As an additional check, the validator can verify if the NSEC4 matching
+[MM: As an additional check, the validator can verify if the DNSNXT matching
 the closest encloser has the Wildcard Flag set.]
 
 ## Validating Referrals to Unsigned Subzones
@@ -796,35 +809,32 @@ the closest encloser has the Wildcard Flag set.]
 The delegation name in a referral is the owner name of the NS RRSet
 present in the authority section of the referral response.
 
-If there is an NSEC4 RR present in the response that matches the
+If there is an DNSNXT RR present in the response that matches the
 delegation name, then the validator MUST ensure that the NS bit is
 set and that the DS bit is not set in the Type Bit Maps field of the
-NSEC4 RR. The validator MUST also ensure that the NSEC4 RR is from
+DNSNXT RR. The validator MUST also ensure that the DNSNXT RR is from
 the correct (i.e., parent) zone. This is done by ensuring that the
-SOA bit is not set in the Type Bit Maps field of this NSEC4 RR.
+SOA bit is not set in the Type Bit Maps field of this DNSNXT RR.
 
 Note that the presence of an NS bit implies the absence of a DNAME
 bit, so there is no need to check for the DNAME bit in the Type Bit
-Maps field of the NSEC4 RR.
+Maps field of the DNSNXT RR.
 
-If there is no NSEC4 RR present that matches the delegation name,
+If there is no DNSNXT RR present that matches the delegation name,
 then the validator MUST verify that there is a closest provable encloser 
 for the delegation name. In addition, the validator MUST verify that
-there is an NSEC4 RR that covers the next closer name and has the
+there is an DNSNXT RR that covers the next closer name and has the
 Opt-Out bit set.
 
-
-# Resolver Considerations
-
-## NSEC4 Resource Record Caching
+## DNSNXT Resource Record Caching
 
 The same considerations as described in Section 9.1 of [](#RFC5155) for
-NSEC3 apply to NSEC4.
+NSEC3 apply to DNSNXT.
 
 ## Use of the AD Bit
 
 The same considerations as described in Section 9.2 of [](#RFC5155) for
-NSEC3 apply to NSEC4.
+NSEC3 apply to DNSNXT.
 
 # Special Considerations
 
@@ -841,44 +851,31 @@ there MUST be no data at any descendant of N.
 [](#RFC5155) updates the DNAME specification to allow NSEC3 and RRSIG types
 at descendants of the apex regardless of the existence of DNAME at the apex.
 
-This document updates the DNAME specification to also allow NSEC4 types
+This document updates the DNAME specification to also allow DNSNXT types
 at descendants of the apex regardless of the existence of DNAME at the apex.
-
-## Iterations value
-
-Like Section 10.3 in [](#RFC5155), but we recommend to
-read [](#Schaeffer10) as it shows that a lower iterations value
-is also acceptable. The research shows that that the half performance count
-for validators is roughly 150 to 600, depending on the key size.
-For authoritative servers the half performance count is around 100 iterations.
 
 ## More Special Considerations
 
 Appendix C of [](#RFC5155) clarifies specific behavior and explains
 more special considerations for implementations, regarding salting and
-hash collisions. These considerations for NSEC3 also apply to NSEC4.
-
+hash collisions. These considerations for NSEC3 also apply to DNSNXT.
 
 # IANA Considerations
 
-Although the NSEC4 and NSEC4PARAM RR formats include a hash algorithm
+Although the DNSNXT and DNSNXTPARAM RR formats include a hash algorithm
 parameter, this document does not define a particular mechanism for
-safely transitioning from one NSEC4 hash algorithm to another. When
-specifying a new hash algorithm for use with NSEC4, a transition
+safely transitioning from one DNSNXT hash algorithm to another. When
+specifying a new hash algorithm for use with DNSNXT, a transition
 mechanism MUST also be defined.
 
 This document updates the IANA registry "DOMAIN NAME SYSTEM PARAMETERS"
 (http://www.iana.org/assignments/dns-parameters) in sub-registry "TYPES",
-by defining two new types. [](#the-nsec4-resource-record) defines the
-NSEC4 RR type [TBD]. [](#the-nsec4param-resource-record) defines the
-NSEC4PARAM RR type [TBD].
+by defining two new types. [](#the-dnsnxt-resource-record) defines the
+DNSNXT RR type [TBD]. [](#the-dnsnxtparam-resource-record) defines the
+DNSNXTPARAM RR type [TBD].
 
-This document possibly updates the IANA registry
-"DNS SECURITY ALGORITHM NUMBERS -- per [](#RFC4035)"
-(http://www.iana.org/assignments/dns-sec-alg-numbers). 
-
-This document creates a new IANA registry for NSEC4 flags. This
-registry is named "DNSSEC NSEC4 Flags". The initial contents of this
+This document creates a new IANA registry for DNSNXT flags. This
+registry is named "DNSSEC DNSNXT Flags". The initial contents of this
 registry are:
 
       0    1    2    3    4    5    6    7
@@ -893,11 +890,11 @@ registry are:
 
     bits 0 - 5 are available for assignment.
 
-Assignment of additional NSEC4 Flags in this registry requires IETF
+Assignment of additional DNSNXT Flags in this registry requires IETF
 Standards Action [](#RFC5226).
 
-This document creates a new IANA registry for NSEC4PARAM flags. This
-registry is named "DNSSEC NSEC4PARAM Flags". The initial contents of
+This document creates a new IANA registry for DNSNXTPARAM flags. This
+registry is named "DNSSEC DNSNXTPARAM Flags". The initial contents of
 this registry are:
 
       0   1   2   3   4   5   6   7
@@ -909,11 +906,11 @@ this registry are:
 
     bits 0 - 6 are available for assignment.
 
-Assignment of additional NSEC4PARAM Flags in this registry requires IETF
+Assignment of additional DNSNXTPARAM Flags in this registry requires IETF
 Standards Action [](#RFC5226).
 
-Finally, this document creates a new IANA registry for NSEC4 hash
-algorithms. This registry is named "DNSSEC NSEC4 Hash Algorithms".
+Finally, this document creates a new IANA registry for DNSNXT hash
+algorithms. This registry is named "DNSSEC DNSNXT Hash Algorithms".
 The initial contents of this registry are:
 
     0 is the Identity function.
@@ -922,9 +919,8 @@ The initial contents of this registry are:
 
     2-255 Available for assignment.
 
-Assignment of additional NSEC4 hash algorithms in this registry requires IETF
+Assignment of additional DNSNXT hash algorithms in this registry requires IETF
 Standards Action [](#RFC5226).
-
 
 # Security Considerations
 
@@ -936,22 +932,29 @@ This document would not be possible without the help of Ed Lewis, Roy Arends,
 Wouter Wijngaards, 
 Karst Koymans, 
 Mohan Parthasarathy,
-Marco Davids, Esther Makaay and Antoin Verschuren.
+Marco Davids,
+Esther Makaay
+and Antoin Verschuren.
 
 # Changelog
 
-## 02
-
-With `denialid` published revisit this one.
-
 ## 01
 
+[ To be removed to the RFC editor before publication. ]
+
+## -02
+
+* Rename to DNSNXT and DNSNXTPARAM;
+* Make Iterations an octet.
+
+## -01
+
 * Clarification throughout the text (Mohan Parthasarathy);
-* Add section about empty non-terminals in NSEC, NSEC3 and NSEC4;
+* Add section about empty non-terminals in NSEC, NSEC3 and DNSNXT;
 * Rename Zero hashing to Identity function.
 * No need for different ordering mechanisms: canonical ordering only.
 * Remove section on validator algorithm (already explained in RFC4035).
 
-## 00
+## -00
 
 * Initial document.
