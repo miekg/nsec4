@@ -248,7 +248,7 @@ The RDATA of the NEXT RR is as shown below.
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     /                         Type Bit Maps                         /
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-^[fig:dnsnxt-wire::The NEXT on-the-wire format.]
+^[fig:next-wire::The NEXT on-the-wire format.]
 
 Hash Algorithm is a single octet. 
 If Hash Algorithm is zero (Identity function), the Iterations field,
@@ -353,7 +353,7 @@ The RDATA of the NEXTPARAM RR is as shown below:
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                             Salt                              /
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-^[fig:dnsnxtparam-wire::The NEXTPARAM on-the-wire format.]
+^[fig:nextparam-wire::The NEXTPARAM on-the-wire format.]
 
 Hash Algorithm is a single octet.
 
@@ -870,8 +870,8 @@ mechanism MUST also be defined.
 
 This document updates the IANA registry "DOMAIN NAME SYSTEM PARAMETERS"
 (http://www.iana.org/assignments/dns-parameters) in sub-registry "TYPES",
-by defining two new types. [](#the-dnsnxt-resource-record) defines the
-NEXT RR type [TBD]. [](#the-dnsnxtparam-resource-record) defines the
+by defining two new types. [](#the-next-resource-record) defines the
+NEXT RR type [TBD]. [](#the-nextparam-resource-record) defines the
 NEXTPARAM RR type [TBD].
 
 This document creates a new IANA registry for NEXT flags. This
