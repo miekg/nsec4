@@ -115,7 +115,7 @@ It interoperates with non-experimental DNSSEC using the technique
 described in [](#RFC4955).  This experiment is identified with the
 following private algorithm (using algorithm PRIVATEDNS):
 
-* Algorithm `5.dnsnxt.nlnetlabs.nl.`, is an alias for algorithm 5, RSASHA1.
+* Algorithm `5.next.nlnetlabs.nl.`, is an alias for algorithm 5, RSASHA1.
 
 Servers wishing to sign and serve zones that utilize NEXT MUST sign
 the zone with this private algorithm and MUST NOT use any other algorithms.
@@ -945,7 +945,7 @@ and Antoin Verschuren.
 ## -02
 
 * Rename to NEXT and NEXTPARAM;
-* Make Iterations an octet.
+* Make Iterations an octet, instead of uin16.
 
 ## -01
 
