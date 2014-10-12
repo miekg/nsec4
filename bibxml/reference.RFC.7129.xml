@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC7129'>
+
+<front>
+<title>Authenticated Denial of Existence in the DNS</title>
+<author initials='R.' surname='Gieben' fullname='R. Gieben'>
+<organization /></author>
+<author initials='W.' surname='Mekking' fullname='W. Mekking'>
+<organization /></author>
+<date year='2014' month='February' />
+<abstract>
+<t>Authenticated denial of existence allows a resolver to validate that a certain domain name does not exist. It is also used to signal that a domain name exists but does not have the specific resource record (RR) type you were asking for. When returning a negative DNS Security Extensions (DNSSEC) response, a name server usually includes up to two NSEC records. With NSEC version 3 (NSEC3), this amount is three.&lt;/t>&lt;t> This document provides additional background commentary and some context for the NSEC and NSEC3 mechanisms used by DNSSEC to provide authenticated denial-of-existence responses.</t></abstract></front>
+
+<seriesInfo name='RFC' value='7129' />
+<format type='TXT' octets='62936' target='http://www.rfc-editor.org/rfc/rfc7129.txt' />
+</reference>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC4035'>
+
+<front>
+<title>Protocol Modifications for the DNS Security Extensions</title>
+<author initials='R.' surname='Arends' fullname='R. Arends'>
+<organization /></author>
+<author initials='R.' surname='Austein' fullname='R. Austein'>
+<organization /></author>
+<author initials='M.' surname='Larson' fullname='M. Larson'>
+<organization /></author>
+<author initials='D.' surname='Massey' fullname='D. Massey'>
+<organization /></author>
+<author initials='S.' surname='Rose' fullname='S. Rose'>
+<organization /></author>
+<date year='2005' month='March' />
+<abstract>
+<t>This document is part of a family of documents that describe the DNS Security Extensions (DNSSEC). The DNS Security Extensions are a collection of new resource records and protocol modifications that add data origin authentication and data integrity to the DNS. This document describes the DNSSEC protocol modifications. This document defines the concept of a signed zone, along with the requirements for serving and resolving by using DNSSEC. These techniques allow a security-aware resolver to authenticate both DNS resource records and authoritative DNS error indications.&lt;/t>&lt;t> This document obsoletes RFC 2535 and incorporates changes from all updates to RFC 2535. [STANDARDS-TRACK]</t></abstract></front>
+
+<seriesInfo name='RFC' value='4035' />
+<format type='TXT' octets='130589' target='http://www.rfc-editor.org/rfc/rfc4035.txt' />
+</reference>

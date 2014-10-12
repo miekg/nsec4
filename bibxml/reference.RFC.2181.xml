@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2181'>
+
+<front>
+<title abbrev='DNS Clarifications'>Clarifications to the DNS Specification</title>
+<author initials='R.' surname='Elz' fullname='Robert Elz'>
+<organization>Computer Science</organization>
+<address>
+<postal>
+<street>Parkville</street>
+<street>Victoria</street>
+<street>3052</street>
+<street>Australia.</street></postal>
+<email>kre@munnari.OZ.AU</email>
+<uri>e</uri></address></author>
+<author initials='R.' surname='Bush' fullname='Randy Bush'>
+<organization>RGnet, Inc.</organization>
+<address>
+<postal>
+<street>5147 Crystal Springs Drive</street>
+<street>Bainbridge Island</street>
+<street>Washington</street>
+<street>98110</street>
+<street>United States.</street>
+<country>NE</country></postal>
+<email>randy@psg.com</email></address></author>
+<date year='1997' month='July' />
+<area>Applications</area>
+<keyword>DNS</keyword>
+<keyword>domain name system</keyword></front>
+
+<seriesInfo name='RFC' value='2181' />
+<format type='TXT' octets='36989' target='http://www.rfc-editor.org/rfc/rfc2181.txt' />
+<format type='XML' octets='38931' target='http://xml.resource.org/public/rfc/xml/rfc2181.xml' />
+</reference>

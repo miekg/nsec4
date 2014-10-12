@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC1034'>
+
+<front>
+<title abbrev='Domain Concepts and Facilities'>Domain names - concepts and facilities</title>
+<author initials='P.' surname='Mockapetris' fullname='P. Mockapetris'>
+<organization>Information Sciences Institute (ISI)</organization></author>
+<date year='1987' day='1' month='November' /></front>
+
+<seriesInfo name='STD' value='13' />
+<seriesInfo name='RFC' value='1034' />
+<format type='TXT' octets='129180' target='http://www.rfc-editor.org/rfc/rfc1034.txt' />
+</reference>

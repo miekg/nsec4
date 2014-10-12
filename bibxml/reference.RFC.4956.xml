@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC4956'>
+
+<front>
+<title>DNS Security (DNSSEC) Opt-In</title>
+<author initials='R.' surname='Arends' fullname='R. Arends'>
+<organization /></author>
+<author initials='M.' surname='Kosters' fullname='M. Kosters'>
+<organization /></author>
+<author initials='D.' surname='Blacka' fullname='D. Blacka'>
+<organization /></author>
+<date year='2007' month='July' />
+<abstract>
+<t>In the DNS security (DNSSEC) extensions, delegations to unsigned subzones are cryptographically secured.  Maintaining this cryptography is not always practical or necessary.  This document describes an experimental "Opt-In" model that allows administrators to omit this cryptography and manage the cost of adopting DNSSEC with large zones.  This memo defines an Experimental Protocol for the Internet community.</t></abstract></front>
+
+<seriesInfo name='RFC' value='4956' />
+<format type='TXT' octets='32033' target='http://www.rfc-editor.org/rfc/rfc4956.txt' />
+</reference>
